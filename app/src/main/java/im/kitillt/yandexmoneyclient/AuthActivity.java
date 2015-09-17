@@ -34,31 +34,37 @@ public class AuthActivity extends AppCompatActivity {
 
     public static final String KEY_URL = "uri";
     public static final String KEY_POST_DATA = "postData";
+    public static final String RESULT_SUCCESS = "success";
     public static final String RESULT_ERROR_MSG = "errorMessage";
-    public static final String RESULT_SUCCESS = "Success";
-
-    private String errorDescription = null;
 
     private WebView webView;
 
+    private String url;
+    private byte[] postDataBytes = null;
+
+    private String errorDescription = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        //requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_auth);
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        hideProgressBar();
+
+        String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        if (!TextUtils.isEmpty(token)) {
+            Log.i("Already authorized", "");
+            setResult(RESULT_OK);
+            finish();
+            return;
+        }
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra(KEY_URL);
-        byte[] postDataBytes = intent.getByteArrayExtra(KEY_POST_DATA);
-        webView = (WebView) findViewById(R.id.auth_webview);
-
+        url = intent.getStringExtra(KEY_URL);
+        postDataBytes = intent.getByteArrayExtra(KEY_POST_DATA);
+        webView = (WebView)findViewById(R.id.auth_webview);
         authorization(url, postDataBytes, webView);
 
         intent = new Intent();
@@ -74,16 +80,28 @@ public class AuthActivity extends AppCompatActivity {
 
     private void loadPage(String url, byte[] postData, WebView view) {
         Log.i("loadPage", "load");
-        view.setVisibility(View.VISIBLE);
+        showWebView(view);
         view.postUrl(url, postData);
     }
 
-    public void showProgressBar() {
-        setProgressBarIndeterminateVisibility(true);
+    private void showWebView(WebView view) {
+        view.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgressBar() {
-        setProgressBarIndeterminateVisibility(false);
+    private void hideWebView() {
+        webView.setVisibility(View.GONE);
+    }
+
+    private class Chrome extends WebChromeClient {
+        @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+            Log.d("WebChromeClient", "progress = " + newProgress);
+            if (newProgress == 100) {
+                //TODO add
+            } else {
+                //TODO add
+            }
+        }
     }
 
     @Override
@@ -124,32 +142,21 @@ public class AuthActivity extends AppCompatActivity {
                 } else {
                     completed = true;
                     errorDescription = authResponse.errorDescription;
+                    Toast.makeText(AuthActivity.this, "Error: "+errorDescription, Toast.LENGTH_SHORT).show();
                 }
             } catch (URISyntaxException e) {
+                completed = true;
                 e.printStackTrace();
+                errorDescription = "Unknown error";
             }
             if (completed) {
-                hideProgressBar();
+                //TODO add smth
             }
             return completed || super.shouldOverrideUrlLoading(view, url);
         }
     }
 
-    private class Chrome extends WebChromeClient {
-        @Override
-        public void onProgressChanged(WebView view, int newProgress) {
-            Log.d("WebChromeClient", "progress = " + newProgress);
-            if (newProgress == 100) {
-                hideProgressBar();
-            } else {
-                showProgressBar();
-            }
-        }
-    }
-
     private void getPermanentToken(String tempToken) {
-        String getTokenUrl = new Token.Request(tempToken, YMCApplication.APP_ID,YMCApplication.REDIRECT_URI)
-                .requestUrl(YMCApplication.apiClient.getHostsProvider());
         OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
         try {
             session.enqueue(new Token.Request(tempToken, YMCApplication.APP_ID, YMCApplication.REDIRECT_URI), new ResponseReady<Token>() {
@@ -180,5 +187,4 @@ public class AuthActivity extends AppCompatActivity {
         getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
                 .edit().putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
     }
-
 }
