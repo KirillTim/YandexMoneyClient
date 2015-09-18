@@ -1,0 +1,13 @@
+{
+	"syntaxVersion": "3",
+	"projectPackageId": "im.kitillt.yandexmoneyclient",
+	"authority": "im.kitillt.yandexmoneyclient.provider",
+	"providerJavaPackage": "im.kitillt.yandexmoneyclient.provider",
+	"providerClassName": "YMCContentProvider",
+	"sqliteOpenHelperClassName": "YMCSQLiteOpenHelper",
+	"sqliteOpenHelperCallbacksClassName": "YMCSQLiteOpenHelperCallbacks",
+	"databaseFileName": "yandexmoneyclient.db",
+	"databaseVersion": 1,
+	"enableForeignKeys": true,
+	"useAnnotations": true,
+}

@@ -1,0 +1,148 @@
+{
+	"documentation": "P2P payment operation.",
+	"fields": [
+		{
+			"name": "operationId",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "status",
+			"type": "enum", 
+			"enumName": "status", 
+			"enumValues": [
+				"SUCCESS",
+				"REFUSED",
+				"IN_PROGRESS",
+				"UNKNOWN"
+			],
+			"nullable": false
+		},
+		{
+			"name": "direction",
+			"type": "enum", 
+			"enumName": "direction", 
+			"enumValues": [
+				"INCOMING",
+				"OUTGOING",
+				"UNKNOWN"
+			],
+			"nullable": false
+		},
+		{
+			"documentation": "real type: BigDecimal",
+			"name": "amount",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"documentation": "real type: BigDecimal",
+			"name": "amountDue",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"documentation": "real type: BigDecimal",
+			"name": "fee",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"documentation": "real type: DateTime",
+			"name": "dateTime",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "title",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "sender",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "recipient",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "payeeIdentifierType",
+			"type": "enum", 
+			"enumName": "payeeIdentifierType", 
+			"enumValues": [
+				"ACCOUNT",
+				"PHONE",
+				"EMAIL",
+				"UNKNOWN"
+			],
+			"nullable": false
+		},
+		{
+			"name": "message",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "comment",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "codepro",
+			"type": "Boolean", 
+			"nullable": false
+		},
+		{
+			"name": "protectionCode",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"documentation": "real type: DateTime",
+			"name": "expires",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"documentation": "real type: DateTime",
+			"name": "answerDateTime",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "label",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "details",
+			"type": "String", 
+			"nullable": false
+		},
+		{
+			"name": "repeatable",
+			"type": "Boolean", 
+			"nullable": false
+		},
+		{
+			"name": "favorite",
+			"type": "Boolean", 
+			"nullable": false
+		},
+		{
+			"name": "paymentType",
+			"type": "enum", 
+			"enumName": "paymentType", 
+			"enumValues": [
+				"OUTGOING_TRANSFER",
+				"INCOMING_TRANSFER",
+				"INCOMING_TRANSFER_PROTECTED",
+				"UNKNOWN"
+			],
+			"nullable": false
+		},
+	]
+}

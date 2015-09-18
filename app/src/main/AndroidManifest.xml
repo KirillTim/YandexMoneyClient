@@ -26,6 +26,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="im.kitillt.yandexmoneyclient.MainActivity" />
         </activity>
+
+        <provider
+            android:name="im.kitillt.yandexmoneyclient.provider.YMCContentProvider"
+            android:authorities="im.kitillt.yandexmoneyclient.provider"
+            android:exported="false" />
+
     </application>
 
 </manifest>
