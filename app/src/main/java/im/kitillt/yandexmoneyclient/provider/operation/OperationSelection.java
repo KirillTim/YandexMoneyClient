@@ -194,33 +194,33 @@ public class OperationSelection extends AbstractSelection<OperationSelection> {
         return this;
     }
 
-    public OperationSelection datetime(String... value) {
-        addEquals(OperationColumns.DATETIME, value);
+    public OperationSelection datetime(long... value) {
+        addEquals(OperationColumns.DATETIME, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection datetimeNot(String... value) {
-        addNotEquals(OperationColumns.DATETIME, value);
+    public OperationSelection datetimeNot(long... value) {
+        addNotEquals(OperationColumns.DATETIME, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection datetimeLike(String... value) {
-        addLike(OperationColumns.DATETIME, value);
+    public OperationSelection datetimeGt(long value) {
+        addGreaterThan(OperationColumns.DATETIME, value);
         return this;
     }
 
-    public OperationSelection datetimeContains(String... value) {
-        addContains(OperationColumns.DATETIME, value);
+    public OperationSelection datetimeGtEq(long value) {
+        addGreaterThanOrEquals(OperationColumns.DATETIME, value);
         return this;
     }
 
-    public OperationSelection datetimeStartsWith(String... value) {
-        addStartsWith(OperationColumns.DATETIME, value);
+    public OperationSelection datetimeLt(long value) {
+        addLessThan(OperationColumns.DATETIME, value);
         return this;
     }
 
-    public OperationSelection datetimeEndsWith(String... value) {
-        addEndsWith(OperationColumns.DATETIME, value);
+    public OperationSelection datetimeLtEq(long value) {
+        addLessThanOrEquals(OperationColumns.DATETIME, value);
         return this;
     }
 
@@ -420,63 +420,63 @@ public class OperationSelection extends AbstractSelection<OperationSelection> {
         return this;
     }
 
-    public OperationSelection expires(String... value) {
-        addEquals(OperationColumns.EXPIRES, value);
+    public OperationSelection expires(long... value) {
+        addEquals(OperationColumns.EXPIRES, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection expiresNot(String... value) {
-        addNotEquals(OperationColumns.EXPIRES, value);
+    public OperationSelection expiresNot(long... value) {
+        addNotEquals(OperationColumns.EXPIRES, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection expiresLike(String... value) {
-        addLike(OperationColumns.EXPIRES, value);
+    public OperationSelection expiresGt(long value) {
+        addGreaterThan(OperationColumns.EXPIRES, value);
         return this;
     }
 
-    public OperationSelection expiresContains(String... value) {
-        addContains(OperationColumns.EXPIRES, value);
+    public OperationSelection expiresGtEq(long value) {
+        addGreaterThanOrEquals(OperationColumns.EXPIRES, value);
         return this;
     }
 
-    public OperationSelection expiresStartsWith(String... value) {
-        addStartsWith(OperationColumns.EXPIRES, value);
+    public OperationSelection expiresLt(long value) {
+        addLessThan(OperationColumns.EXPIRES, value);
         return this;
     }
 
-    public OperationSelection expiresEndsWith(String... value) {
-        addEndsWith(OperationColumns.EXPIRES, value);
+    public OperationSelection expiresLtEq(long value) {
+        addLessThanOrEquals(OperationColumns.EXPIRES, value);
         return this;
     }
 
-    public OperationSelection answerdatetime(String... value) {
-        addEquals(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetime(long... value) {
+        addEquals(OperationColumns.ANSWERDATETIME, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection answerdatetimeNot(String... value) {
-        addNotEquals(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetimeNot(long... value) {
+        addNotEquals(OperationColumns.ANSWERDATETIME, toObjectArray(value));
         return this;
     }
 
-    public OperationSelection answerdatetimeLike(String... value) {
-        addLike(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetimeGt(long value) {
+        addGreaterThan(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 
-    public OperationSelection answerdatetimeContains(String... value) {
-        addContains(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetimeGtEq(long value) {
+        addGreaterThanOrEquals(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 
-    public OperationSelection answerdatetimeStartsWith(String... value) {
-        addStartsWith(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetimeLt(long value) {
+        addLessThan(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 
-    public OperationSelection answerdatetimeEndsWith(String... value) {
-        addEndsWith(OperationColumns.ANSWERDATETIME, value);
+    public OperationSelection answerdatetimeLtEq(long value) {
+        addLessThanOrEquals(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 

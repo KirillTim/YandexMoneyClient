@@ -99,12 +99,10 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
     }
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    public String getDatetime() {
-        String res = getStringOrNull(OperationColumns.DATETIME);
+    public long getDatetime() {
+        Long res = getLongOrNull(OperationColumns.DATETIME);
         if (res == null)
             throw new NullPointerException("The value of 'datetime' in the database was null, which is not allowed according to the model definition");
         return res;
@@ -205,24 +203,20 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
     }
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    public String getExpires() {
-        String res = getStringOrNull(OperationColumns.EXPIRES);
+    public long getExpires() {
+        Long res = getLongOrNull(OperationColumns.EXPIRES);
         if (res == null)
             throw new NullPointerException("The value of 'expires' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    public String getAnswerdatetime() {
-        String res = getStringOrNull(OperationColumns.ANSWERDATETIME);
+    public long getAnswerdatetime() {
+        Long res = getLongOrNull(OperationColumns.ANSWERDATETIME);
         if (res == null)
             throw new NullPointerException("The value of 'answerdatetime' in the database was null, which is not allowed according to the model definition");
         return res;

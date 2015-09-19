@@ -55,11 +55,9 @@ public interface OperationModel extends BaseModel {
     String getFee();
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    String getDatetime();
+    long getDatetime();
 
     /**
      * Get the {@code title} value.
@@ -116,18 +114,14 @@ public interface OperationModel extends BaseModel {
     String getProtectioncode();
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    String getExpires();
+    long getExpires();
 
     /**
-     * real type: DateTime
-     * Cannot be {@code null}.
+     * unix time here, real type: DateTime
      */
-    @NonNull
-    String getAnswerdatetime();
+    long getAnswerdatetime();
 
     /**
      * Get the {@code label} value.
