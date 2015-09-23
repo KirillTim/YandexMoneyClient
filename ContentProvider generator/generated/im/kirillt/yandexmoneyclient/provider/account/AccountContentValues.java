@@ -65,10 +65,13 @@ public class AccountContentValues extends AbstractContentValues {
     /**
      * avatar image file location
      */
-    public AccountContentValues putAvatar(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("avatar must not be null");
+    public AccountContentValues putAvatar(@Nullable String value) {
         mContentValues.put(AccountColumns.AVATAR, value);
         return this;
     }
 
+    public AccountContentValues putAvatarNull() {
+        mContentValues.putNull(AccountColumns.AVATAR);
+        return this;
+    }
 }

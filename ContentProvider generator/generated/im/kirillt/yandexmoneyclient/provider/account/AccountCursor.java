@@ -76,13 +76,11 @@ public class AccountCursor extends AbstractCursor implements AccountModel {
 
     /**
      * avatar image file location
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getAvatar() {
         String res = getStringOrNull(AccountColumns.AVATAR);
-        if (res == null)
-            throw new NullPointerException("The value of 'avatar' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 }

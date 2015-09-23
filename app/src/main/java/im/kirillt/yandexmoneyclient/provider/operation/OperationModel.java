@@ -42,16 +42,16 @@ public interface OperationModel extends BaseModel {
 
     /**
      * real type: BigDecimal
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getAmountdue();
 
     /**
      * real type: BigDecimal
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getFee();
 
     /**
@@ -82,9 +82,9 @@ public interface OperationModel extends BaseModel {
 
     /**
      * Get the {@code payeeidentifiertype} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     payeeIdentifierType getPayeeidentifiertype();
 
     /**
@@ -108,33 +108,37 @@ public interface OperationModel extends BaseModel {
 
     /**
      * Get the {@code protectioncode} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getProtectioncode();
 
     /**
      * unix time here, real type: DateTime
+     * Can be {@code null}.
      */
-    long getExpires();
+    @Nullable
+    Long getExpires();
 
     /**
      * unix time here, real type: DateTime
+     * Can be {@code null}.
      */
-    long getAnswerdatetime();
+    @Nullable
+    Long getAnswerdatetime();
 
     /**
      * Get the {@code label} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getLabel();
 
     /**
      * Get the {@code details} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getDetails();
 
     /**

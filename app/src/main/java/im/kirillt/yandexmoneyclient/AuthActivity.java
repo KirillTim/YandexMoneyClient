@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,14 +36,17 @@ public class AuthActivity extends AppCompatActivity {
     public static final String KEY_URL = "uri";
     public static final String KEY_POST_DATA = "postData";
     public static final String RESULT_SUCCESS = "success";
+    public static final String RESULT_TOKEN = "token";
+    public static final String RESULT_LOGIN = "login";
     public static final String RESULT_ERROR_MSG = "errorMessage";
 
     private WebView webView;
 
+    private String login = null;
+
     private String url;
     private byte[] postDataBytes = null;
 
-    private String errorDescription = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("AuthActivity", "onCreate()");
@@ -58,7 +62,7 @@ public class AuthActivity extends AppCompatActivity {
         if (!TextUtils.isEmpty(token)) {
             Log.i("Already authorized", "");
             setResult(RESULT_OK);
-            finish();
+            this.finish();
             return;
         }
 
@@ -68,15 +72,7 @@ public class AuthActivity extends AppCompatActivity {
         webView = (WebView)findViewById(R.id.auth_webview);
         authorization(url, postDataBytes, webView);
 
-        intent = new Intent();
-        if (TextUtils.isEmpty(errorDescription)) {
-            intent.putExtra(RESULT_SUCCESS, true);
-        } else {
-            intent.putExtra(RESULT_SUCCESS, false);
-            intent.putExtra(RESULT_ERROR_MSG, errorDescription);
-        }
-        setResult(RESULT_OK, intent);
-        finish();
+
     }
 
     private void loadPage(String url, byte[] postData, WebView view) {
@@ -137,23 +133,35 @@ public class AuthActivity extends AppCompatActivity {
             boolean completed = false;
             try {
                 AuthorizationCodeResponse authResponse = AuthorizationCodeResponse.parse(url);
-                if (authResponse.error == null) {
-                    getPermanentToken(authResponse.code);
+                if (authResponse.code != null) {
+                   getPermanentToken(authResponse.code);
                     completed = true;
-                } else {
+                } else if (authResponse.error != null) {
                     completed = true;
-                    errorDescription = authResponse.errorDescription;
-                    Toast.makeText(AuthActivity.this, "Error: "+errorDescription, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(AuthActivity.this, "Error: "+errorDescription, Toast.LENGTH_SHORT).show();
+                    returnResult(null, authResponse.errorDescription);
                 }
             } catch (URISyntaxException e) {
                 completed = true;
                 e.printStackTrace();
-                errorDescription = "Unknown error";
+                returnResult(null, "Unknown error");
             }
             if (completed) {
                 //TODO add smth
             }
             return completed || super.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            String cookies = CookieManager.getInstance().getCookie(url);
+            if (cookies != null && login == null) {
+                login = getLoginFromCookies(cookies);
+                if (login != null) {
+                    Log.i("login", login);
+                }
+            }
         }
     }
 
@@ -164,28 +172,46 @@ public class AuthActivity extends AppCompatActivity {
                 @Override
                 protected void failure(Exception exception) {
                     Log.i("Token fail: ", exception.getLocalizedMessage());
-                    errorDescription = exception.getMessage();
+                    returnResult(null, exception.getMessage());
                 }
 
                 @Override
                 protected void response(Token response) {
                     Log.i("Token success: ", response.toString());
-                    Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                    if (response.error == null) {
-                        saveToken(response.accessToken);
-                    } else {
-                        errorDescription = response.error.name();
-                    }
+                    //Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
+                    returnResult(response.accessToken, response.error == null ? null : response.error.name());
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
-            errorDescription = e.getMessage();
+            returnResult(null, e.getMessage());
         }
     }
 
-    private void saveToken(String token) {
-        getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
-                .edit().putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+    private void returnResult(String token, String errorDescription) {
+        Intent intent = new Intent();
+        if (TextUtils.isEmpty(errorDescription) && !TextUtils.isEmpty(token)) {
+            intent.putExtra(RESULT_SUCCESS, true);
+            intent.putExtra(RESULT_TOKEN, token);
+            intent.putExtra(RESULT_LOGIN, login == null ? "" : login);
+        } else {
+            intent.putExtra(RESULT_SUCCESS, false);
+            intent.putExtra(RESULT_ERROR_MSG, errorDescription);
+        }
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    private String getLoginFromCookies(String cookies) {
+        final String key = "yandex_login=";
+        int begin = cookies.indexOf(key)+key.length();
+        if (begin == -1) {
+            return null;
+        }
+        int end = cookies.indexOf(";", begin);
+        if (end == -1) {
+            return null;
+        }
+        return cookies.substring(begin, end);
     }
 }

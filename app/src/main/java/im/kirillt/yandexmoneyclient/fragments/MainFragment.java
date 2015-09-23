@@ -99,7 +99,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     private void setAccountData(View container, Cursor data) {
-        if (data == null || data.getCount() == 0) {
+        if (data == null ) {
+            return ;
+        }
+        data.moveToNext();
+        if (data.getCount() == 0) {
             return ;
         }
         TextView accountNumber = (TextView)container.findViewById(R.id.account_number);

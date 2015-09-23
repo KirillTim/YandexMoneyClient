@@ -63,7 +63,11 @@ public class DownloadHistoryEvent implements DownloadEvent {
                     }
                 }
                 for (Operation operation : response.operations) {
-                    ResponseToContentValues.operation(operation).insert(context.getContentResolver());
+                    if (operation.type == Operation.Type.OUTGOING_TRANSFER
+                            || operation.type == Operation.Type.INCOMING_TRANSFER
+                            || operation.type == Operation.Type.INCOMING_TRANSFER_PROTECTED) {
+                        ResponseToContentValues.operation(operation).insert(context.getContentResolver());
+                    }
                 }
                 YMCApplication.historyDownloadingFinish();
                 EventBus.getDefault().post(new SuccessHistoryEvent());

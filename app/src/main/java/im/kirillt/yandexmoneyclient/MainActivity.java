@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDrawerLayout() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
         view.setNavigationItemSelectedListener(menuItem -> {
             selectDrawerItem(menuItem);
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             setTitle(menuItem.getTitle());
             return true;
         });
+        curMenuItemId = view.getMenu().getItem(0);
     }
 
     @Override
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
         if (menuItem == curMenuItemId) {
             return ;
         }
+        curMenuItemId = menuItem;
         Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         //Fragment fragment;
         switch(menuItem.getItemId()) {
@@ -161,7 +163,13 @@ public class MainActivity extends AppCompatActivity {
         }
         boolean success = data.getBooleanExtra(AuthActivity.RESULT_SUCCESS, false);
         if (success) {
-            Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Welcome, "+data.getStringExtra(AuthActivity.RESULT_LOGIN), Toast.LENGTH_SHORT).show();
+            String token = data.getStringExtra(AuthActivity.RESULT_TOKEN);
+            if (!TextUtils.isEmpty(token)) {
+                getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
+                        .edit().putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+                YMCApplication.auth2Session.setAccessToken(token);
+            }
         } else {
             Toast.makeText(MainActivity.this, "Fail: " + data.getStringExtra(AuthActivity.RESULT_ERROR_MSG), Toast.LENGTH_SHORT).show();
         }

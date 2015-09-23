@@ -42,8 +42,8 @@ public interface AccountModel extends BaseModel {
 
     /**
      * avatar image file location
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     String getAvatar();
 }

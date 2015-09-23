@@ -38,14 +38,12 @@
 		{
 			"documentation": "real type: BigDecimal",
 			"name": "amountDue",
-			"type": "String", 
-			"nullable": false
+			"type": "String" 
 		},
 		{
 			"documentation": "real type: BigDecimal",
 			"name": "fee",
-			"type": "String", 
-			"nullable": false
+			"type": "String" 
 		},
 		{
 			"documentation": "unix time here, real type: DateTime",
@@ -77,8 +75,7 @@
 				"PHONE",
 				"EMAIL",
 				"UNKNOWN"
-			],
-			"nullable": false
+			]
 		},
 		{
 			"name": "message",
@@ -97,30 +94,25 @@
 		},
 		{
 			"name": "protectionCode",
-			"type": "String", 
-			"nullable": false
+			"type": "String" 
 		},
 		{
 			"documentation": "unix time here, real type: DateTime",
 			"name": "expires",
-			"type": "Long", 
-			"nullable": false
+			"type": "Long" 
 		},
 		{
 			"documentation": "unix time here, real type: DateTime",
 			"name": "answerDateTime",
-			"type": "Long", 
-			"nullable": false
+			"type": "Long" 
 		},
 		{
 			"name": "label",
-			"type": "String", 
-			"nullable": false
+			"type": "String"
 		},
 		{
 			"name": "details",
-			"type": "String", 
-			"nullable": false
+			"type": "String" 
 		},
 		{
 			"name": "repeatable",

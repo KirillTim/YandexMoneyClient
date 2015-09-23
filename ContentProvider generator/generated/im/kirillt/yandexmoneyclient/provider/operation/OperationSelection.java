@@ -420,13 +420,13 @@ public class OperationSelection extends AbstractSelection<OperationSelection> {
         return this;
     }
 
-    public OperationSelection expires(long... value) {
-        addEquals(OperationColumns.EXPIRES, toObjectArray(value));
+    public OperationSelection expires(Long... value) {
+        addEquals(OperationColumns.EXPIRES, value);
         return this;
     }
 
-    public OperationSelection expiresNot(long... value) {
-        addNotEquals(OperationColumns.EXPIRES, toObjectArray(value));
+    public OperationSelection expiresNot(Long... value) {
+        addNotEquals(OperationColumns.EXPIRES, value);
         return this;
     }
 
@@ -450,13 +450,13 @@ public class OperationSelection extends AbstractSelection<OperationSelection> {
         return this;
     }
 
-    public OperationSelection answerdatetime(long... value) {
-        addEquals(OperationColumns.ANSWERDATETIME, toObjectArray(value));
+    public OperationSelection answerdatetime(Long... value) {
+        addEquals(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 
-    public OperationSelection answerdatetimeNot(long... value) {
-        addNotEquals(OperationColumns.ANSWERDATETIME, toObjectArray(value));
+    public OperationSelection answerdatetimeNot(Long... value) {
+        addNotEquals(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 

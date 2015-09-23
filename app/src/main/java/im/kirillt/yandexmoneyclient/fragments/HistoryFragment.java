@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import im.kirillt.yandexmoneyclient.HistoryCursorAdapter;
 import im.kirillt.yandexmoneyclient.R;
@@ -18,8 +19,8 @@ import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-    HistoryCursorAdapter adapter;
-
+    private HistoryCursorAdapter adapter;
+    private View rootView;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -49,7 +50,15 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_history, container, false);
+        rootView =  inflater.inflate(R.layout.fragment_history, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ListView listView = (ListView)rootView.findViewById(R.id.history_list);
+        listView.setAdapter(adapter);
     }
 
     @Override

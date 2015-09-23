@@ -3,6 +3,8 @@ package im.kirillt.yandexmoneyclient.utils;
 import com.yandex.money.api.methods.AccountInfo;
 import com.yandex.money.api.model.Operation;
 
+import java.math.BigDecimal;
+
 import im.kirillt.yandexmoneyclient.provider.account.AccountContentValues;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationContentValues;
 import im.kirillt.yandexmoneyclient.provider.operation.direction;
@@ -15,36 +17,56 @@ import im.kirillt.yandexmoneyclient.provider.operation.status;
  */
 public class ResponseToContentValues {
     public static AccountContentValues account(AccountInfo accountInfo) {
-        return new AccountContentValues()
-                .putAccountnumber(accountInfo.account)
-                .putAccountusername("UserName")
-                .putAvatar(accountInfo.avatar.url)
-                .putBalance(accountInfo.balance.toString())
-                .putBalancehold(accountInfo.balanceDetails.hold.toString());
+        AccountContentValues rv = new AccountContentValues();
+        rv.putAccountnumber(accountInfo.account)
+                .putAccountusername("UserName");
+        if (accountInfo.avatar != null) {
+            rv.putAvatar(stringOrEmpty(accountInfo.avatar.url));
+        }
+        rv.putBalance(accountInfo.balance.toString());
+        if (accountInfo.balanceDetails != null) {
+            rv.putBalancehold(bigDecimalOrZero(accountInfo.balanceDetails.hold).toString());
+        }
+        return rv;
     }
 
     public static OperationContentValues operation(Operation operation) {
-        return new OperationContentValues()
-                .putOperationid(operation.operationId)
+        OperationContentValues rv = new OperationContentValues();
+        rv.putOperationid(operation.operationId)
                 .putStatus(status.valueOf(operation.status.name()))
-                .putDirection(direction.valueOf(operation.status.name()))
-                .putAmount(operation.amount.toString())
-                .putAmountdue(operation.amountDue.toString())
-                .putFee(operation.fee.toString())
+                .putDirection(direction.valueOf(operation.direction.name()))
+                .putAmount(bigDecimalOrZero(operation.amount).toString())
+                .putAmountdue(bigDecimalOrZero(operation.amountDue).toString())
+                .putFee(bigDecimalOrZero(operation.fee).toString())
                 .putDatetime(operation.datetime.getMillis() / 1000L)
-                .putTitle(operation.title)
-                .putSender(operation.sender)
-                .putRecipient(operation.recipient)
-                .putPayeeidentifiertype(payeeIdentifierType.valueOf(operation.recipientType.name()))
-                .putMessage(operation.message)
-                .putComment(operation.comment)
-                .putCodepro(operation.codepro)
-                .putProtectioncode(operation.protectionCode)
-                .putExpires(operation.expires.getMillis() / 1000L)
-                .putAnswerdatetime(operation.expires.getMillis() / 1000L)
-                .putLabel(operation.label)
-                .putDetails(operation.details)
+                .putTitle(stringOrEmpty(operation.title))
+                .putSender(stringOrEmpty(operation.sender))
+                .putRecipient(stringOrEmpty(operation.recipient));
+        if (operation.recipientType != null) {
+            rv.putPayeeidentifiertype(payeeIdentifierType.valueOf(operation.recipientType.name()));
+        }
+        rv.putMessage(stringOrEmpty(operation.message))
+                .putComment(stringOrEmpty(operation.comment))
+                .putCodepro(operation.codepro);
+        if (operation.codepro) {
+            rv.putProtectioncode(operation.protectionCode)
+                    .putExpires(operation.expires.getMillis() / 1000L)
+                    .putAnswerdatetime(operation.answerDatetime.getMillis() / 1000L);
+
+        }
+        rv.putLabel(stringOrEmpty(operation.label))
+                .putDetails(stringOrEmpty(operation.details))
+                .putRepeatable(operation.repeatable)
                 .putFavorite(operation.favorite)
                 .putPaymenttype(paymentType.valueOf(operation.type.toString()));
+        return rv;
+    }
+
+    private static String stringOrEmpty(String s) {
+        return s == null ? "" : s;
+    }
+
+    private static BigDecimal bigDecimalOrZero(BigDecimal bd) {
+        return bd == null ? new BigDecimal(0) : bd;
     }
 }

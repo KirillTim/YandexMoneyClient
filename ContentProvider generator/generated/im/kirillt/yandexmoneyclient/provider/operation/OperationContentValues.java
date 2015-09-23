@@ -62,22 +62,28 @@ public class OperationContentValues extends AbstractContentValues {
     /**
      * real type: BigDecimal
      */
-    public OperationContentValues putAmountdue(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("amountdue must not be null");
+    public OperationContentValues putAmountdue(@Nullable String value) {
         mContentValues.put(OperationColumns.AMOUNTDUE, value);
         return this;
     }
 
+    public OperationContentValues putAmountdueNull() {
+        mContentValues.putNull(OperationColumns.AMOUNTDUE);
+        return this;
+    }
 
     /**
      * real type: BigDecimal
      */
-    public OperationContentValues putFee(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("fee must not be null");
+    public OperationContentValues putFee(@Nullable String value) {
         mContentValues.put(OperationColumns.FEE, value);
         return this;
     }
 
+    public OperationContentValues putFeeNull() {
+        mContentValues.putNull(OperationColumns.FEE);
+        return this;
+    }
 
     /**
      * unix time here, real type: DateTime
@@ -109,12 +115,15 @@ public class OperationContentValues extends AbstractContentValues {
     }
 
 
-    public OperationContentValues putPayeeidentifiertype(@NonNull payeeIdentifierType value) {
-        if (value == null) throw new IllegalArgumentException("payeeidentifiertype must not be null");
-        mContentValues.put(OperationColumns.PAYEEIDENTIFIERTYPE, value.ordinal());
+    public OperationContentValues putPayeeidentifiertype(@Nullable payeeIdentifierType value) {
+        mContentValues.put(OperationColumns.PAYEEIDENTIFIERTYPE, value == null ? null : value.ordinal());
         return this;
     }
 
+    public OperationContentValues putPayeeidentifiertypeNull() {
+        mContentValues.putNull(OperationColumns.PAYEEIDENTIFIERTYPE);
+        return this;
+    }
 
     public OperationContentValues putMessage(@NonNull String value) {
         if (value == null) throw new IllegalArgumentException("message must not be null");
@@ -136,44 +145,61 @@ public class OperationContentValues extends AbstractContentValues {
     }
 
 
-    public OperationContentValues putProtectioncode(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("protectioncode must not be null");
+    public OperationContentValues putProtectioncode(@Nullable String value) {
         mContentValues.put(OperationColumns.PROTECTIONCODE, value);
         return this;
     }
 
+    public OperationContentValues putProtectioncodeNull() {
+        mContentValues.putNull(OperationColumns.PROTECTIONCODE);
+        return this;
+    }
 
     /**
      * unix time here, real type: DateTime
      */
-    public OperationContentValues putExpires(long value) {
+    public OperationContentValues putExpires(@Nullable Long value) {
         mContentValues.put(OperationColumns.EXPIRES, value);
         return this;
     }
 
+    public OperationContentValues putExpiresNull() {
+        mContentValues.putNull(OperationColumns.EXPIRES);
+        return this;
+    }
 
     /**
      * unix time here, real type: DateTime
      */
-    public OperationContentValues putAnswerdatetime(long value) {
+    public OperationContentValues putAnswerdatetime(@Nullable Long value) {
         mContentValues.put(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
 
+    public OperationContentValues putAnswerdatetimeNull() {
+        mContentValues.putNull(OperationColumns.ANSWERDATETIME);
+        return this;
+    }
 
-    public OperationContentValues putLabel(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("label must not be null");
+    public OperationContentValues putLabel(@Nullable String value) {
         mContentValues.put(OperationColumns.LABEL, value);
         return this;
     }
 
+    public OperationContentValues putLabelNull() {
+        mContentValues.putNull(OperationColumns.LABEL);
+        return this;
+    }
 
-    public OperationContentValues putDetails(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("details must not be null");
+    public OperationContentValues putDetails(@Nullable String value) {
         mContentValues.put(OperationColumns.DETAILS, value);
         return this;
     }
 
+    public OperationContentValues putDetailsNull() {
+        mContentValues.putNull(OperationColumns.DETAILS);
+        return this;
+    }
 
     public OperationContentValues putRepeatable(boolean value) {
         mContentValues.put(OperationColumns.REPEATABLE, value);

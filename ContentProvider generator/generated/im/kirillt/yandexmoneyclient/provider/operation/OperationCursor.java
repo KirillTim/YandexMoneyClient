@@ -76,25 +76,21 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
 
     /**
      * real type: BigDecimal
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getAmountdue() {
         String res = getStringOrNull(OperationColumns.AMOUNTDUE);
-        if (res == null)
-            throw new NullPointerException("The value of 'amountdue' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
      * real type: BigDecimal
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getFee() {
         String res = getStringOrNull(OperationColumns.FEE);
-        if (res == null)
-            throw new NullPointerException("The value of 'fee' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
@@ -146,13 +142,12 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
 
     /**
      * Get the {@code payeeidentifiertype} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public payeeIdentifierType getPayeeidentifiertype() {
         Integer intValue = getIntegerOrNull(OperationColumns.PAYEEIDENTIFIERTYPE);
-        if (intValue == null)
-            throw new NullPointerException("The value of 'payeeidentifiertype' in the database was null, which is not allowed according to the model definition");
+        if (intValue == null) return null;
         return payeeIdentifierType.values()[intValue];
     }
 
@@ -192,57 +187,51 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
 
     /**
      * Get the {@code protectioncode} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getProtectioncode() {
         String res = getStringOrNull(OperationColumns.PROTECTIONCODE);
-        if (res == null)
-            throw new NullPointerException("The value of 'protectioncode' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
      * unix time here, real type: DateTime
+     * Can be {@code null}.
      */
-    public long getExpires() {
+    @Nullable
+    public Long getExpires() {
         Long res = getLongOrNull(OperationColumns.EXPIRES);
-        if (res == null)
-            throw new NullPointerException("The value of 'expires' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
      * unix time here, real type: DateTime
+     * Can be {@code null}.
      */
-    public long getAnswerdatetime() {
+    @Nullable
+    public Long getAnswerdatetime() {
         Long res = getLongOrNull(OperationColumns.ANSWERDATETIME);
-        if (res == null)
-            throw new NullPointerException("The value of 'answerdatetime' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
      * Get the {@code label} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getLabel() {
         String res = getStringOrNull(OperationColumns.LABEL);
-        if (res == null)
-            throw new NullPointerException("The value of 'label' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 
     /**
      * Get the {@code details} value.
-     * Cannot be {@code null}.
+     * Can be {@code null}.
      */
-    @NonNull
+    @Nullable
     public String getDetails() {
         String res = getStringOrNull(OperationColumns.DETAILS);
-        if (res == null)
-            throw new NullPointerException("The value of 'details' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 

@@ -26,8 +26,7 @@
 		{
 			"documentation": "avatar image file location",
 			"name": "avatar",
-			"type": "String", 
-			"nullable": false
+			"type": "String" 
 		},
     ]
 }
