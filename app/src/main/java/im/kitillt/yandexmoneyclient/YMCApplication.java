@@ -16,8 +16,12 @@ public class YMCApplication extends Application {
     public static final String APP_ID = "DDD264D223C195815CB984B24B74220E9A551C81F9163AAD41A55EDA98C03E98";
     public static final String REDIRECT_URI = "client://authresult";
     public static final DefaultApiMobileClientWrapper apiClient = new DefaultApiMobileClientWrapper(new DefaultApiClient(APP_ID, true, "Android"));
-    public static final OAuth2Session auth2Session = new OAuth2Session(apiClient);
+    public static OAuth2Session auth2Session = new OAuth2Session(apiClient);
 
+    private static volatile boolean accountDownloadedNow = false;
+    private static volatile boolean historyDownloadedNow = false;
+
+    public static boolean lockOnResume = false;
     public YMCApplication getInstance() {
         return singleton;
     }
@@ -26,5 +30,21 @@ public class YMCApplication extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
+    }
+
+    public static void accountDownloadingStart() {
+        accountDownloadedNow = true;
+    }
+    public static void accountDownloadingFinish() {
+        accountDownloadedNow = false;
+    }
+    public static void historyDownloadingStart() {
+        historyDownloadedNow = true;
+    }
+    public static void historyDownloadingFinish() {
+        historyDownloadedNow = false;
+    }
+    public static boolean isDownloading() {
+        return accountDownloadedNow || historyDownloadedNow;
     }
 }

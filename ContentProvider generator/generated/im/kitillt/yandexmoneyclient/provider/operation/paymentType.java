@@ -7,6 +7,11 @@ public enum paymentType {
     /**
      * 
      */
+    PAYMENT_SHOP,
+
+    /**
+     * 
+     */
     OUTGOING_TRANSFER,
 
     /**
@@ -18,6 +23,11 @@ public enum paymentType {
      * 
      */
     INCOMING_TRANSFER_PROTECTED,
+
+    /**
+     * 
+     */
+    DEPOSITION,
 
     /**
      * 

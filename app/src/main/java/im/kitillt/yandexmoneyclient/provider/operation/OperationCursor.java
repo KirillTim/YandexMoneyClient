@@ -267,7 +267,7 @@ public class OperationCursor extends AbstractCursor implements OperationModel {
     }
 
     /**
-     * Get the {@code paymenttype} value.
+     * only *_TRANSFER_* values is used
      * Cannot be {@code null}.
      */
     @NonNull

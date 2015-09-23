@@ -41,7 +41,7 @@ public class OperationColumns implements BaseColumns {
     public static final String FEE = "fee";
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
     public static final String DATETIME = "dateTime";
 
@@ -62,12 +62,12 @@ public class OperationColumns implements BaseColumns {
     public static final String PROTECTIONCODE = "protectionCode";
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
     public static final String EXPIRES = "expires";
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
     public static final String ANSWERDATETIME = "answerDateTime";
 
@@ -79,6 +79,9 @@ public class OperationColumns implements BaseColumns {
 
     public static final String FAVORITE = "favorite";
 
+    /**
+     * only *_TRANSFER_* values is used
+     */
     public static final String PAYMENTTYPE = "paymentType";
 
 

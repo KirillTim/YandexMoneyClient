@@ -79,6 +79,9 @@ public class OperationColumns implements BaseColumns {
 
     public static final String FAVORITE = "favorite";
 
+    /**
+     * only *_TRANSFER_* values is used
+     */
     public static final String PAYMENTTYPE = "paymentType";
 
 

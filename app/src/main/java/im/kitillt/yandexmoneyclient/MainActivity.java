@@ -1,132 +1,133 @@
 package im.kitillt.yandexmoneyclient;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Pair;
-import android.view.Menu;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.yandex.money.api.methods.OperationHistory;
-import com.yandex.money.api.model.Scope;
-import com.yandex.money.api.net.DefaultApiClient;
-import com.yandex.money.api.net.OAuth2Authorization;
-import com.yandex.money.api.net.OAuth2Session;
+import de.greenrobot.event.EventBus;
+import im.kitillt.yandexmoneyclient.events.result.AnyErrorEvent;
+import im.kitillt.yandexmoneyclient.events.download.DownloadAllEvent;
+import im.kitillt.yandexmoneyclient.events.result.SuccessAccountInfoEvent;
+import im.kitillt.yandexmoneyclient.events.result.SuccessEvent;
+import im.kitillt.yandexmoneyclient.fragments.AboutFragment;
+import im.kitillt.yandexmoneyclient.fragments.PaymentFragment;
+import im.kitillt.yandexmoneyclient.fragments.SettingsFragment;
+import im.kitillt.yandexmoneyclient.fragments.UpdatableFragment;
 
-import java.io.IOException;
-import java.util.HashSet;
+public class MainActivity extends LockableActivity {
 
-import im.kitillt.yandexmoneyclient.utils.ResponseReady;
-import im.kitillt.yandexmoneyclient.utils.Threads;
-
-public class MainActivity extends AppCompatActivity {
-
-
-    public Context context;
+    private DrawerLayout drawerLayout;
+    private MenuItem curMenuItemId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
-        Button button = (Button) findViewById(R.id.auth_button);
-        button.setOnClickListener(v -> {
-            Pair<String, byte[]> data = wtf();
-            Intent intent = new Intent(context, AuthActivity.class);
-            intent.putExtra(AuthActivity.KEY_URL, data.first);
-            intent.putExtra(AuthActivity.KEY_POST_DATA, data.second);
-            startActivityForResult(intent, 1);
-        });
-        Button loadHist = (Button) findViewById(R.id.load_history_button);
-        loadHist.setOnClickListener(v -> {
-            String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
-            if (TextUtils.isEmpty(token)) {
-                Toast.makeText(context, "Code not found", Toast.LENGTH_SHORT).show();
-            } else {
-                OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
-                session.setAccessToken(token);
-                HashSet<OperationHistory.FilterType> types = new HashSet<>();
-                types.add(OperationHistory.FilterType.DEPOSITION);
-                types.add(OperationHistory.FilterType.PAYMENT);
-                final OperationHistory.Request request = new OperationHistory.Request.Builder().setTypes(types).setDetails(true).createRequest();
-                try {
-                    session.enqueue(request, new ResponseReady<OperationHistory>() {
-                        @Override
-                        protected void failure(Exception exception) {
-                            Toast.makeText(context, "Fail: " + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        protected void response(OperationHistory response) {
-                            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-                            Log.i("response", response.toString());
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            for (int i = 0; i < 10; i++) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Log.i("sleep: ", i+"");
-            }
-        });
+        initToolbar();
+        initDrawerLayout();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+    private void initToolbar() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void initDrawerLayout() {
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
+        view.setNavigationItemSelectedListener(menuItem -> {
+            selectDrawerItem(menuItem);
+            menuItem.setChecked(true);
+            drawerLayout.closeDrawers();
+            setTitle(menuItem.getTitle());
+            return true;
+        });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            return;
+    private void selectDrawerItem(MenuItem menuItem) {
+        if (menuItem == curMenuItemId) {
+            return ;
         }
-        boolean success = data.getBooleanExtra(AuthActivity.RESULT_SUCCESS, false);
-        if (success) {
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Fail: " + data.getStringExtra(AuthActivity.RESULT_ERROR_MSG), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
+        Fragment fragment;
+        switch(menuItem.getItemId()) {
+            case R.id.drawer_home:
+                fragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+                break;
+            case R.id.drawer_pay:
+                fragment = PaymentFragment.newInstance();
+                break;
+            case R.id.drawer_history:
+                fragment = UpdatableFragment.newInstance(UpdatableFragment.HISTORY_FRAGMENT);
+                break;
+            case R.id.drawer_settings:
+                fragment = SettingsFragment.newInstance();
+                break;
+            case R.id.drawer_about:
+                fragment = AboutFragment.newInstance();
+                break;
+            default:
+                fragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+
+        }
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.activity_main_fragment, fragment).commit();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEventMainThread(AnyErrorEvent errorEvent) {
+        Toast.makeText(this, errorEvent.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void onEventAsync(DownloadAllEvent event) {
+        event.download();
+    }
+
+    public void onEventMainThread(SuccessEvent event) {
+        Toast.makeText(this, "downloaded: "+event.getClass().getName(), Toast.LENGTH_SHORT).show();
+        if (!YMCApplication.isDownloading()) {
+            stopRefreshingWidget();
         }
     }
 
-    public Pair<String, byte[]> wtf() {
-        OAuth2Authorization auth2Authorization = new OAuth2Authorization(new DefaultApiClient(YMCApplication.APP_ID, true, "Android"));
-        OAuth2Authorization.Params params = auth2Authorization.getAuthorizeParams()
-                .addScope(Scope.ACCOUNT_INFO)
-                .addScope(Scope.INCOMING_TRANSFERS)
-                .addScope(Scope.OPERATION_DETAILS)
-                .addScope(Scope.OPERATION_HISTORY)
-                .addScope(Scope.PAYMENT_P2P)
-                .setRedirectUri(YMCApplication.REDIRECT_URI);
-        return new Pair<>(auth2Authorization.getAuthorizeUrl(), params.build());
+    private void stopRefreshingWidget() {
+        //TODO: stop widget download circle
     }
 }

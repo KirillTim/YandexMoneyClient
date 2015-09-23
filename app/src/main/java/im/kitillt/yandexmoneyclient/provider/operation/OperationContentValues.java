@@ -187,6 +187,9 @@ public class OperationContentValues extends AbstractContentValues {
     }
 
 
+    /**
+     * only *_TRANSFER_* values is used
+     */
     public OperationContentValues putPaymenttype(@NonNull paymentType value) {
         if (value == null) throw new IllegalArgumentException("paymenttype must not be null");
         mContentValues.put(OperationColumns.PAYMENTTYPE, value.ordinal());

@@ -48,9 +48,9 @@
 			"nullable": false
 		},
 		{
-			"documentation": "real type: DateTime",
+			"documentation": "unix time here, real type: DateTime",
 			"name": "dateTime",
-			"type": "String", 
+			"type": "Long", 
 			"nullable": false
 		},
 		{
@@ -101,15 +101,15 @@
 			"nullable": false
 		},
 		{
-			"documentation": "real type: DateTime",
+			"documentation": "unix time here, real type: DateTime",
 			"name": "expires",
-			"type": "String", 
+			"type": "Long", 
 			"nullable": false
 		},
 		{
-			"documentation": "real type: DateTime",
+			"documentation": "unix time here, real type: DateTime",
 			"name": "answerDateTime",
-			"type": "String", 
+			"type": "Long", 
 			"nullable": false
 		},
 		{
@@ -133,13 +133,16 @@
 			"nullable": false
 		},
 		{
+			"documentation": "only *_TRANSFER_* values is used",
 			"name": "paymentType",
 			"type": "enum", 
 			"enumName": "paymentType", 
 			"enumValues": [
+				"PAYMENT_SHOP",
 				"OUTGOING_TRANSFER",
 				"INCOMING_TRANSFER",
 				"INCOMING_TRANSFER_PROTECTED",
+				"DEPOSITION",
 				"UNKNOWN"
 			],
 			"nullable": false

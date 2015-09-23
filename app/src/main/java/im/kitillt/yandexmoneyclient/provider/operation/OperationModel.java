@@ -148,7 +148,7 @@ public interface OperationModel extends BaseModel {
     boolean getFavorite();
 
     /**
-     * Get the {@code paymenttype} value.
+     * only *_TRANSFER_* values is used
      * Cannot be {@code null}.
      */
     @NonNull

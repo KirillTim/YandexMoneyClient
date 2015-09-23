@@ -4,22 +4,60 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
+import com.yandex.money.api.methods.AccountInfo;
+import com.yandex.money.api.net.OnResponseReady;
+
+import org.joda.time.DateTime;
+
+import java.io.IOException;
+
+import im.kitillt.yandexmoneyclient.provider.account.AccountSelection;
+import im.kitillt.yandexmoneyclient.utils.ResponseFailureCallback;
+import im.kitillt.yandexmoneyclient.utils.ResponseReady;
+import im.kitillt.yandexmoneyclient.utils.ResponseToContentValues;
+
 public class WorkerIntentService extends IntentService {
-    // TODO: Rename actions, choose action names that describe tasks that this
-    // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_FOO = "im.kitillt.yandexmoneyclient.action.FOO";
     private static final String ACTION_BAZ = "im.kitillt.yandexmoneyclient.action.BAZ";
 
     // TODO: Rename parameters
     private static final String EXTRA_PARAM1 = "im.kitillt.yandexmoneyclient.extra.PARAM1";
     private static final String EXTRA_PARAM2 = "im.kitillt.yandexmoneyclient.extra.PARAM2";
+
+    public static void downloadNewHistory() {
+
+    }
+
+    public static void downloadAllHistory() {
+
+    }
+
+    private static void downloadHistory() {
+
+    }
+
+    private static void downloadHistoryFrom(DateTime dateTime) {
+
+    }
+
+    public static void downloadAccount(Context context, ResponseFailureCallback callback) throws Exception {
+        YMCApplication.accountDownloadedNow = true;
+        YMCApplication.auth2Session.enqueue(new AccountInfo.Request(), new ResponseReady<AccountInfo>() {
+            @Override
+            protected void failure(Exception exception) {
+                YMCApplication.accountDownloadedNow = false;
+                callback.call(exception);
+            }
+
+            @Override
+            protected void response(AccountInfo response) {
+                //TODO: rewrite it better way
+                new AccountSelection().accountnumberNot(response.account).delete(context.getContentResolver());
+                ResponseToContentValues.account(response).insert(context.getContentResolver());
+                YMCApplication.accountDownloadedNow = false;
+            }
+        });
+    }
 
     /**
      * Starts this service to perform action Foo with the given parameters. If

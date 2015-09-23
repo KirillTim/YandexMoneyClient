@@ -80,10 +80,9 @@ public class OperationContentValues extends AbstractContentValues {
 
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
-    public OperationContentValues putDatetime(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("datetime must not be null");
+    public OperationContentValues putDatetime(long value) {
         mContentValues.put(OperationColumns.DATETIME, value);
         return this;
     }
@@ -145,20 +144,18 @@ public class OperationContentValues extends AbstractContentValues {
 
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
-    public OperationContentValues putExpires(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("expires must not be null");
+    public OperationContentValues putExpires(long value) {
         mContentValues.put(OperationColumns.EXPIRES, value);
         return this;
     }
 
 
     /**
-     * real type: DateTime
+     * unix time here, real type: DateTime
      */
-    public OperationContentValues putAnswerdatetime(@NonNull String value) {
-        if (value == null) throw new IllegalArgumentException("answerdatetime must not be null");
+    public OperationContentValues putAnswerdatetime(long value) {
         mContentValues.put(OperationColumns.ANSWERDATETIME, value);
         return this;
     }
@@ -190,6 +187,9 @@ public class OperationContentValues extends AbstractContentValues {
     }
 
 
+    /**
+     * only *_TRANSFER_* values is used
+     */
     public OperationContentValues putPaymenttype(@NonNull paymentType value) {
         if (value == null) throw new IllegalArgumentException("paymenttype must not be null");
         mContentValues.put(OperationColumns.PAYMENTTYPE, value.ordinal());
