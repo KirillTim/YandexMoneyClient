@@ -26,12 +26,16 @@ public class MainActivity extends LockableActivity {
     private DrawerLayout drawerLayout;
     private MenuItem curMenuItemId = null;
 
+    private Fragment currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
         initDrawerLayout();
+        currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_main_fragment, currentFragment).commit();
     }
 
 
@@ -75,29 +79,29 @@ public class MainActivity extends LockableActivity {
             return ;
         }
         Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-        Fragment fragment;
+        //Fragment fragment;
         switch(menuItem.getItemId()) {
             case R.id.drawer_home:
-                fragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
                 break;
             case R.id.drawer_pay:
-                fragment = PaymentFragment.newInstance();
+                currentFragment = PaymentFragment.newInstance();
                 break;
             case R.id.drawer_history:
-                fragment = UpdatableFragment.newInstance(UpdatableFragment.HISTORY_FRAGMENT);
+                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.HISTORY_FRAGMENT);
                 break;
             case R.id.drawer_settings:
-                fragment = SettingsFragment.newInstance();
+                currentFragment = SettingsFragment.newInstance();
                 break;
             case R.id.drawer_about:
-                fragment = AboutFragment.newInstance();
+                currentFragment = AboutFragment.newInstance();
                 break;
             default:
-                fragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
 
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.activity_main_fragment, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.activity_main_fragment, currentFragment).commit();
     }
 
     @Override

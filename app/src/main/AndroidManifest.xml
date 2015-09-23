@@ -29,11 +29,6 @@
             android:authorities="im.kitillt.yandexmoneyclient.provider"
             android:exported="false" />
 
-        <service
-            android:name=".WorkerIntentService"
-            android:exported="false" >
-        </service>
-
     </application>
 
 </manifest>
