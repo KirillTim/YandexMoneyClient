@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.operation;
+package im.kirillt.yandexmoneyclient.provider.operation;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import im.kitillt.yandexmoneyclient.provider.base.AbstractContentValues;
+import im.kirillt.yandexmoneyclient.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code operation} table.

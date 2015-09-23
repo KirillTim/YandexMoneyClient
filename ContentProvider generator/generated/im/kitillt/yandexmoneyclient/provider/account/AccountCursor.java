@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.account;
+package im.kirillt.yandexmoneyclient.provider.account;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import im.kitillt.yandexmoneyclient.provider.base.AbstractCursor;
+import im.kirillt.yandexmoneyclient.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code account} table.

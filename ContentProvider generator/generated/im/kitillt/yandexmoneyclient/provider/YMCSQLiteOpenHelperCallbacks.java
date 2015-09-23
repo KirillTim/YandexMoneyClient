@@ -1,11 +1,11 @@
-package im.kitillt.yandexmoneyclient.provider;
+package im.kirillt.yandexmoneyclient.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import android.util.Log;
 
-import im.kitillt.yandexmoneyclient.BuildConfig;
+import im.kirillt.yandexmoneyclient.BuildConfig;
 
 /**
  * Implement your custom database creation or upgrade code here.

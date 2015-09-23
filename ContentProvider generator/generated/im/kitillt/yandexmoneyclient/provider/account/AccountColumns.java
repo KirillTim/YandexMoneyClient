@@ -1,11 +1,11 @@
-package im.kitillt.yandexmoneyclient.provider.account;
+package im.kirillt.yandexmoneyclient.provider.account;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
-import im.kitillt.yandexmoneyclient.provider.YMCContentProvider;
-import im.kitillt.yandexmoneyclient.provider.account.AccountColumns;
-import im.kitillt.yandexmoneyclient.provider.operation.OperationColumns;
+import im.kirillt.yandexmoneyclient.provider.YMCContentProvider;
+import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
+import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 
 /**
  * Account info

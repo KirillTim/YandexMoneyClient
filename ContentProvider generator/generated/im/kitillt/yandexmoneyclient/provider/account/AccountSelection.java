@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.account;
+package im.kirillt.yandexmoneyclient.provider.account;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
-import im.kitillt.yandexmoneyclient.provider.base.AbstractSelection;
+import im.kirillt.yandexmoneyclient.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code account} table.

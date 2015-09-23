@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider;
+package im.kirillt.yandexmoneyclient.provider;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,9 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-import im.kitillt.yandexmoneyclient.BuildConfig;
-import im.kitillt.yandexmoneyclient.provider.account.AccountColumns;
-import im.kitillt.yandexmoneyclient.provider.operation.OperationColumns;
+import im.kirillt.yandexmoneyclient.BuildConfig;
+import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
+import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 
 public class YMCSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = YMCSQLiteOpenHelper.class.getSimpleName();

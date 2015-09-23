@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.operation;
+package im.kirillt.yandexmoneyclient.provider.operation;
 
 /**
  * Possible values for the {@code status} column of the {@code operation} table.

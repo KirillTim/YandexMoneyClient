@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient;
+package im.kirillt.yandexmoneyclient;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

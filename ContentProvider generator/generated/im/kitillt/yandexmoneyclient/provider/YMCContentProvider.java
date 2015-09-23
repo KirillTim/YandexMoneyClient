@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider;
+package im.kirillt.yandexmoneyclient.provider;
 
 import java.util.Arrays;
 
@@ -10,10 +10,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import im.kitillt.yandexmoneyclient.BuildConfig;
-import im.kitillt.yandexmoneyclient.provider.base.BaseContentProvider;
-import im.kitillt.yandexmoneyclient.provider.account.AccountColumns;
-import im.kitillt.yandexmoneyclient.provider.operation.OperationColumns;
+import im.kirillt.yandexmoneyclient.BuildConfig;
+import im.kirillt.yandexmoneyclient.provider.base.BaseContentProvider;
+import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
+import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 
 public class YMCContentProvider extends BaseContentProvider {
     private static final String TAG = YMCContentProvider.class.getSimpleName();
@@ -23,7 +23,7 @@ public class YMCContentProvider extends BaseContentProvider {
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
-    public static final String AUTHORITY = "im.kitillt.yandexmoneyclient.provider";
+    public static final String AUTHORITY = "im.kirillt.yandexmoneyclient.provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
     private static final int URI_TYPE_ACCOUNT = 0;

@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.base;
+package im.kirillt.yandexmoneyclient.provider.base;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

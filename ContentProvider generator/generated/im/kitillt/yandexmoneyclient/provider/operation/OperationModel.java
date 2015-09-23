@@ -1,6 +1,6 @@
-package im.kitillt.yandexmoneyclient.provider.operation;
+package im.kirillt.yandexmoneyclient.provider.operation;
 
-import im.kitillt.yandexmoneyclient.provider.base.BaseModel;
+import im.kirillt.yandexmoneyclient.provider.base.BaseModel;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient.provider.base;
+package im.kirillt.yandexmoneyclient.provider.base;
 
 import java.util.Date;
 import java.util.HashMap;
