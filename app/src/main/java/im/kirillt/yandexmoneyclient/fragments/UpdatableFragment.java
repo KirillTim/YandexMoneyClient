@@ -4,6 +4,7 @@ package im.kirillt.yandexmoneyclient.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class UpdatableFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i("UpdatableFragment", "onCreate()");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             int fragmentName = getArguments().getInt(ARG_FRAGMENT_NAME);
@@ -66,7 +68,15 @@ public class UpdatableFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("UpdatableFragment", "onCreateView()");
         rootView = inflater.inflate(R.layout.fragment_updatable, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.i("UpdatableFragment", "onActivityCreated()");
+        super.onActivityCreated(savedInstanceState);
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (YMCApplication.isDownloading()) {
@@ -76,12 +86,6 @@ public class UpdatableFragment extends Fragment {
             downloadData();
         });
         swipeRefreshLayout.setRefreshing(YMCApplication.isDownloading());
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         getChildFragmentManager().beginTransaction().add(R.id.inner_fragment, innerFragment).commit();
 
     }

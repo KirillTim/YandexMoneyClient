@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import android.widget.Toast;
 
 import java.math.BigDecimal;
 
+import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.R;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
 
 /**
@@ -47,29 +50,36 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i("MainFragment", "onCreate()");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
-        historyFragment = HistoryFragment.newInstance();
+        //historyFragment = HistoryFragment.newInstance();
         getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("MainFragment", "onCreateView()");
         rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        accountInfoContainer = (LinearLayout)rootView.findViewById(R.id.account_info_linear_layout);
-        Button payButton = (Button) rootView.findViewById(R.id.pay_button);
-        payButton.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Pay Button Pressed!", Toast.LENGTH_SHORT).show();
-        });
         return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.i("MainFragment", "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
-        getChildFragmentManager().beginTransaction().add(R.id.fragment_history, historyFragment).commit();
+        accountInfoContainer = (LinearLayout)rootView.findViewById(R.id.account_info_linear_layout);
+        Button payButton = (Button) rootView.findViewById(R.id.pay_button);
+        payButton.setOnClickListener(v -> {
+            Toast.makeText(getContext(), "Pay Button Pressed!", Toast.LENGTH_SHORT).show();
+        });
+        Button downloadHistory = (Button)rootView.findViewById(R.id.load_history_button);
+        downloadHistory.setOnClickListener(v -> {
+            EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
+        });
+        //getChildFragmentManager().beginTransaction().add(R.id.fragment_history, historyFragment).commit();
     }
 
     @Override
@@ -89,6 +99,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     private void setAccountData(View container, Cursor data) {
+        if (data == null || data.getCount() == 0) {
+            return ;
+        }
         TextView accountNumber = (TextView)container.findViewById(R.id.account_number);
         accountNumber.setText(data.getString(data.getColumnIndex(AccountColumns.ACCOUNTNUMBER)));
         TextView balance = (TextView)container.findViewById(R.id.balance);

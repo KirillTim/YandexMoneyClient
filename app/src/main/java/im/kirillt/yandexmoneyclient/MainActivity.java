@@ -1,13 +1,18 @@
 package im.kirillt.yandexmoneyclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -21,7 +26,7 @@ import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
 import im.kirillt.yandexmoneyclient.fragments.UpdatableFragment;
 
-public class MainActivity extends LockableActivity {
+public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private MenuItem curMenuItemId = null;
@@ -30,7 +35,11 @@ public class MainActivity extends LockableActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MainActivity", "onCreate()");
         super.onCreate(savedInstanceState);
+        if (!YMCApplication.auth2Session.isAuthorized()) {
+            login();
+        }
         setContentView(R.layout.activity_main);
         initToolbar();
         initDrawerLayout();
@@ -106,12 +115,14 @@ public class MainActivity extends LockableActivity {
 
     @Override
     public void onStart() {
+        Log.i("MainActivity", "onStart()");
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
+        Log.i("MainActivity", "onStop()");
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
@@ -133,5 +144,26 @@ public class MainActivity extends LockableActivity {
 
     private void stopRefreshingWidget() {
         //TODO: stop widget download circle
+    }
+
+    private void login() {
+        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
+        intent.putExtra(AuthActivity.KEY_URL, YMCApplication.authorization.getAuthorizeUrl());
+        intent.putExtra(AuthActivity.KEY_POST_DATA, YMCApplication.authParams.build());
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            Toast.makeText(MainActivity.this, "No return data", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        boolean success = data.getBooleanExtra(AuthActivity.RESULT_SUCCESS, false);
+        if (success) {
+            Toast.makeText(MainActivity.this, "Success", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, "Fail: " + data.getStringExtra(AuthActivity.RESULT_ERROR_MSG), Toast.LENGTH_SHORT).show();
+        }
     }
 }

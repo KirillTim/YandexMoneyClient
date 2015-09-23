@@ -45,6 +45,7 @@ public class AuthActivity extends AppCompatActivity {
     private String errorDescription = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("AuthActivity", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 

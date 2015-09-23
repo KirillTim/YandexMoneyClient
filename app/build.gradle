@@ -27,11 +27,7 @@ android {
 buildscript {
     repositories {
         jcenter()
-        //mavenCentral()
     }
-    /*dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.2'
-    }*/
 }
 
 dependencies {
@@ -39,7 +35,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.yandex.money.api:yandex-money-sdk-java:4.2.1'
     compile 'com.android.support:design:23.0.1'
-    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'de.greenrobot:eventbus:2.2.1'
 }
 

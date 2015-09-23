@@ -29,12 +29,23 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <fragment
+        <FrameLayout
             android:id="@+id/activity_main_fragment"
-            class="im.kirillt.yandexmoneyclient.fragments.UpdatableFragment"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            tools:layout="@layout/fragment_updatable" />
+            tools:layout="@layout/fragment_updatable"/>
+        <!--<fragment
+            android:id="@+id/activity_main_fragment"
+            android:name="im.kirillt.yandexmoneyclient.fragments.UpdatableFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            tools:layout="@layout/fragment_updatable" />-->
+        <!--<fragment
+            android:id="@+id/activity_main_fragment"
+            android:name="im.kirillt.yandexmoneyclient.fragments.UpdatableFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            tools:layout="@layout/fragment_updatable" />-->
 
     </android.support.design.widget.CoordinatorLayout>
 
