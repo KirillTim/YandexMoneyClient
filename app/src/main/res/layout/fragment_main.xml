@@ -34,7 +34,7 @@
     <fragment
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        class="im.kitillt.yandexmoneyclient.fragments.HistoryFragment"
+        class="im.kirillt.yandexmoneyclient.fragments.HistoryFragment"
         tools:layout="@layout/fragment_history"
         android:id="@+id/fragment_history">
 

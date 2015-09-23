@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="im.kitillt.yandexmoneyclient.fragments.UpdatableFragment">
+    tools:context="im.kirillt.yandexmoneyclient.fragments.UpdatableFragment">
 
-    <SwipeRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,5 +15,5 @@
             android:layout_height="fill_parent"
             tools:layout="@layout/fragment_main"/>
 
-    </SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

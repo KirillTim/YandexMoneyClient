@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="im.kitillt.yandexmoneyclient" >
+    package="im.kirillt.yandexmoneyclient" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -26,7 +26,7 @@
 
         <provider
             android:name=".provider.YMCContentProvider"
-            android:authorities="im.kitillt.yandexmoneyclient.provider"
+            android:authorities="im.kirillt.yandexmoneyclient.provider"
             android:exported="false" />
 
     </application>

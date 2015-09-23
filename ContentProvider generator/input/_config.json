@@ -1,8 +1,8 @@
 {
 	"syntaxVersion": "3",
-	"projectPackageId": "im.kitillt.yandexmoneyclient",
-	"authority": "im.kitillt.yandexmoneyclient.provider",
-	"providerJavaPackage": "im.kitillt.yandexmoneyclient.provider",
+	"projectPackageId": "im.kirillt.yandexmoneyclient",
+	"authority": "im.kirillt.yandexmoneyclient.provider",
+	"providerJavaPackage": "im.kirillt.yandexmoneyclient.provider",
 	"providerClassName": "YMCContentProvider",
 	"sqliteOpenHelperClassName": "YMCSQLiteOpenHelper",
 	"sqliteOpenHelperCallbacksClassName": "YMCSQLiteOpenHelperCallbacks",
