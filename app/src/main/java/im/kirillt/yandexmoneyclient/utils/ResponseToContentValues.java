@@ -62,11 +62,11 @@ public class ResponseToContentValues {
         return rv;
     }
 
-    private static String stringOrEmpty(String s) {
+    public static String stringOrEmpty(String s) {
         return s == null ? "" : s;
     }
 
-    private static BigDecimal bigDecimalOrZero(BigDecimal bd) {
+    public static BigDecimal bigDecimalOrZero(BigDecimal bd) {
         return bd == null ? new BigDecimal(0) : bd;
     }
 }

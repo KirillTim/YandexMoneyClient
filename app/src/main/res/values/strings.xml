@@ -13,7 +13,11 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_auth">AuthActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="pay_who">Who (account number/phone/email)</string>
+    <string name="pay_total">Total</string>
+    <string name="pay_to_be_paid">To be paid</string>
+    <string name="pay_you_have">You have</string>
+    <string name="pay_recipient_message">Message to recipient</string>
+    <string name="optional">Optional</string>
+
 </resources>

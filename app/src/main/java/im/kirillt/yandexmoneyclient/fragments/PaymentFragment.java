@@ -4,50 +4,62 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import im.kirillt.yandexmoneyclient.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PaymentFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PaymentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PaymentFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public static final String KEY_WHO = "who";
+    public static final String KEY_TOTAL = "total";
+    public static final String KEY_TO_BE_PAID = "toBePaid";
 
-    private OnFragmentInteractionListener mListener;
+    private static final BigDecimal P2P_COMMISSION = new BigDecimal(0.005);
+    private Model model;
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * The factory method to create a new instance of
+     * fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param data Map with arguments
      * @return A new instance of fragment PaymentFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static PaymentFragment newInstance(String param1, String param2) {
+    public static PaymentFragment newInstance(Map<String,String> data) {
+        Bundle dataBundle = new Bundle();
+        dataBundle.putString(KEY_WHO, data.get(KEY_WHO));
+        dataBundle.putString(KEY_TOTAL, data.get(KEY_TOTAL));
+        dataBundle.putString(KEY_TO_BE_PAID, data.get(KEY_TO_BE_PAID));
+        return newInstance(dataBundle);
+    }
+
+    /**
+     * The factory method to create a new instance of
+     * fragment using the provided parameters.
+     *
+     * @param data bundle with arguments
+     * @return A new instance of fragment PaymentFragment.
+     */
+    public static PaymentFragment newInstance(Bundle data) {
         PaymentFragment fragment = new PaymentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.setArguments(data);
         return fragment;
     }
+
+    /**
+     * The factory method to create a new instance of
+     * fragment without parameters
+     *
+     * @return A new instance of fragment PaymentFragment.
+     */
+
     public static PaymentFragment newInstance() {
         return new PaymentFragment();
     }
@@ -61,8 +73,10 @@ public class PaymentFragment extends Fragment {
         Log.i("PaymentFragment", "onCreate()");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            Bundle args = getArguments();
+            model = new Model(args.getString(KEY_WHO), args.getString(KEY_TOTAL), args.getString(KEY_TO_BE_PAID));
+        } else {
+            model = new Model("", null, null);
         }
     }
 
@@ -73,33 +87,29 @@ public class PaymentFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_payment, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private class Model {
+        public String who;
+        public BigDecimal total = BigDecimal.ZERO;
+        public BigDecimal toBePaid = BigDecimal.ZERO;
+
+        public Model(String who, String totalStr, String toBePaidStr) {
+            this.who = who == null ? "" : who;
+            try {
+                total = new BigDecimal(totalStr);
+                toBePaid = new BigDecimal(toBePaidStr);
+            } catch (NumberFormatException|NullPointerException ignored) {}
+            try {
+                if (!total.equals(BigDecimal.ZERO)) {
+                    toBePaid = total.add(total.multiply(P2P_COMMISSION));
+                } else if (!toBePaid.equals(BigDecimal.ZERO)) {
+                    total = toBePaid.divide(BigDecimal.ONE.add(P2P_COMMISSION));
+                }
+            } catch (Exception ignored) {}
+
+
+            if (TextUtils.isEmpty(totalStr)) {
+                if (TextUtils.isEmpty(toBePaidStr))
+            }
         }
     }
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
 }
