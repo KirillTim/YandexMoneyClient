@@ -19,5 +19,6 @@
     <string name="pay_you_have">You have</string>
     <string name="pay_recipient_message">Message to recipient</string>
     <string name="optional">Optional</string>
+    <string name="big_decimal_zero">0.0</string>
 
 </resources>

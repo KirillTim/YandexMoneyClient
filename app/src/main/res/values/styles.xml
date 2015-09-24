@@ -3,12 +3,18 @@
     <style name="EditText" parent="Base.Widget.AppCompat.EditText">
         <item name="android:textColor">@color/text_color_light</item>
         <item name="android:textSize">20sp</item>
-        <item name="colorControlActivated">@color/color_primary</item>
-        <item name="colorControlHighlight">@color/color_primary</item>
+        <item name="android:lines">1</item>
+    </style>
 
+    <style name="AmountEditText" parent="EditText">
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:maxLength">8</item>
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/background_white</item>
+        <item name="colorControlActivated">@color/color_primary</item>
+        <item name="colorControlHighlight">@color/color_primary</item>
     </style>
 
 </resources>
