@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.provider.account.AccountCursor;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
@@ -43,15 +44,15 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("PaymentActivity", "onCreate");
         super.onCreate(savedInstanceState);
-        Log.i("intent", getIntent() + "");
-        Log.i("intent Action", getIntent().getAction());
+        /*Log.i("intent", getIntent() + "");
+        Log.i("intent Action", getIntent().getAction());*/
 
-        Bundle bundle = getIntent().getExtras();
+        /*Bundle bundle = getIntent().getExtras();
         for (String key : bundle.keySet()) {
             Object value = bundle.get(key);
             Log.d("extras", String.format("%s %s (%s)", key,
                     value.toString(), value.getClass().getName()));
-        }
+        }*/
         setContentView(R.layout.activity_payment);
         containerView = (LinearLayout) findViewById(R.id.payment_activity_container);
         balance = getBalance(this);
@@ -63,7 +64,7 @@ public class PaymentActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(v -> {
             PaymentFragment.PaymentModel model = inputFragment.getModel();
             if (model != null) {
-
+                Toast.makeText(PaymentActivity.this, "valid", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -121,7 +122,8 @@ public class PaymentActivity extends AppCompatActivity {
 
     private Bundle getModelFromIntent(BigDecimal balance) {
         Bundle rv = new Bundle();
-        if (getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+        String action = getIntent().getAction();
+        if (action != null && action.equals(Intent.ACTION_VIEW)) {
             Map<String,String> params = null;
             try {
                 params = UrlEncodedUtils.parse(getIntent().getDataString().toLowerCase());
@@ -151,6 +153,10 @@ public class PaymentActivity extends AppCompatActivity {
             cursor.close();
         }
         return rv;
+    }
+
+    public void onEventMainThread(AnyErrorEvent errorEvent) {
+        Toast.makeText(this, errorEvent.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private enum PaymentState {

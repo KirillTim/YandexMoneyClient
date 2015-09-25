@@ -1,4 +1,4 @@
-package im.kirillt.yandexmoneyclient.events.result;
+package im.kirillt.yandexmoneyclient.events;
 
 /**
  * Created by kirill on 20.09.15.

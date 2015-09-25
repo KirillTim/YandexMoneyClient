@@ -8,8 +8,7 @@ import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.YMCApplication;
-import im.kirillt.yandexmoneyclient.events.result.AnyErrorEvent;
-import im.kirillt.yandexmoneyclient.events.result.SuccessAccountInfoEvent;
+import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 import im.kirillt.yandexmoneyclient.utils.ResponseToContentValues;

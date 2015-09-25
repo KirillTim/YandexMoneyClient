@@ -12,13 +12,9 @@ import android.view.ViewGroup;
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
+import im.kirillt.yandexmoneyclient.events.TestEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 
-/**
- * Wrapper {@link Fragment} handled update events and store information(another Fragment) inside
- * Use the {@link UpdatableFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UpdatableFragment extends Fragment {
     private static final String ARG_FRAGMENT_NAME = "fragmentName";
     public static final int MAIN_FRAGMENT = 0;
@@ -28,13 +24,6 @@ public class UpdatableFragment extends Fragment {
     private View rootView;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    /**
-     * Factory method to create a new instance of
-     * fragment with inner Fragment.
-     *
-     * @param innerFragmentName name of the fragment to place inside
-     * @return A new instance of fragment UpdatableFragment.
-     */
     public static UpdatableFragment newInstance(int innerFragmentName) {
         UpdatableFragment fragment = new UpdatableFragment();
         Bundle args = new Bundle();
@@ -91,6 +80,8 @@ public class UpdatableFragment extends Fragment {
     }
 
     private void downloadData() {
-        EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
+        //EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
+        //TODO remove it
+        EventBus.getDefault().post(new TestEvent());
     }
 }

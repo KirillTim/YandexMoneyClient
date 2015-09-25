@@ -16,9 +16,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
-import im.kirillt.yandexmoneyclient.events.result.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.TestEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
-import im.kirillt.yandexmoneyclient.events.result.SuccessEvent;
+import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
 import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
 import im.kirillt.yandexmoneyclient.fragments.UpdatableFragment;
@@ -133,11 +134,17 @@ public class MainActivity extends AppCompatActivity {
         event.download();
     }
 
-    public void onEventMainThread(SuccessEvent event) {
+    public void onEventMainThread(SuccessDownloadEvent event) {
         Toast.makeText(this, "downloaded: "+event.getClass().getName(), Toast.LENGTH_SHORT).show();
         if (!YMCApplication.isDownloading()) {
             stopRefreshingWidget();
         }
+    }
+
+    //TODO delete
+    public void onEventAsync(TestEvent event) {
+        Log.i("onEventAsync", "start sleep event");
+        event.sleepTest();
     }
 
     private void stopRefreshingWidget() {
