@@ -14,7 +14,6 @@ import java.util.HashSet;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.YMCApplication;
-import im.kirillt.yandexmoneyclient.events.download.DownloadEvent;
 import im.kirillt.yandexmoneyclient.events.result.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.result.SuccessHistoryEvent;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;

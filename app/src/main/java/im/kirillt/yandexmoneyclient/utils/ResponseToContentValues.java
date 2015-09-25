@@ -12,6 +12,9 @@ import im.kirillt.yandexmoneyclient.provider.operation.payeeIdentifierType;
 import im.kirillt.yandexmoneyclient.provider.operation.paymentType;
 import im.kirillt.yandexmoneyclient.provider.operation.status;
 
+import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalOrZero;
+import static im.kirillt.yandexmoneyclient.utils.Converters.stringOrEmpty;
+
 /**
  * Created by kirill on 19.09.15.
  */
@@ -60,13 +63,5 @@ public class ResponseToContentValues {
                 .putFavorite(operation.favorite)
                 .putPaymenttype(paymentType.valueOf(operation.type.toString()));
         return rv;
-    }
-
-    public static String stringOrEmpty(String s) {
-        return s == null ? "" : s;
-    }
-
-    public static BigDecimal bigDecimalOrZero(BigDecimal bd) {
-        return bd == null ? new BigDecimal(0) : bd;
     }
 }

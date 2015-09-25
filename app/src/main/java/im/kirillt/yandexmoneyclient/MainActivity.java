@@ -4,12 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -20,10 +18,8 @@ import android.widget.Toast;
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.result.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
-import im.kirillt.yandexmoneyclient.events.result.SuccessAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.events.result.SuccessEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
-import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
 import im.kirillt.yandexmoneyclient.fragments.UpdatableFragment;
 
@@ -96,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
                 break;
             case R.id.drawer_pay:
-                currentFragment = PaymentFragment.newInstance();
+                PaymentActivity.startActivity(MainActivity.this);
                 break;
             case R.id.drawer_history:
                 currentFragment = UpdatableFragment.newInstance(UpdatableFragment.HISTORY_FRAGMENT);

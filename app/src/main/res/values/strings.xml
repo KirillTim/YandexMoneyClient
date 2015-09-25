@@ -16,9 +16,9 @@
     <string name="pay_who">Who (account number/phone/email)</string>
     <string name="pay_total">Total</string>
     <string name="pay_to_be_paid">To be paid</string>
-    <string name="pay_you_have">You have</string>
-    <string name="pay_recipient_message">Message to recipient</string>
-    <string name="optional">Optional</string>
+    <string name="pay_you_have">You have:</string>
+    <string name="pay_recipient_message">Message to recipient(optional)</string>
+    <string name="optional">optional</string>
     <string name="big_decimal_zero">0.0</string>
 
 </resources>

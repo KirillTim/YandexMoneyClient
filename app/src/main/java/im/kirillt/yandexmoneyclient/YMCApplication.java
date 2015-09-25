@@ -36,24 +36,8 @@ public class YMCApplication extends Application {
             .addScope(Scope.PAYMENT_P2P)
             .setRedirectUri(REDIRECT_URI);
 
-
     private static volatile boolean accountDownloadedNow = false;
     private static volatile boolean historyDownloadedNow = false;
-
-    public static boolean lockOnResume = false;
-
-    public YMCApplication getInstance() {
-        return singleton;
-    }
-
-    @Override
-    public void onCreate() {
-        Log.i("YMCApplication", "onCreate()");
-        super.onCreate();
-        auth2Session.setAccessToken(getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, ""));
-        singleton = this;
-    }
-
     public static void accountDownloadingStart() {
         accountDownloadedNow = true;
     }
@@ -69,5 +53,26 @@ public class YMCApplication extends Application {
     public static boolean isDownloading() {
         return accountDownloadedNow || historyDownloadedNow;
     }
+
+    private static Context appContext;
+    public static Context getAppContext() {
+        return appContext;
+    }
+
+    public static boolean lockOnResume = false;
+
+    public YMCApplication getInstance() {
+        return singleton;
+    }
+
+    @Override
+    public void onCreate() {
+        Log.i("YMCApplication", "onCreate()");
+        super.onCreate();
+        auth2Session.setAccessToken(getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, ""));
+        singleton = this;
+        appContext = getApplicationContext();
+    }
+
 
 }

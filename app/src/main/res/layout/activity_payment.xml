@@ -1,22 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android.support.design="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <!--<android.support.design.widget.TextInputLayout
-        android:id="@+id/who_input_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android.support.design:errorEnabled="true"
-        android.support.design:hintAnimationEnabled="true"
-        android:hint="Who">
 
-        <EditText
-            android:id="@+id/who_edit_text"
-            android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/payment_toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="WhoEditTextHint" />
+            android:titleTextColor="@color/color_red_dark"
+            android:background="@color/color_primary"/>
 
-    </android.support.design.widget.TextInputLayout>-->
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/payment_activity_container"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+
+            <FrameLayout
+                android:id="@+id/payment_input_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+        style="@style/FabStyle"
+        android:id="@+id/payment_fab"
+        app:layout_anchor="@id/payment_toolbar"
+        app:layout_anchorGravity="bottom|right|end" />
+
+</android.support.design.widget.CoordinatorLayout>
+

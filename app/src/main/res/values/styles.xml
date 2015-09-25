@@ -1,6 +1,8 @@
 <resources>
 
     <style name="EditText" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/text_color_light</item>
         <item name="android:textSize">20sp</item>
         <item name="android:lines">1</item>
@@ -11,8 +13,22 @@
         <item name="android:maxLength">8</item>
     </style>
 
+    <style name="FabStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/spacing_large</item>
+        <item name="backgroundTint">@color/color_red</item>
+        <item name="android:src">@drawable/ic_send_black_24dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">6dp</item>
+        <item name="pressedTranslationZ">10dp</item>
+        <item name="rippleColor">@android:color/white</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">@color/background_white</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="android:textColorHint">@color/text_color_hint</item>
         <item name="colorControlActivated">@color/color_primary</item>
         <item name="colorControlHighlight">@color/color_primary</item>
     </style>
