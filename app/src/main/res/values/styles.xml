@@ -13,6 +13,20 @@
         <item name="android:maxLength">8</item>
     </style>
 
+    <style name="TextViewH1">
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="android:textSize">25dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextViewH2">
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

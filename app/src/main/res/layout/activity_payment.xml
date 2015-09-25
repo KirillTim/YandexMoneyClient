@@ -21,6 +21,22 @@
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
+            <ProgressBar
+                android:id="@+id/payment_progress_bar"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/payment_error_textview"
+                android:paddingTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_red_light"
+                android:visibility="gone"
+                android:textSize="30dp"
+                android:text="ERROR ERROR ACHTUNG!"/>
 
             <FrameLayout
                 android:id="@+id/payment_input_fragment"

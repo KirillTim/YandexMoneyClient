@@ -15,8 +15,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yandex.money.api.methods.BaseRequestPayment;
 import com.yandex.money.api.utils.UrlEncodedUtils;
 
 import java.math.BigDecimal;
@@ -25,6 +28,10 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessEvent;
+import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessResultEvent;
+import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestEvent;
+import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestResultEvent;
 import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.provider.account.AccountCursor;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
@@ -39,32 +46,26 @@ public class PaymentActivity extends AppCompatActivity {
     private BigDecimal balance;
     private PaymentFragment inputFragment;
     private PaymentState activityState;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("PaymentActivity", "onCreate");
         super.onCreate(savedInstanceState);
-        /*Log.i("intent", getIntent() + "");
-        Log.i("intent Action", getIntent().getAction());*/
-
-        /*Bundle bundle = getIntent().getExtras();
-        for (String key : bundle.keySet()) {
-            Object value = bundle.get(key);
-            Log.d("extras", String.format("%s %s (%s)", key,
-                    value.toString(), value.getClass().getName()));
-        }*/
         setContentView(R.layout.activity_payment);
         containerView = (LinearLayout) findViewById(R.id.payment_activity_container);
         balance = getBalance(this);
         initToolBar(getString(R.string.pay_you_have)+" "+ bigDecimalToAmountString(balance));
         inputFragment = PaymentFragment.newInstance(getModelFromIntent(balance));
         getSupportFragmentManager().beginTransaction().add(R.id.payment_input_fragment, inputFragment).commit();
+        progressBar = (ProgressBar)findViewById(R.id.payment_progress_bar);
         floatingActionButton = (FloatingActionButton) findViewById(R.id.payment_fab);
         floatingActionButton.show();
         floatingActionButton.setOnClickListener(v -> {
             PaymentFragment.PaymentModel model = inputFragment.getModel();
             if (model != null) {
-                Toast.makeText(PaymentActivity.this, "valid", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.VISIBLE);
+                EventBus.getDefault().post(new PaymentRequestEvent(model));
             }
         });
     }
@@ -157,6 +158,28 @@ public class PaymentActivity extends AppCompatActivity {
 
     public void onEventMainThread(AnyErrorEvent errorEvent) {
         Toast.makeText(this, errorEvent.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void onEventMainThread(PaymentRequestResultEvent event) {
+        Log.i("payment request result", event.response.toString());
+        progressBar.setVisibility(View.GONE);
+        if (event.response.status == BaseRequestPayment.Status.SUCCESS) {
+            EventBus.getDefault().post(new PaymentProcessEvent(event.response.requestId));
+        }
+    }
+
+    public void onEventMainThread(PaymentProcessResultEvent event) {
+        TextView textView = (TextView)findViewById(R.id.payment_error_textview);
+        textView.setVisibility(View.VISIBLE);
+        textView.setText(event.response.status.toString());
+    }
+
+    public void onEventAsync(PaymentRequestEvent event) {
+        event.request();
+    }
+
+    public void onEventAsync(PaymentProcessEvent event) {
+        event.process();
     }
 
     private enum PaymentState {

@@ -22,7 +22,7 @@
 
         <activity
             android:name=".PaymentActivity"
-            android:label="@string/title_activity_auth">
+            android:label="@string/title_activity_payment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

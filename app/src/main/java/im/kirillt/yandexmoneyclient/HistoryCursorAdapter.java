@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joda.time.DateTime;
@@ -29,6 +31,13 @@ public class HistoryCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView title = (TextView) view.findViewById(R.id.title);
+        ImageView btn = (ImageView) view.findViewById(R.id.item_img);
+        btn.setOnClickListener(v -> {
+            title.setVisibility(View.GONE);
+        });
+        title.setOnClickListener(v -> {
+            btn.setVisibility(View.VISIBLE);
+        });
         TextView date = (TextView) view.findViewById(R.id.date);
         TextView amount = (TextView) view.findViewById(R.id.amount);
         title.setText(cursor.getString(cursor.getColumnIndex(OperationColumns.TITLE)));

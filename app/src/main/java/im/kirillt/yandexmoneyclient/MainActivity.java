@@ -13,11 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
-import im.kirillt.yandexmoneyclient.events.TestEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem curMenuItemId = null;
 
     private Fragment currentFragment;
+
+    private LinearLayout toolBarInnerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initToolbar() {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolBarInnerView = (LinearLayout) findViewById(R.id.account_info_container);
+        toolBarInnerView.setVisibility(View.GONE);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
@@ -141,14 +146,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO delete
-    public void onEventAsync(TestEvent event) {
-        Log.i("onEventAsync", "start sleep event");
-        event.sleepTest();
-    }
-
     private void stopRefreshingWidget() {
         //TODO: stop widget download circle
+    }
+
+    public LinearLayout getToolBarInnerView() {
+        return toolBarInnerView;
     }
 
     private void login() {

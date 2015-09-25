@@ -8,11 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
-import im.kirillt.yandexmoneyclient.events.TestEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 
 public class UpdatableFragment extends Fragment {
@@ -80,8 +80,6 @@ public class UpdatableFragment extends Fragment {
     }
 
     private void downloadData() {
-        //EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
-        //TODO remove it
-        EventBus.getDefault().post(new TestEvent());
+        EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
     }
 }
