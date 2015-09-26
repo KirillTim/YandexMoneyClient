@@ -142,17 +142,7 @@ public class MainActivity extends AppCompatActivity {
         event.download();
     }
 
-    public void onEventMainThread(SuccessDownloadEvent event) {
-        Toast.makeText(this, "downloaded: "+event.getClass().getName(), Toast.LENGTH_SHORT).show();
-        if (!YMCApplication.isDownloading()) {
-            stopRefreshingWidget();
-        }
-    }
 
-    private void stopRefreshingWidget() {
-
-        //TODO: stop widget download circle
-    }
 
     public LinearLayout getToolBarInnerView() {
         return toolBarInnerView;
@@ -164,28 +154,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void login() {
         Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-        intent.putExtra(AuthActivity.KEY_URL, YMCApplication.authorization.getAuthorizeUrl());
-        intent.putExtra(AuthActivity.KEY_POST_DATA, YMCApplication.authParams.build());
         startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {
-            Toast.makeText(MainActivity.this, "No return data", Toast.LENGTH_SHORT).show();
+        if (requestCode != 1) {
             return;
         }
-        boolean success = data.getBooleanExtra(AuthActivity.RESULT_SUCCESS, false);
-        if (success) {
-            Toast.makeText(MainActivity.this, "Welcome, "+data.getStringExtra(AuthActivity.RESULT_LOGIN), Toast.LENGTH_SHORT).show();
-            String token = data.getStringExtra(AuthActivity.RESULT_TOKEN);
-            if (!TextUtils.isEmpty(token)) {
-                getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
-                        .edit().putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
-                YMCApplication.auth2Session.setAccessToken(token);
-            }
+        if (resultCode != RESULT_OK) {
+            android.os.Process.killProcess(android.os.Process.myPid());
         } else {
-            Toast.makeText(MainActivity.this, "Fail: " + data.getStringExtra(AuthActivity.RESULT_ERROR_MSG), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
         }
     }
 }

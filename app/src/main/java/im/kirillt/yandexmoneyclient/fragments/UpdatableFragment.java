@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
+import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
 
 public class UpdatableFragment extends Fragment {
     private static final String ARG_FRAGMENT_NAME = "fragmentName";
@@ -79,7 +81,26 @@ public class UpdatableFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     private void downloadData() {
         EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
     }
+
+    public void onEventMainThread(SuccessDownloadEvent event) {
+        if (!YMCApplication.isDownloading()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
 }

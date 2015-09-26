@@ -1,57 +1,47 @@
 package im.kirillt.yandexmoneyclient;
 
-import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.yandex.money.api.methods.Token;
-import com.yandex.money.api.model.*;
-import com.yandex.money.api.net.AuthorizationCodeResponse;
-import com.yandex.money.api.net.OAuth2Authorization;
-import com.yandex.money.api.net.OAuth2Session;
+import com.yandex.money.api.model.AccountStatus;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import org.w3c.dom.Text;
 
-import im.kirillt.yandexmoneyclient.utils.ResponseReady;
+import de.greenrobot.event.EventBus;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
+import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
+import im.kirillt.yandexmoneyclient.fragments.auth.CreateLockCodeFragment;
+import im.kirillt.yandexmoneyclient.fragments.auth.ErrorFragment;
+import im.kirillt.yandexmoneyclient.fragments.auth.WebViewFragment;
 
 public class AuthActivity extends AppCompatActivity {
 
-    public static final String KEY_URL = "uri";
-    public static final String KEY_POST_DATA = "postData";
-    public static final String RESULT_SUCCESS = "success";
-    public static final String RESULT_TOKEN = "token";
-    public static final String RESULT_LOGIN = "login";
-    public static final String RESULT_ERROR_MSG = "errorMessage";
-
-    private WebView webView;
-
-    private String login = null;
-
-    private String url;
-    private byte[] postDataBytes = null;
+    private ProgressBar progressBar;
+    private FrameLayout frameLayout;
+    private TextView greetingTextView;
+    private String token;
+    private String login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("AuthActivity", "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        frameLayout = (FrameLayout)findViewById(R.id.activity_auth_fragment_container);
+        progressBar = (ProgressBar)findViewById(R.id.auth_progress_bar);
+        greetingTextView = (TextView)findViewById(R.id.activity_auth_greeting);
+        greetingTextView.setVisibility(View.GONE);
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
@@ -65,41 +55,10 @@ public class AuthActivity extends AppCompatActivity {
             this.finish();
             return;
         }
-
-        Intent intent = getIntent();
-        url = intent.getStringExtra(KEY_URL);
-        postDataBytes = intent.getByteArrayExtra(KEY_POST_DATA);
-        webView = (WebView)findViewById(R.id.auth_webview);
-        authorization(url, postDataBytes, webView);
-
-
+        Fragment fragment = WebViewFragment.newInstance(YMCApplication.REDIRECT_URI, YMCApplication.authParams.build());
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container, fragment).commit();
     }
 
-    private void loadPage(String url, byte[] postData, WebView view) {
-        Log.i("loadPage", "load");
-        showWebView(view);
-        view.postUrl(url, postData);
-    }
-
-    private void showWebView(WebView view) {
-        view.setVisibility(View.VISIBLE);
-    }
-
-    private void hideWebView() {
-        webView.setVisibility(View.GONE);
-    }
-
-    private class Chrome extends WebChromeClient {
-        @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-            Log.d("WebChromeClient", "progress = " + newProgress);
-            if (newProgress == 100) {
-                //TODO add
-            } else {
-                //TODO add
-            }
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,104 +73,72 @@ public class AuthActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.i("onBackPressed", "pressed");
         super.onBackPressed();
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private void authorization(String url, byte[] postData, WebView authView) {
-        authView.setWebChromeClient(new Chrome());
-        authView.setWebViewClient(new GetTempTokenClient());
-        authView.getSettings().setJavaScriptEnabled(true);
-        loadPage(url, postData, authView);
-    }
-
-    private class GetTempTokenClient extends WebViewClient{
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("GetTempTokenClient", "loading " + url);
-            boolean completed = false;
-            try {
-                AuthorizationCodeResponse authResponse = AuthorizationCodeResponse.parse(url);
-                if (authResponse.code != null) {
-                   getPermanentToken(authResponse.code);
-                    completed = true;
-                } else if (authResponse.error != null) {
-                    completed = true;
-                    //Toast.makeText(AuthActivity.this, "Error: "+errorDescription, Toast.LENGTH_SHORT).show();
-                    returnResult(null, authResponse.errorDescription);
-                }
-            } catch (URISyntaxException e) {
-                completed = true;
-                e.printStackTrace();
-                returnResult(null, "Unknown error");
-            }
-            if (completed) {
-                //TODO add smth
-            }
-            return completed || super.shouldOverrideUrlLoading(view, url);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            String cookies = CookieManager.getInstance().getCookie(url);
-            if (cookies != null && login == null) {
-                login = getLoginFromCookies(cookies);
-                if (login != null) {
-                    Log.i("login", login);
-                }
-            }
-        }
-    }
-
-    private void getPermanentToken(String tempToken) {
-        OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
-        try {
-            session.enqueue(new Token.Request(tempToken, YMCApplication.APP_ID, YMCApplication.REDIRECT_URI), new ResponseReady<Token>() {
-                @Override
-                protected void failure(Exception exception) {
-                    Log.i("Token fail: ", exception.getLocalizedMessage());
-                    returnResult(null, exception.getMessage());
-                }
-
-                @Override
-                protected void response(Token response) {
-                    Log.i("Token success: ", response.toString());
-                    //Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                    returnResult(response.accessToken, response.error == null ? null : response.error.name());
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-            returnResult(null, e.getMessage());
-        }
-    }
-
-    private void returnResult(String token, String errorDescription) {
-        Intent intent = new Intent();
-        if (TextUtils.isEmpty(errorDescription) && !TextUtils.isEmpty(token)) {
-            intent.putExtra(RESULT_SUCCESS, true);
-            intent.putExtra(RESULT_TOKEN, token);
-            intent.putExtra(RESULT_LOGIN, login == null ? "" : login);
-        } else {
-            intent.putExtra(RESULT_SUCCESS, false);
-            intent.putExtra(RESULT_ERROR_MSG, errorDescription);
-        }
-        setResult(RESULT_OK, intent);
+        Log.i("onBackPressed", "pressed");
+        setResult(RESULT_CANCELED);
         finish();
     }
 
-    private String getLoginFromCookies(String cookies) {
-        final String key = "yandex_login=";
-        int begin = cookies.indexOf(key)+key.length();
-        if (begin == -1) {
-            return null;
+    public void getWebAuth(String token, String login, String errorMessage) {
+        if (!TextUtils.isEmpty(errorMessage)) {
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
+                    ErrorFragment.newInstance(errorMessage)).commit();
+        } else {
+            Log.i("getWebAuth()", "login: "+login+", token: "+token);
+            this.token = token;
+            this.login = login;
+            showProgressBar();
+            frameLayout.setVisibility(View.GONE);
+            greetingTextView.setText(getString(R.string.greeting)+login+"!");
+            EventBus.getDefault().post(new DownloadAccountInfoEvent(this));
         }
-        int end = cookies.indexOf(";", begin);
-        if (end == -1) {
-            return null;
-        }
-        return cookies.substring(begin, end);
     }
+
+    public void onEventAsync(DownloadAccountInfoEvent event) {
+        event.download();
+    }
+
+    public void onEventMainThread(SuccessAccountInfoEvent event) {
+        progressBar.setVisibility(View.INVISIBLE);
+        greetingTextView.setVisibility(View.GONE);
+        if (event.response.accountStatus == AccountStatus.ANONYMOUS) {
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
+                    ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
+                    CreateLockCodeFragment.newInstance()).commit();
+        }
+
+    }
+
+    public void getLockCode(String lockCode) {
+        Log.i("getLockCode", "lock code: " + lockCode);
+        YMCApplication.auth2Session.setAccessToken(token);
+        getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
+                .putString(YMCApplication.PREF_LOCK_CODE, lockCode)
+                .putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    @Override
+    protected void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
 }

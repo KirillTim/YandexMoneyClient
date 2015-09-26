@@ -37,7 +37,7 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                     new AccountSelection().accountnumberNot(response.account).delete(context.getContentResolver());
                     ResponseToContentValues.account(response).insert(context.getContentResolver());
                     YMCApplication.accountDownloadingFinish();
-                    EventBus.getDefault().post(new SuccessAccountInfoEvent());
+                    EventBus.getDefault().post(new SuccessAccountInfoEvent(response));
                 }
             });
         } catch (IOException e) {
