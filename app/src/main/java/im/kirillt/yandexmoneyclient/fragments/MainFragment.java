@@ -8,11 +8,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,10 +26,8 @@ import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalToAmountSt
 
 public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private View rootView;
     private LinearLayout accountInfoContainer;
     private FloatingActionButton fab;
-
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -43,7 +39,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i("MainFragment", "onCreate()");
+        Log.d("MainFragment", "onCreate()");
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -51,30 +47,28 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("MainFragment", "onCreateView()");
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        fab = (FloatingActionButton) rootView.findViewById(R.id.fragment_main_fab);
-        fab.setOnClickListener(v -> {
-            PaymentActivity.startActivity(getContext());
-        });
-        return rootView;
+        Log.d("MainFragment", "onCreateView()");
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.i("MainFragment", "onActivityCreated");
+        Log.d("MainFragment", "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
         accountInfoContainer = ((MainActivity)getActivity()).getToolBarInnerView();
         accountInfoContainer.setVisibility(View.VISIBLE);
-        int gravity = Gravity.BOTTOM | Gravity.RIGHT;
-        ViewGroup.LayoutParams params = fab.getLayoutParams();
-        //params.set
+        fab = ((MainActivity)getActivity()).getFab();
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(v -> {
+            PaymentActivity.startActivity(getContext());
+        });
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         accountInfoContainer.setVisibility(View.GONE);
+        fab.setVisibility(View.GONE);
     }
 
     @Override

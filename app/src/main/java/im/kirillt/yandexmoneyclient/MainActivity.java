@@ -2,6 +2,7 @@ package im.kirillt.yandexmoneyclient;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment currentFragment;
 
     private LinearLayout toolBarInnerView;
+    private FloatingActionButton mainFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
             login();
         }
         setContentView(R.layout.activity_main);
+        mainFab = (FloatingActionButton)findViewById(R.id.activity_main_fab);
         initToolbar();
         initDrawerLayout();
         currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
@@ -52,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         toolBarInnerView = (LinearLayout) findViewById(R.id.account_info_container);
         toolBarInnerView.setVisibility(View.GONE);
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
 
@@ -152,6 +155,10 @@ public class MainActivity extends AppCompatActivity {
 
     public LinearLayout getToolBarInnerView() {
         return toolBarInnerView;
+    }
+
+    public FloatingActionButton getFab() {
+        return mainFab;
     }
 
     private void login() {
