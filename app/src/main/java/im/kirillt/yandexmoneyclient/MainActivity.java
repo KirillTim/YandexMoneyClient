@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopRefreshingWidget() {
+
         //TODO: stop widget download circle
     }
 

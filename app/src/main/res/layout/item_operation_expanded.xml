@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_operation_expanded_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--<View style="@style/HorizontalDivider" />-->
+    <!-- date time -->
+    <TextView
+        android:id="@+id/item_operation_expanded_date"
+        style="@style/TextViewH3"
+        android:hint="@string/date_and_time" />
+
+    <!-- Amount -->
+    <TextView
+        android:id="@+id/item_operation_expanded_amount"
+        style="@style/TextViewH2"
+        android:gravity="center"
+        android:hint="@string/amount" />
+
+    <!-- Commission -->
+    <TextView
+        android:id="@+id/item_operation_expanded_commission_header"
+        style="@style/TextViewH3"
+        android:gravity="center"
+        android:text="@string/commission"
+        android:textColor="@color/text_color_light" />
+    <TextView
+        android:id="@+id/item_operation_expanded_commission"
+        style="@style/TextViewH3"
+        android:gravity="center"
+        android:hint="@string/commission_hint" />
+
+    <!-- Status -->
+    <TextView
+        android:id="@+id/item_operation_expanded_status_header"
+        style="@style/TextViewH3"
+        android:text="@string/status"
+        android:textColor="@color/text_color_light"/>
+    <TextView
+        android:id="@+id/item_operation_expanded_status"
+        style="@style/TextViewH3"
+        android:hint="@string/status" />
+
+    <!-- Recipient -->
+    <TextView
+        android:id="@+id/item_operation_expanded_recipient_header"
+        style="@style/TextViewH3"
+        android:text="@string/recipient"
+        android:textColor="@color/text_color_light"/>
+    <TextView
+        android:id="@+id/item_operation_expanded_recipient"
+        style="@style/TextViewH3"
+        android:hint="@string/recipient" />
+
+    <!-- Comment -->
+    <TextView
+        android:id="@+id/item_operation_expanded_message_header"
+        style="@style/TextViewH3"
+        android:text="@string/message"
+        android:textColor="@color/text_color_light"/>
+    <TextView
+        android:id="@+id/item_operation_expanded_message"
+        style="@style/TextViewH3"
+        android:hint="@string/message" />
+
+    <View style="@style/HorizontalDivider" />
+
+    <TextView
+        android:id="@+id/item_operation_expanded_repeat_button"
+        style="@style/TextViewH1"
+        android:layout_gravity="center"
+        android:hint="@string/repeat" />
+
+    <LinearLayout
+        android:id="@+id/item_operation_payment_action_container"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/item_operation_payment_accept_button"
+            style="@style/TextViewH1"
+            android:layout_width="wrap_content"
+            android:hint="@string/accept"/>
+        <View style="@style/VerticalDivider"/>
+        <TextView
+            android:id="@+id/item_operation_payment_reject_button"
+            style="@style/TextViewH1"
+            android:layout_width="wrap_content"
+            android:hint="@string/reject"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

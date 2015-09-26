@@ -8,7 +8,7 @@
         android:id="@+id/history_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_operation_in_list">
+        tools:listitem="@layout/item_operation">
 
     </ListView>
 </FrameLayout>

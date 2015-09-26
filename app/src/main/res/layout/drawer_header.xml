@@ -7,7 +7,4 @@
              android:orientation="vertical"
              android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <include layout="@layout/item_account_info"
-        tools:layout="@layout/item_account_info"/>
-
 </RelativeLayout>

@@ -14,6 +14,7 @@
     </style>
 
     <style name="TextViewH1">
+        <item name="android:gravity">center</item>
         <item name="android:textColor">@color/text_color_dark</item>
         <item name="android:textSize">25dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -21,8 +22,25 @@
     </style>
 
     <style name="TextViewH2">
-        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_dark</item>
         <item name="android:textSize">20dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextViewH3">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="TextViewH4">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:textSize">10dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -47,4 +65,17 @@
         <item name="colorControlHighlight">@color/color_primary</item>
     </style>
 
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <!--<item name="android:background">?android:attr/listDivider</item>-->
+    </style>
+
+    <style name="VerticalDivider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@android:color/darker_gray</item>
+        <!--<item name="android:background">?android:attr/listDivider</item>-->
+    </style>
 </resources>

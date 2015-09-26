@@ -3,11 +3,8 @@
     android:layout_height="match_parent"
     tools:context="im.kirillt.yandexmoneyclient.fragments.SettingsFragment">
 
-    <TextView
-        android:paddingTop="200dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="30dp"
-        android:text="Settings Fragment" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
