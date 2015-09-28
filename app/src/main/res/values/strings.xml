@@ -11,8 +11,9 @@
     <!-- auth -->
     <string name="auth_error_message">Auth error message</string>
     <string name="greeting">Welcome, </string>
-    <string name="error_anonymous_account">You can't use this app while you are Anonymous. Please validate you Yandex.Money account and login again</string>
-    <string name="password_doesnt_match">Codes doesn't match</string>
+    <string name="error_anonymous_account">You can\'t use this app while you are Anonymous. Please validate you Yandex.Money account and login again</string>
+    <string name="password_doesnt_match">Codes doesn\'t match</string>
+    <string name="enter_code_second_time">Please, enter the same code again</string>
     <string name="reset">Reset</string>
     <string name="enter_code">Enter lock code</string>
     <string name="enter_lock_code_hint">From four to eight digits</string>

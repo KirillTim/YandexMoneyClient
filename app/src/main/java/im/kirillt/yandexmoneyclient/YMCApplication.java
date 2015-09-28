@@ -24,8 +24,8 @@ public class YMCApplication extends Application {
     public static final String PREF_LOCK_CODE = "lock_code";
     public static final String APP_ID = "DDD264D223C195815CB984B24B74220E9A551C81F9163AAD41A55EDA98C03E98";
     public static final String REDIRECT_URI = "client://authresult";
-    //public static final DefaultApiMobileClientWrapper apiClient = new DefaultApiMobileClientWrapper(new DefaultApiClient(APP_ID, true, "Android"));
-    public static final DefaultApiClient apiClient = new DefaultApiClient(APP_ID, true, "Android");
+    public static final DefaultApiMobileClientWrapper apiClient = new DefaultApiMobileClientWrapper(new DefaultApiClient(APP_ID, true, "Android"));
+    //public static final DefaultApiClient apiClient = new DefaultApiClient(APP_ID, true, "Android");
     public static final OAuth2Session auth2Session = new OAuth2Session(apiClient);
 
     public static final OAuth2Authorization authorization = new OAuth2Authorization(apiClient);

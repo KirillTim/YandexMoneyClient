@@ -1,9 +1,10 @@
 package im.kirillt.yandexmoneyclient;
 
-import android.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,12 +12,15 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yandex.money.api.model.AccountStatus;
 
 import org.w3c.dom.Text;
 
 import de.greenrobot.event.EventBus;
+import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
@@ -35,6 +39,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("AuthActivity", "onCreate()");
+        Log.i("activity", "getWebAuth id="+Thread.currentThread().getId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
 
@@ -43,22 +48,31 @@ public class AuthActivity extends AppCompatActivity {
         greetingTextView = (TextView)findViewById(R.id.activity_auth_greeting);
         greetingTextView.setVisibility(View.GONE);
 
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        initToolbar();
 
-        String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
+                .getString(YMCApplication.PREF_AUTH_TOKEN, "");
         if (!TextUtils.isEmpty(token)) {
             Log.i("Already authorized", "");
             setResult(RESULT_OK);
             this.finish();
             return;
         }
-        Fragment fragment = WebViewFragment.newInstance(YMCApplication.REDIRECT_URI, YMCApplication.authParams.build());
-        getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container, fragment).commit();
+        Fragment fragment = WebViewFragment.newInstance(YMCApplication.authorization.getAuthorizeUrl(),
+                YMCApplication.authParams.build());
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.activity_auth_fragment_container, fragment).commit();
     }
 
+    private void initToolbar() {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.activity_auth_toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -80,11 +94,13 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void getWebAuth(String token, String login, String errorMessage) {
+        Log.i("activity", "getWebAuth id=" + Thread.currentThread().getId());
         if (!TextUtils.isEmpty(errorMessage)) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     ErrorFragment.newInstance(errorMessage)).commit();
         } else {
             Log.i("getWebAuth()", "login: "+login+", token: "+token);
+            YMCApplication.auth2Session.setAccessToken(token);
             this.token = token;
             this.login = login;
             showProgressBar();
@@ -94,8 +110,16 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
+    public void onEventMainThread(WebAuthResultEvent event) {
+        getWebAuth(event.token, event.login, event.errorDescription);
+    }
+
     public void onEventAsync(DownloadAccountInfoEvent event) {
         event.download();
+    }
+
+    public void onEventMainThread(AnyErrorEvent event) {
+        Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show();
     }
 
     public void onEventMainThread(SuccessAccountInfoEvent event) {
@@ -105,6 +129,7 @@ public class AuthActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
         } else {
+            frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     CreateLockCodeFragment.newInstance()).commit();
         }
@@ -113,7 +138,6 @@ public class AuthActivity extends AppCompatActivity {
 
     public void getLockCode(String lockCode) {
         Log.i("getLockCode", "lock code: " + lockCode);
-        YMCApplication.auth2Session.setAccessToken(token);
         getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
                 .putString(YMCApplication.PREF_LOCK_CODE, lockCode)
                 .putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();

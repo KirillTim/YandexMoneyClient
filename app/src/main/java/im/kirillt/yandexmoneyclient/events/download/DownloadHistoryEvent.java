@@ -73,13 +73,13 @@ public class DownloadHistoryEvent implements DownloadEvent {
         });
     }
 
-    private DateTime getLatestSavedOperationDate() {
+    public DateTime getLatestSavedOperationDate() {
         OperationCursor cursor = new OperationSelection().operationidNot("").query(context.getContentResolver(), null, OperationColumns.DATETIME + " DESC");
         if (cursor == null) {
             return null;
         }
         if (cursor.moveToNext()) {
-            return new DateTime(new Date(cursor.getDatetime() * 1000L));
+            return new DateTime(new Date(cursor.getDatetime()));
         }
         return null;
     }

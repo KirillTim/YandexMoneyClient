@@ -1,17 +1,17 @@
 package im.kirillt.yandexmoneyclient.fragments.auth;
 
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import im.kirillt.yandexmoneyclient.AuthActivity;
 import im.kirillt.yandexmoneyclient.R;
@@ -37,11 +37,13 @@ public class CreateLockCodeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("CreateLockCodeFragment", "onCreate()");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("CreateLockCodeFragment", "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_create_lock_code, container, false);
         passwordEditText = (EditText)root.findViewById(R.id.fragment_create_lock_code_edit_text);
         passwordEditText.addTextChangedListener(new MyTextWatcher() {
@@ -50,7 +52,7 @@ public class CreateLockCodeFragment extends Fragment {
                 error.setVisibility(View.INVISIBLE);
             }
         });
-        error = (TextView)root.findViewById(R.id.fragment_create_lock_code_second_wrong);
+        error = (TextView)root.findViewById(R.id.fragment_create_lock_code_second_msg);
         error.setVisibility(View.INVISIBLE);
         submit = (ImageView)root.findViewById(R.id.fragment_create_lock_code_submit_button);
         submit.setOnClickListener(v -> {
@@ -61,10 +63,15 @@ public class CreateLockCodeFragment extends Fragment {
             if (firstCode.equals("")) {
                 firstCode = code;
                 passwordEditText.setText("");
+                error.setText(getString(R.string.enter_code_second_time));
+                error.setTextColor(getResources().getColor(R.color.text_color_dark));
+                error.setVisibility(View.VISIBLE);
             } else {
                 if (code.equals(firstCode)) {
                     ((AuthActivity)getActivity()).getLockCode(code);
                 } else {
+                    error.setText(getString(R.string.password_doesnt_match));
+                    error.setTextColor(getResources().getColor(R.color.color_red_dark));
                     error.setVisibility(View.VISIBLE);
                 }
             }
@@ -73,6 +80,7 @@ public class CreateLockCodeFragment extends Fragment {
         reset.setOnClickListener(v -> {
             firstCode = "";
             passwordEditText.setText("");
+            error.setVisibility(View.INVISIBLE);
         });
         return root;
     }

@@ -15,9 +15,6 @@ import im.kirillt.yandexmoneyclient.provider.operation.status;
 import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalOrZero;
 import static im.kirillt.yandexmoneyclient.utils.Converters.stringOrEmpty;
 
-/**
- * Created by kirill on 19.09.15.
- */
 public class ResponseToContentValues {
     public static AccountContentValues account(AccountInfo accountInfo) {
         AccountContentValues rv = new AccountContentValues();
@@ -41,7 +38,7 @@ public class ResponseToContentValues {
                 .putAmount(bigDecimalOrZero(operation.amount).toString())
                 .putAmountdue(bigDecimalOrZero(operation.amountDue).toString())
                 .putFee(bigDecimalOrZero(operation.fee).toString())
-                .putDatetime(operation.datetime.getMillis() / 1000L)
+                .putDatetime(operation.datetime.getMillis())
                 .putTitle(stringOrEmpty(operation.title))
                 .putSender(stringOrEmpty(operation.sender))
                 .putRecipient(stringOrEmpty(operation.recipient));
@@ -53,9 +50,10 @@ public class ResponseToContentValues {
                 .putCodepro(operation.codepro);
         if (operation.codepro) {
             rv.putProtectioncode(operation.protectionCode)
-                    .putExpires(operation.expires.getMillis() / 1000L)
-                    .putAnswerdatetime(operation.answerDatetime.getMillis() / 1000L);
-
+                    .putExpires(operation.expires.getMillis());
+            if (operation.answerDatetime != null) {
+                rv.putAnswerdatetime(operation.answerDatetime.getMillis());
+            }
         }
         rv.putLabel(stringOrEmpty(operation.label))
                 .putDetails(stringOrEmpty(operation.details))

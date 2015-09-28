@@ -20,23 +20,25 @@ import com.yandex.money.api.net.OAuth2Session;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.AuthActivity;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
+import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
 public class WebViewFragment extends Fragment {
 
-    private static final String KEY_URL = "uri";
+    private static final String KEY_URL = "url";
     private static final String KEY_POST_DATA = "postData";
 
     private String login = null;
     private WebView webView;
 
-    public static WebViewFragment newInstance(String uri, byte[] postData) {
+    public static WebViewFragment newInstance(String url, byte[] postData) {
         WebViewFragment fragment = new WebViewFragment();
         Bundle args = new Bundle();
-        args.putString(KEY_URL, uri);
+        args.putString(KEY_URL, url);
         args.putByteArray(KEY_POST_DATA, postData);
         fragment.setArguments(args);
         return fragment;
@@ -59,6 +61,7 @@ public class WebViewFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.i("WebViewFragment", "onActivityCreated() thread.id= "+Thread.currentThread().getId());
         loadPage(getArguments().getString(KEY_URL),
                 getArguments().getByteArray(KEY_POST_DATA), webView);
     }
@@ -66,6 +69,7 @@ public class WebViewFragment extends Fragment {
     private void loadPage(String url, byte[] postData, WebView view) {
         Log.i("loadPage", "load");
         view.setVisibility(View.VISIBLE);
+        showProgressBar();
         view.postUrl(url, postData);
     }
 
@@ -133,6 +137,7 @@ public class WebViewFragment extends Fragment {
 
                 @Override
                 protected void response(Token response) {
+                    Log.i("token response", "thread.id= "+Thread.currentThread().getId());
                     Log.i("Token success: ", response.toString());
                     //Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                     returnResult(response.accessToken, response.error == null ? null : response.error.name());
@@ -145,7 +150,11 @@ public class WebViewFragment extends Fragment {
     }
     private String getLoginFromCookies(String cookies) {
         final String key = "yandex_login=";
-        int begin = cookies.indexOf(key)+key.length();
+        int begin = cookies.indexOf(key);
+        if (begin == -1) {
+            return null;
+        }
+        begin +=key.length();
         if (begin == -1) {
             return null;
         }
@@ -157,14 +166,22 @@ public class WebViewFragment extends Fragment {
     }
 
     private void hideProgressBar() {
-        ((AuthActivity)getActivity()).hideProgressBar();
+        Log.i("WebViewFragment", "hideProgressBar thread.id= "+Thread.currentThread().getId());
+        AuthActivity activity = (AuthActivity)getActivity();
+        if (activity!= null) {
+            activity.hideProgressBar();
+        }
     }
 
     private void showProgressBar() {
-        ((AuthActivity)getActivity()).showProgressBar();
+        AuthActivity activity = (AuthActivity)getActivity();
+        if (activity != null) {
+            activity.showProgressBar();
+        }
     }
 
     private void returnResult(String token, String errorDescription) {
-        ((AuthActivity)getActivity()).getWebAuth(token, login, errorDescription);
+        Log.i("WebViewFragment", "returnResult thread.id= " + Thread.currentThread().getId());
+        EventBus.getDefault().post(new WebAuthResultEvent(login, token, errorDescription));
     }
 }

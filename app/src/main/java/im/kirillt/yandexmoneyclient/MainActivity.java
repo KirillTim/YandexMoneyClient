@@ -164,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (resultCode != RESULT_OK) {
             android.os.Process.killProcess(android.os.Process.myPid());
+            finish();
         } else {
             Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
         }

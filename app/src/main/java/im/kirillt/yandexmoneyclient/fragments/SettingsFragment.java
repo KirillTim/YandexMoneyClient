@@ -57,17 +57,26 @@ public class SettingsFragment extends Fragment {
                 YMCApplication.auth2Session.enqueue(new Token.Revoke(), new ResponseReady<Object>() {
                     @Override
                     protected void failure(Exception exception) {
-
+                        Log.i("settings", "fail");
+                        deleteAndExit();
                     }
 
                     @Override
                     protected void response(Object response) {
-                        android.os.Process.killProcess(android.os.Process.myPid());
+                        Log.i("settings", "ok");
+                        deleteAndExit();
                     }
                 });
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+    }
+
+    private void deleteAndExit() {
+        getActivity().getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
+                .remove(YMCApplication.PREF_AUTH_TOKEN)
+                .remove(YMCApplication.PREF_LOCK_CODE).apply();
+        getActivity().finish();
     }
 }

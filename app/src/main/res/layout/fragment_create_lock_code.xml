@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_white"
     tools:context="im.kirillt.yandexmoneyclient.fragments.auth.CreateLockCodeFragment">
 
     <LinearLayout
@@ -18,12 +19,12 @@
             android:text="@string/enter_code" />
 
         <TextView
-            android:id="@+id/fragment_create_lock_code_second_wrong"
-            android:textColor="@android:color/holo_red_dark"
+            android:id="@+id/fragment_create_lock_code_second_msg"
+            android:textColor="@color/text_color_dark"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/password_doesnt_match"/>
+            android:hint="any message here"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -3,15 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="im.kitillt.yandexmoneyclient.AuthActivity">
 
-    <ProgressBar
-        android:id="@+id/auth_progress_bar"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/activity_auth_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary">
 
+        <ProgressBar
+            android:id="@+id/auth_progress_bar"
+            style="@android:style/Widget.ProgressBar.Inverse"
+            android:visibility="visible"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:id="@+id/activity_auth_greeting"
