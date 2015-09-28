@@ -1,7 +1,6 @@
 package im.kirillt.yandexmoneyclient.fragments.auth;
 
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -71,7 +70,7 @@ public class CreateLockCodeFragment extends Fragment {
                     ((AuthActivity)getActivity()).getLockCode(code);
                 } else {
                     error.setText(getString(R.string.password_doesnt_match));
-                    error.setTextColor(getResources().getColor(R.color.color_red_dark));
+                    error.setTextColor(getResources().getColor(R.color.red_dark));
                     error.setVisibility(View.VISIBLE);
                 }
             }

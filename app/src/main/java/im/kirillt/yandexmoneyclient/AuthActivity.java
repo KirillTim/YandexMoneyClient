@@ -106,7 +106,7 @@ public class AuthActivity extends AppCompatActivity {
             showProgressBar();
             frameLayout.setVisibility(View.GONE);
             greetingTextView.setText(getString(R.string.greeting)+login+"!");
-            EventBus.getDefault().post(new DownloadAccountInfoEvent(this));
+            EventBus.getDefault().post(new DownloadAccountInfoEvent(this, login));
         }
     }
 

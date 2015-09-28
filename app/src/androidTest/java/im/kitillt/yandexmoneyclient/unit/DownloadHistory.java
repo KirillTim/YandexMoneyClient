@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +28,11 @@ public class DownloadHistory {
     @Rule
     public ActivityTestRule<MainActivity> activityRule =
             new ActivityTestRule<>(MainActivity.class);
+
+    @AfterClass
+    public void clearOperationsDB() {
+        new OperationSelection().operationidNot("").delete(activityRule.getActivity().getContentResolver());
+    }
 
     @Test
     public void getLastSavedOperationDateTest() {

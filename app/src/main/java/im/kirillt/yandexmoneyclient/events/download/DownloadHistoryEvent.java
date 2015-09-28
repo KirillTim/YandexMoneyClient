@@ -2,6 +2,7 @@ package im.kirillt.yandexmoneyclient.events.download;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.yandex.money.api.methods.OperationHistory;
 import com.yandex.money.api.model.Operation;
@@ -51,6 +52,7 @@ public class DownloadHistoryEvent implements DownloadEvent {
 
             @Override
             protected void response(OperationHistory response) {
+                Log.i("download: ", "nextRecord:"+ (response.nextRecord == null ? 0 : response.nextRecord )+" response size: "+response.operations.size());
                 if (!TextUtils.isEmpty(response.nextRecord)) {
                     try {
                         download(from, Integer.valueOf(response.nextRecord), records);
@@ -92,7 +94,7 @@ public class DownloadHistoryEvent implements DownloadEvent {
                 .setTypes(types)
                 .setDetails(true);
         if (from != null) {
-            builder.setFrom(from);
+            builder.setFrom(from.plusMillis(100));
         }
         if (startRecord >= 0) {
             builder.setStartRecord(String.valueOf(startRecord));
