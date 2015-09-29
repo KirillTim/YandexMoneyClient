@@ -11,6 +11,7 @@ import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
 import im.kirillt.yandexmoneyclient.provider.account.AccountContentValues;
+import im.kirillt.yandexmoneyclient.provider.account.AccountCursor;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
@@ -53,13 +54,20 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                     if (response.avatar != null) {
                         contentValues.putAvatar(response.avatar.url);
                     }
-
+                    //TODO this
+                    //yep, its crap. some magic bug is here and i don't write such a bad code often
+                    AccountCursor ac = new AccountCursor(new AccountSelection()
+                            .accountnumber(response.account).query(context.getContentResolver()));
+                    ac.moveToFirst();
                     int r = context.getContentResolver().
                             update(AccountColumns.CONTENT_URI, contentValues.values(),
                                     new AccountSelection().accountnumber(response.account).sel(), null);
                     if (r == 0) {
                         new AccountSelection().accountnumberNot("").delete(context.getContentResolver());
                         contentValues.putAccountnumber(response.account);
+                        if (login == null && ac.getCount() > 0) {
+                            contentValues.putAccountusername(ac.getAccountusername());
+                        }
                         contentValues.insert(context.getContentResolver());
                     }
                     YMCApplication.accountDownloadingFinish();

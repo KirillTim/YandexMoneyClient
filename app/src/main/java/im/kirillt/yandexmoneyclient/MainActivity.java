@@ -16,8 +16,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.IncomingTransferProcessResultEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
 import im.kirillt.yandexmoneyclient.fragments.HistoryFragment;
@@ -95,7 +98,6 @@ public class MainActivity extends BaseActivity {
             return ;
         }
         curMenuItemId = menuItem;
-        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         switch(menuItem.getItemId()) {
             case R.id.drawer_home:
                 currentFragment = MainFragment.newInstance();
@@ -136,14 +138,18 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(AnyErrorEvent errorEvent) {
-        Toast.makeText(this, errorEvent.toString(), Toast.LENGTH_SHORT).show();
+        if (errorEvent.getException() instanceof IOException) {
+            Toast.makeText(this, getString(R.string.net_error),Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onEventAsync(DownloadAllEvent event) {
         event.download();
     }
 
-
+    public void onEventMainThread(IncomingTransferProcessResultEvent event) {
+        Toast.makeText(this, event.result, Toast.LENGTH_SHORT).show();
+    }
 
     public LinearLayout getToolBarInnerView() {
         return toolBarInnerView;

@@ -61,7 +61,11 @@
     <string name="invalid_email">Invalid email address</string>
     <string name="invalid_phone">Invalid phone number</string>
     <string name="invalid_ya_account">Invalid account number</string>
+    <string name="pay_success">Success!</string>
+    <string name="pay_error">Error</string>
 
+    <string name="net_error">Something is wrong with the Internet.Please, check your connection</string>
+    <string name="pay_illegal_param_to_error">There\'s nobody with this address in the service, but you can send the transfer anyway (commission will be 3%%). Yandex\'ll tell the recipient how to add money to a Wallet or transfer it to a bank card</string>
 
     <string name="title_activity_settings">Settings</string>
 

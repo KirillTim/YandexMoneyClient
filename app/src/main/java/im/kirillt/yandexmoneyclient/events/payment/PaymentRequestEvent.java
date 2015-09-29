@@ -18,12 +18,15 @@ public class PaymentRequestEvent {
 
     public PaymentRequestEvent(PaymentInfo model) {
         this.model = model;
-        this.p2pTransferParams = new P2pTransferParams.Builder(model.who.get())
-                //.setAmount(model.toBePaid)
+        P2pTransferParams.Builder builder = new P2pTransferParams.Builder(model.who.get())
                 .setAmountDue(new BigDecimal(model.amountTotal.get()))
                 .setMessage(model.message.get())
-                .setLabel("Alternative Yandex Money Client")
-                .build();
+                .setLabel("Alternative Yandex Money Client");
+        if (model.codePro.get()) {
+            builder.setCodepro(true);
+            builder.setExpirePeriod(Integer.valueOf(model.codeproTime.get()));
+        }
+        this.p2pTransferParams = builder.build();
     }
 
     public void request() {

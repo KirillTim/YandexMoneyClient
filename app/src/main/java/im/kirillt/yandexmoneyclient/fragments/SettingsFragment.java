@@ -69,7 +69,8 @@ public class SettingsFragment extends Fragment {
                         getActivity().finish();
                     }
                 });
-            } catch (IOException e) {
+            } catch (Exception e) {
+                YMCApplication.deleteToken(getActivity());
                 e.printStackTrace();
             }
         });

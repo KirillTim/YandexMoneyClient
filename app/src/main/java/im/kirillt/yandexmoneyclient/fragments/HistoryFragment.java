@@ -16,6 +16,7 @@ import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.HistoryCursorAdapter;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
+import im.kirillt.yandexmoneyclient.events.IncomingTransferProcessEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
@@ -103,6 +104,10 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
         if (!YMCApplication.isDownloading()) {
             swipeRefreshLayout.setRefreshing(false);
         }
+    }
+
+    public void onEventAsync(IncomingTransferProcessEvent event) {
+        event.process();
     }
 
 }

@@ -14,8 +14,15 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.yandex.money.api.methods.BaseRequestPayment;
+import com.yandex.money.api.model.*;
+import com.yandex.money.api.model.Error;
+import com.yandex.money.api.utils.UrlEncodedUtils;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.databinding.ActivityPaymentBinding;
@@ -35,7 +42,8 @@ import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalToAmountSt
 
 public class PaymentActivity extends BaseActivity {
 
-    public static final String PAYMENT_INFO = "paymentInfo";
+
+    private FloatingActionButton floatingActionButton;
 
     private PaymentInfo paymentInfo;
     private boolean paymentRunning = false;
@@ -47,7 +55,7 @@ public class PaymentActivity extends BaseActivity {
         final ActivityPaymentBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_payment);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) binding.getRoot().findViewById(R.id.payment_fab);
+        floatingActionButton = (FloatingActionButton) binding.getRoot().findViewById(R.id.payment_fab);
         floatingActionButton.show();
         floatingActionButton.setOnClickListener(v -> {
             if (paymentInfo.validateAmount()) {
@@ -62,9 +70,15 @@ public class PaymentActivity extends BaseActivity {
             paymentInfo.codePro.set(isChecked);
         });
         EventBus.getDefault().post(new DownloadAccountInfoEvent(this));
-        paymentInfo = new PaymentInfo(getBalance(this), "", "", "", false, null, getResources());
 
-        initToolBar(bigDecimalToAmountString(paymentInfo.balance));
+        BigDecimal balance = getBalance(this);
+
+        paymentInfo = getModelFromIntent(balance);
+        if (paymentInfo == null) {
+            paymentInfo = new PaymentInfo(balance, "", "", "", false, null, getResources());
+        }
+
+        initToolBar(bigDecimalToAmountString(balance));
 
         binding.setPaymentInfo(paymentInfo);
         binding.payToBePaid.addTextChangedListener(new TextWatcherAdapter() {
@@ -139,6 +153,28 @@ public class PaymentActivity extends BaseActivity {
         }
     }
 
+    private PaymentInfo getModelFromIntent(BigDecimal balance) {
+        PaymentInfo rv = null;
+        String action = getIntent().getAction();
+        if (action != null && action.equals(Intent.ACTION_VIEW)) {
+            Map<String,String> params = null;
+            try {
+                params = UrlEncodedUtils.parse(getIntent().getDataString().toLowerCase());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            if (params != null) {
+                rv = new PaymentInfo(balance, params.get("receiver"), params.get("sum"),
+                        params.get("destination"), false, null, getResources());
+            }
+        } else {
+            if (getIntent().getExtras() != null) {
+                //TODO create payment info from here
+            }
+        }
+        return rv;
+    }
+
     public static BigDecimal getBalance(Context context) {
         BigDecimal rv = BigDecimal.ZERO;
         AccountCursor cursor = new AccountSelection().accountnumberNot("").query(context.getContentResolver());
@@ -160,14 +196,24 @@ public class PaymentActivity extends BaseActivity {
     }
 
     public void onEventMainThread(AnyErrorEvent errorEvent) {
-        Toast.makeText(this, errorEvent.toString(), Toast.LENGTH_SHORT).show();
+        if (errorEvent.getException() instanceof IOException) {
+            Toast.makeText(this, getString(R.string.net_error), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onEventMainThread(PaymentRequestResultEvent event) {
         paymentRunning = false;
         Log.i("payment request result", event.response.toString());
-        String msg = event.response.status.name()+(event.response.error != null ? ":"+event.response.error.toString() : "");
-        paymentInfo.requestResultMessage.set(msg);
+        if (event.response.error != null) {
+            String msg = "";
+            if (event.response.error == Error.ILLEGAL_PARAM_TO) {
+                msg = getString(R.string.pay_illegal_param_to_error);
+            } else {
+                msg = "Server answer with error: "+event.response.error.toString();
+            }
+            floatingActionButton.show();
+            paymentInfo.requestResultMessage.set(msg);
+        }
         paymentInfo.refreshing.set(false);
         if (event.response.status == BaseRequestPayment.Status.SUCCESS) {
             EventBus.getDefault().post(new PaymentProcessEvent(event.response.requestId));
@@ -176,19 +222,27 @@ public class PaymentActivity extends BaseActivity {
 
     public void onEventMainThread(PaymentProcessResultEvent event) {
         paymentRunning = false;
+        paymentInfo.requestResultMessage.set("");
         paymentInfo.finished.set(true);
         paymentInfo.refreshing.set(false);
-        String msg = event.response.status.name()+(event.response.error != null ? ":"+event.response.error.toString() : "");
+        String msg ;
+        if (event.response.error == null) {
+            msg = getString(R.string.pay_success);
+        } else  {
+            msg = getString(R.string.pay_error)+": "+event.response.error.name();
+        }
         paymentInfo.processResultMessage.set(msg);
     }
 
     public void onEventAsync(PaymentRequestEvent event) {
         paymentInfo.refreshing.set(true);
+        floatingActionButton.hide();
         event.request();
     }
 
     public void onEventAsync(PaymentProcessEvent event) {
         paymentInfo.refreshing.set(true);
+        floatingActionButton.hide();
         event.process();
     }
 
