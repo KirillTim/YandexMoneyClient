@@ -6,27 +6,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.HistoryCursorAdapter;
 import im.kirillt.yandexmoneyclient.R;
+import im.kirillt.yandexmoneyclient.YMCApplication;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
+import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 
 
 public class HistoryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-
     private HistoryCursorAdapter adapter;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private View rootView;
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment HistoryFragment.
-     */
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
@@ -40,9 +41,6 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        // TODO: do something
-        }
         getLoaderManager().initLoader(0, null, this);
         adapter = new HistoryCursorAdapter(getContext(), null, 0);
     }
@@ -59,7 +57,15 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
         super.onActivityCreated(savedInstanceState);
         ListView listView = (ListView)rootView.findViewById(R.id.history_list);
         listView.setAdapter(adapter);
-    }
+        swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (YMCApplication.isDownloading()) {
+                swipeRefreshLayout.setRefreshing(false);
+                return;
+            }
+            downloadData();
+        });
+        swipeRefreshLayout.setRefreshing(YMCApplication.isDownloading());}
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -75,6 +81,28 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void downloadData() {
+        EventBus.getDefault().post(new DownloadAllEvent(getActivity()));
+    }
+
+    public void onEventMainThread(SuccessDownloadEvent event) {
+        if (!YMCApplication.isDownloading()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
 }

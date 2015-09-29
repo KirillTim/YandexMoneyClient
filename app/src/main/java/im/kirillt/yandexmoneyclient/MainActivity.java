@@ -1,6 +1,5 @@
 package im.kirillt.yandexmoneyclient;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -21,8 +20,9 @@ import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
+import im.kirillt.yandexmoneyclient.fragments.HistoryFragment;
+import im.kirillt.yandexmoneyclient.fragments.MainFragment;
 import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
-import im.kirillt.yandexmoneyclient.fragments.UpdatableFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
         mainFab = (FloatingActionButton)findViewById(R.id.activity_main_fab);
         initToolbar();
         initDrawerLayout();
-        currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+        currentFragment = MainFragment.newInstance();
         getSupportFragmentManager().beginTransaction().add(R.id.activity_main_fragment, currentFragment).commit();
     }
 
@@ -98,14 +98,14 @@ public class MainActivity extends BaseActivity {
         Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
         switch(menuItem.getItemId()) {
             case R.id.drawer_home:
-                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+                currentFragment = MainFragment.newInstance();
                 break;
             case R.id.drawer_pay:
                 curMenuItemId = menu.getItem(0);
                 PaymentActivity.startActivity(MainActivity.this);
                 break;
             case R.id.drawer_history:
-                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.HISTORY_FRAGMENT);
+                currentFragment = HistoryFragment.newInstance();
                 break;
             case R.id.drawer_settings:
                 currentFragment = SettingsFragment.newInstance();
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
                 currentFragment = AboutFragment.newInstance();
                 break;
             default:
-                currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
+                currentFragment = MainFragment.newInstance();
 
         }
         FragmentManager fragmentManager = getSupportFragmentManager();

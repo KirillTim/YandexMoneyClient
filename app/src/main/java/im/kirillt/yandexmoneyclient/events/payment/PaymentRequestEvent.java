@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
-import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.model.PaymentInfo;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
