@@ -47,7 +47,7 @@ public class DownloadHistory {
         try {
             //Such reflection, very love it, WOW!
             Method method = event.getClass().getDeclaredMethod("getLatestSavedOperationDate", new Class[]{});
-            DateTime result = (DateTime) method.invoke(event, null);
+            DateTime result = (DateTime) method.invoke(event, (Object[])null);
             assertEquals(now.toDateTime(DateTimeZone.getDefault()), result.toDateTime(DateTimeZone.getDefault()));
         } catch (NoSuchMethodException e) { //can't use Exception1|Exception2|... e notation because of targetAPI
             e.printStackTrace();

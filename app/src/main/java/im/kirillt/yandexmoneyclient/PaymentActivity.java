@@ -2,85 +2,118 @@ package im.kirillt.yandexmoneyclient;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yandex.money.api.methods.BaseRequestPayment;
-import com.yandex.money.api.utils.UrlEncodedUtils;
+
+import org.parceler.Parcels;
 
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
-import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import im.kirillt.yandexmoneyclient.databinding.ActivityPaymentBinding;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessResultEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestResultEvent;
 import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
+import im.kirillt.yandexmoneyclient.model.PaymentInfo;
+import im.kirillt.yandexmoneyclient.model.util.TextWatcherAdapter;
 import im.kirillt.yandexmoneyclient.provider.account.AccountCursor;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
-
-import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalOrZero;
-import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalToAmountString;
+import im.kirillt.yandexmoneyclient.utils.Converters;
 
 public class PaymentActivity extends AppCompatActivity {
 
-    private LinearLayout containerView;
+    public static final String PAYMENT_INFO = "paymentInfo";
+
+    private PaymentInfo paymentInfo;
     private FloatingActionButton floatingActionButton;
-    private BigDecimal balance;
-    private PaymentFragment inputFragment;
-    private PaymentState activityState;
-    private ProgressBar progressBar;
+    private boolean paymentRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("PaymentActivity", "onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_payment);
-        containerView = (LinearLayout) findViewById(R.id.payment_activity_container);
-        balance = getBalance(this);
-        initToolBar(getString(R.string.pay_you_have)+" "+ bigDecimalToAmountString(balance));
-        inputFragment = PaymentFragment.newInstance(getModelFromIntent(balance));
-        getSupportFragmentManager().beginTransaction().add(R.id.payment_input_fragment, inputFragment).commit();
-        progressBar = (ProgressBar)findViewById(R.id.payment_progress_bar);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.payment_fab);
+        final ActivityPaymentBinding binding = DataBindingUtil
+                .setContentView(this, R.layout.activity_payment);
+
+        floatingActionButton = (FloatingActionButton) binding.getRoot().findViewById(R.id.payment_fab);
         floatingActionButton.show();
         floatingActionButton.setOnClickListener(v -> {
-            PaymentFragment.PaymentModel model = inputFragment.getModel();
-            if (model != null) {
-                progressBar.setVisibility(View.VISIBLE);
-                EventBus.getDefault().post(new PaymentRequestEvent(model));
+            if (paymentInfo.validateAmount()) {
+                if (!paymentRunning) {
+                    paymentRunning = true;
+                    EventBus.getDefault().post(new PaymentRequestEvent(paymentInfo));
+                }
             }
         });
+
+        paymentInfo = new PaymentInfo(getBalance(this), "", "", "", false, null, getResources());
+
+        initToolBar(Converters.bigDecimalToAmountString(paymentInfo.balance));
+
+        binding.setPaymentInfo(paymentInfo);
+        binding.payToBePaid.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                paymentInfo.changeAmountTotal();
+                if (s.toString().equals("")) {
+                    paymentInfo.amountTotal.set("");
+                }
+            }
+        });
+        binding.payTotal.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                paymentInfo.changeAmountTBP();
+                if (s.toString().equals("")) {
+                    paymentInfo.amountToBePaid.set("");
+                }
+
+            }
+        });
+
     }
 
-    private void initToolBar(String actionBarTitle) {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.payment_toolbar);
-        setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(actionBarTitle);
-        }
+    public static void startActivity(Context context) {
+        context.startActivity(new Intent(context, PaymentActivity.class));
     }
+
+
+    @Override
+    public void onStart() {
+        Log.i("PaymentActivity_old", "onStart()");
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        Log.i("PaymentActivity_old", "onStop()");
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putParcelable(PAYMENT_INFO, Parcels.wrap(paymentInfo));
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,57 +126,16 @@ public class PaymentActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
+    private void initToolBar(String actionBarTitle) {
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.payment_toolbar);
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        Log.i("PaymentActivity", "onStart()");
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        Log.i("PaymentActivity", "onStop()");
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, PaymentActivity.class));
-    }
-
-    private Bundle getModelFromIntent(BigDecimal balance) {
-        Bundle rv = new Bundle();
-        String action = getIntent().getAction();
-        if (action != null && action.equals(Intent.ACTION_VIEW)) {
-            Map<String,String> params = null;
-            try {
-                params = UrlEncodedUtils.parse(getIntent().getDataString().toLowerCase());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            if (params != null) {
-                rv.putString(PaymentFragment.KEY_WHO, params.get("receiver"));
-                rv.putString(PaymentFragment.KEY_TOTAL, params.get("sum"));
-                rv.putString(PaymentFragment.KEY_MESSAGE, params.get("destination"));
-                rv.putString(PaymentFragment.KEY_COMMENT, params.get("comment"));
-            }
-        } else {
-            if (getIntent().getExtras() != null) {
-                rv = getIntent().getExtras();
-            }
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(actionBarTitle);
         }
-        rv.putString(PaymentFragment.KEY_BALANCE, bigDecimalToAmountString(balance));
-        return rv;
     }
 
     public static BigDecimal getBalance(Context context) {
@@ -161,35 +153,33 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(PaymentRequestResultEvent event) {
+        paymentRunning = false;
         Log.i("payment request result", event.response.toString());
-        progressBar.setVisibility(View.GONE);
+        String msg = event.response.status.name()+(event.response.error != null ? ":"+event.response.error.toString() : "");
+        paymentInfo.requestResultMessage.set(msg);
+        paymentInfo.refreshing.set(false);
         if (event.response.status == BaseRequestPayment.Status.SUCCESS) {
             EventBus.getDefault().post(new PaymentProcessEvent(event.response.requestId));
         }
     }
 
     public void onEventMainThread(PaymentProcessResultEvent event) {
-        TextView textView = (TextView)findViewById(R.id.payment_error_textview);
-        textView.setVisibility(View.VISIBLE);
-        textView.setText(event.response.status.toString());
+        paymentRunning = false;
+        paymentInfo.finished.set(true);
+        paymentInfo.refreshing.set(false);
+        String msg = event.response.status.name()+(event.response.error != null ? ":"+event.response.error.toString() : "");
+        paymentInfo.processResultMessage.set(msg);
     }
 
     public void onEventAsync(PaymentRequestEvent event) {
+        paymentInfo.refreshing.set(true);
         event.request();
     }
 
     public void onEventAsync(PaymentProcessEvent event) {
+        paymentInfo.refreshing.set(true);
         event.process();
     }
 
-    private enum PaymentState {
-        PRE_REQUEST,
-        REQUEST,
-        REQUEST_ERROR,
-        PROCESS,
-        PROCESS_ERROR
-    }
-
 }
-
 

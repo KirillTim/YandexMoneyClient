@@ -2,9 +2,6 @@ package im.kirillt.yandexmoneyclient.utils;
 
 import java.math.BigDecimal;
 
-/**
- * Created by kirill on 25.09.15.
- */
 public class Converters {
     public Converters() {
     }

@@ -45,9 +45,18 @@
     <string name="pay_total">Total</string>
     <string name="pay_to_be_paid">To be paid</string>
     <string name="pay_you_have">You have:</string>
-    <string name="pay_recipient_message">Message to recipient(optional)</string>
+    <string name="pay_recipient_message">Message to recipient</string>
     <string name="optional">optional</string>
     <string name="big_decimal_zero">0.0</string>
+    <string name="pay_security_code">Security code</string>
+    <string name="pay_codepro_hint">From 1 to 365</string>
+    <string name="mandatory_field">Mandatory field</string>
+    <string name="not_enough_money">Not enough money</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_phone">Invalid phone number</string>
+    <string name="invalid_ya_account">Invalid account number</string>
+
+
     <string name="title_activity_settings">Settings</string>
 
     <string name="clear_cache">Clear cache</string>

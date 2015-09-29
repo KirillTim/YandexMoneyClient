@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 
 import im.kirillt.yandexmoneyclient.MainActivity;
+//import im.kirillt.yandexmoneyclient.PaymentActivity_old;
 import im.kirillt.yandexmoneyclient.PaymentActivity;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;

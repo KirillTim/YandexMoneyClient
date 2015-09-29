@@ -4,25 +4,26 @@ import com.yandex.money.api.methods.RequestPayment;
 import com.yandex.money.api.methods.params.P2pTransferParams;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
+import im.kirillt.yandexmoneyclient.model.PaymentInfo;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
 public class PaymentRequestEvent {
-    private PaymentFragment.PaymentModel model;
+    private PaymentInfo model;
     private P2pTransferParams p2pTransferParams;
 
-    public PaymentRequestEvent(PaymentFragment.PaymentModel model) {
+    public PaymentRequestEvent(PaymentInfo model) {
         this.model = model;
-        this.p2pTransferParams = new P2pTransferParams.Builder(model.who)
+        this.p2pTransferParams = new P2pTransferParams.Builder(model.who.get())
                 //.setAmount(model.toBePaid)
-                .setAmountDue(model.total)
-                .setMessage(model.message)
-                .setComment(model.comment)
-                .setLabel(model.label)
+                .setAmountDue(new BigDecimal(model.amountTotal.get()))
+                .setMessage(model.message.get())
+                .setLabel("Alternative Yandex Money Client")
                 .build();
     }
 
