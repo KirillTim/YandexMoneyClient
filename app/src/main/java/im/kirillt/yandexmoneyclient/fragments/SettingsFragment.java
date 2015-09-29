@@ -44,7 +44,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((Button)getView().findViewById(R.id.fragment_settings_clear_cache_button)).setOnClickListener(v -> {
+        ((Button) getView().findViewById(R.id.fragment_settings_clear_cache_button)).setOnClickListener(v -> {
             int op = new OperationSelection().operationidNot("").delete(getActivity().getContentResolver());
             int acc = new AccountSelection().accountnumberNot("").delete(getActivity().getContentResolver());
             Log.i("Settings Fragment", op + " operations deleted");
@@ -58,13 +58,15 @@ public class SettingsFragment extends Fragment {
                     @Override
                     protected void failure(Exception exception) {
                         Log.i("settings", "fail");
-                        deleteAndExit();
+                        YMCApplication.deleteToken(getActivity());
+                        getActivity().finish();
                     }
 
                     @Override
                     protected void response(Object response) {
                         Log.i("settings", "ok");
-                        deleteAndExit();
+                        YMCApplication.deleteToken(getActivity());
+                        getActivity().finish();
                     }
                 });
             } catch (IOException e) {
@@ -73,10 +75,4 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    private void deleteAndExit() {
-        getActivity().getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
-                .remove(YMCApplication.PREF_AUTH_TOKEN)
-                .remove(YMCApplication.PREF_LOCK_CODE).apply();
-        getActivity().finish();
-    }
 }

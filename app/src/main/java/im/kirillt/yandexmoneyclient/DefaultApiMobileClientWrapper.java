@@ -7,9 +7,6 @@ import com.yandex.money.api.net.HostsProvider;
 import com.yandex.money.api.net.UserAgent;
 import com.yandex.money.api.utils.Language;
 
-/**
- * Created by kirill on 15.09.15.
- */
 public class DefaultApiMobileClientWrapper implements ApiClient {//extends DefaultApiClient {
 
     private DefaultApiClient defaultApiClient;
@@ -17,14 +14,6 @@ public class DefaultApiMobileClientWrapper implements ApiClient {//extends Defau
     public DefaultApiMobileClientWrapper(DefaultApiClient apiClient) {
         this.defaultApiClient = apiClient;
     }
-
-    /*public DefaultApiMobileClientWrapper(String clientId, boolean debugLogging) {
-        super(clientId, debugLogging);
-    }
-
-    public DefaultApiMobileClientWrapper(String clientId, boolean debugLogging, String platform) {
-        super(clientId, debugLogging, platform);
-    }*/
 
     @Override
     public String getClientId() {

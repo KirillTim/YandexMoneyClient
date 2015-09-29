@@ -5,52 +5,49 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.yandex.money.api.methods.BaseRequestPayment;
-
-import org.parceler.Parcels;
 
 import java.math.BigDecimal;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.databinding.ActivityPaymentBinding;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
+import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentProcessResultEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestEvent;
 import im.kirillt.yandexmoneyclient.events.payment.PaymentRequestResultEvent;
-import im.kirillt.yandexmoneyclient.fragments.PaymentFragment;
 import im.kirillt.yandexmoneyclient.model.PaymentInfo;
 import im.kirillt.yandexmoneyclient.model.util.TextWatcherAdapter;
 import im.kirillt.yandexmoneyclient.provider.account.AccountCursor;
 import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
-import im.kirillt.yandexmoneyclient.utils.Converters;
 
-public class PaymentActivity extends AppCompatActivity {
+import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalToAmountString;
+
+public class PaymentActivity extends BaseActivity {
 
     public static final String PAYMENT_INFO = "paymentInfo";
 
     private PaymentInfo paymentInfo;
-    private FloatingActionButton floatingActionButton;
     private boolean paymentRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         final ActivityPaymentBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_payment);
 
-        floatingActionButton = (FloatingActionButton) binding.getRoot().findViewById(R.id.payment_fab);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) binding.getRoot().findViewById(R.id.payment_fab);
         floatingActionButton.show();
         floatingActionButton.setOnClickListener(v -> {
             if (paymentInfo.validateAmount()) {
@@ -60,10 +57,14 @@ public class PaymentActivity extends AppCompatActivity {
                 }
             }
         });
-
+        Switch codeProSwitch = (Switch) binding.getRoot().findViewById(R.id.pay_codepro_switch);
+        codeProSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            paymentInfo.codePro.set(isChecked);
+        });
+        EventBus.getDefault().post(new DownloadAccountInfoEvent(this));
         paymentInfo = new PaymentInfo(getBalance(this), "", "", "", false, null, getResources());
 
-        initToolBar(Converters.bigDecimalToAmountString(paymentInfo.balance));
+        initToolBar(bigDecimalToAmountString(paymentInfo.balance));
 
         binding.setPaymentInfo(paymentInfo);
         binding.payToBePaid.addTextChangedListener(new TextWatcherAdapter() {
@@ -89,7 +90,7 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, PaymentActivity.class));
+        context.startActivity(new Intent(context, PaymentActivity.class).putExtra(YMCApplication.FROM_INNER, true));
     }
 
 
@@ -146,6 +147,16 @@ public class PaymentActivity extends AppCompatActivity {
             cursor.close();
         }
         return rv;
+    }
+
+    public void onEventAsync(DownloadAccountInfoEvent event) {
+        event.download();
+    }
+
+    public void onEventMainThread(SuccessAccountInfoEvent event) {
+        BigDecimal balance = event.response.balance;
+        getActionBar().setTitle(bigDecimalToAmountString(balance));
+        paymentInfo.balance = balance;
     }
 
     public void onEventMainThread(AnyErrorEvent errorEvent) {

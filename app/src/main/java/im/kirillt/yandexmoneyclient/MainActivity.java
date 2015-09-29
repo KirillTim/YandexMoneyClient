@@ -9,9 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,11 +24,11 @@ import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
 import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
 import im.kirillt.yandexmoneyclient.fragments.UpdatableFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private MenuItem curMenuItemId = null;
-
+    private Menu menu = null;
     private Fragment currentFragment;
 
     private LinearLayout toolBarInnerView;
@@ -38,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("MainActivity", "onCreate()");
         super.onCreate(savedInstanceState);
-        if (!YMCApplication.auth2Session.isAuthorized()) {
-            login();
-        }
+       /* if (!YMCApplication.auth2Session.isAuthorized()) {
+            Toast.makeText(this, "You are not authorized", Toast.LENGTH_SHORT).show();
+            YMCApplication.deleteToken(this);
+            finish();
+        }*/
         setContentView(R.layout.activity_main);
         mainFab = (FloatingActionButton)findViewById(R.id.activity_main_fab);
         initToolbar();
@@ -73,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
             setTitle(menuItem.getTitle());
             return true;
         });
-        curMenuItemId = view.getMenu().getItem(0);
+        menu = view.getMenu();
+        curMenuItemId = menu.getItem(0);
     }
 
     @Override
@@ -93,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
         }
         curMenuItemId = menuItem;
         Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_SHORT).show();
-        //Fragment fragment;
         switch(menuItem.getItemId()) {
             case R.id.drawer_home:
                 currentFragment = UpdatableFragment.newInstance(UpdatableFragment.MAIN_FRAGMENT);
                 break;
             case R.id.drawer_pay:
+                curMenuItemId = menu.getItem(0);
                 PaymentActivity.startActivity(MainActivity.this);
                 break;
             case R.id.drawer_history:
@@ -150,21 +153,5 @@ public class MainActivity extends AppCompatActivity {
         return mainFab;
     }
 
-    private void login() {
-        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-        startActivityForResult(intent, 1);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode != 1) {
-            return;
-        }
-        if (resultCode != RESULT_OK) {
-            android.os.Process.killProcess(android.os.Process.myPid());
-            finish();
-        } else {
-            Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

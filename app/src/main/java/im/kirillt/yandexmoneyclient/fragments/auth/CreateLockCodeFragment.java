@@ -36,13 +36,11 @@ public class CreateLockCodeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("CreateLockCodeFragment", "onCreate()");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("CreateLockCodeFragment", "onCreateView()");
         View root = inflater.inflate(R.layout.fragment_create_lock_code, container, false);
         passwordEditText = (EditText)root.findViewById(R.id.fragment_create_lock_code_edit_text);
         passwordEditText.addTextChangedListener(new MyTextWatcher() {
@@ -87,6 +85,20 @@ public class CreateLockCodeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            firstCode = savedInstanceState.getString("first");
+            String nowEdit = savedInstanceState.getString("now");
+            if (nowEdit != null) {
+                passwordEditText.setTag(nowEdit);
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("first", firstCode);
+        outState.putString("now", passwordEditText.getText().toString());
     }
 
 

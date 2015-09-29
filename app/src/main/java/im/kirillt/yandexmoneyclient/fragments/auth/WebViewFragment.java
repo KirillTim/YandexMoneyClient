@@ -18,7 +18,10 @@ import com.yandex.money.api.net.AuthorizationCodeResponse;
 import com.yandex.money.api.net.OAuth2Session;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.AuthActivity;
@@ -93,6 +96,24 @@ public class WebViewFragment extends Fragment {
             boolean completed = false;
             try {
                 AuthorizationCodeResponse authResponse = AuthorizationCodeResponse.parse(url);
+                //WTF? accidentally i realized, that from one moment i've started loading "code%3D" instead of "code="
+                if (authResponse.code == null && authResponse.error == null) {
+                    try {
+                        url = java.net.URLDecoder.decode(url, "UTF-8");
+                        //TODO: fix it
+                        authResponse = AuthorizationCodeResponse.parse(url);
+                        if (authResponse.code == null && url.contains("code")) {
+                            int i = url.indexOf("code")+4;
+                            if (url.charAt(i) == '%') {
+                                i += 3;
+                            } else {
+                                i ++;
+                            }
+                            getPermanentToken(url.substring(i));
+                            completed = true;
+                        }
+                    } catch (UnsupportedEncodingException ignored) {}
+                }
                 if (authResponse.code != null) {
                     getPermanentToken(authResponse.code);
                     completed = true;
@@ -131,14 +152,11 @@ public class WebViewFragment extends Fragment {
             session.enqueue(new Token.Request(tempToken, YMCApplication.APP_ID, YMCApplication.REDIRECT_URI), new ResponseReady<Token>() {
                 @Override
                 protected void failure(Exception exception) {
-                    Log.i("Token fail: ", exception.getLocalizedMessage());
                     returnResult(null, exception.getMessage());
                 }
 
                 @Override
                 protected void response(Token response) {
-                    Log.i("token response", "thread.id= "+Thread.currentThread().getId());
-                    Log.i("Token success: ", response.toString());
                     //Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                     returnResult(response.accessToken, response.error == null ? null : response.error.name());
                 }

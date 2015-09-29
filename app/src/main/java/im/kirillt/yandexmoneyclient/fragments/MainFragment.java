@@ -68,8 +68,12 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onDetach() {
         super.onDetach();
-        accountInfoContainer.setVisibility(View.GONE);
-        fab.setVisibility(View.GONE);
+        if (accountInfoContainer != null) {
+            accountInfoContainer.setVisibility(View.GONE);
+        }
+        if (fab != null) {
+            fab.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -96,6 +100,8 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         if (data.getCount() == 0) {
             return;
         }
+        TextView login = (TextView) accountInfoContainer.findViewById(R.id.account_info_user_name);
+        login.setText(data.getString(data.getColumnIndex(AccountColumns.ACCOUNTUSERNAME)));
         TextView accountNumber = (TextView) accountInfoContainer.findViewById(R.id.account_info_account_number);
         accountNumber.setText(data.getString(data.getColumnIndex(AccountColumns.ACCOUNTNUMBER)));
         TextView balance = (TextView) accountInfoContainer.findViewById(R.id.account_info_balance);

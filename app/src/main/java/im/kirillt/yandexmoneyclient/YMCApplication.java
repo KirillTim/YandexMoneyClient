@@ -1,5 +1,6 @@
 package im.kirillt.yandexmoneyclient;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,6 @@ import com.yandex.money.api.net.OAuth2Session;
  */
 public class YMCApplication extends Application {
     private static YMCApplication singleton;
-
     public static final String PREFERENCES_STORAGE = "YMCPrefs";
     public static final String PREF_AUTH_TOKEN = "auth_token";
     public static final String PREF_LOCK_CODE = "lock_code";
@@ -68,12 +68,36 @@ public class YMCApplication extends Application {
 
     @Override
     public void onCreate() {
-        Log.i("YMCApplication", "onCreate()");
         super.onCreate();
-        auth2Session.setAccessToken(getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, ""));
+        Log.i("YMCApplication", "onCreate()");
+        String tokenStr = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        if (TextUtils.isEmpty(tokenStr)) {
+            askLock = false;
+            askAuth = true;
+        } else {
+            askLock = true;
+            askAuth = false;
+        }
         singleton = this;
         appContext = getApplicationContext();
     }
 
+    public boolean validateCode(String code) {
+        String co = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(PREF_LOCK_CODE, "");
+        return co.equals(Encryption.passMD5(code).toString());
+    }
+
+    public static void setToken(String token) {
+        auth2Session.setAccessToken(token);
+    }
+
+    public static void deleteToken(Activity activity) {
+        activity.getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
+                .remove(YMCApplication.PREF_AUTH_TOKEN)
+                .remove(YMCApplication.PREF_LOCK_CODE).apply();
+    }
+    public static final String FROM_INNER = "fromInner";
+    public static boolean askLock = false;
+    public static boolean askAuth = false;
 
 }

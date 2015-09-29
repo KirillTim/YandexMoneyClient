@@ -11,6 +11,7 @@ import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
 import im.kirillt.yandexmoneyclient.provider.account.AccountContentValues;
+import im.kirillt.yandexmoneyclient.provider.account.AccountSelection;
 import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
 public class DownloadAccountInfoEvent implements DownloadEvent {
@@ -43,6 +44,8 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                     contentValues.putBalance(response.balance.toString());
                     if (login != null) {
                         contentValues.putAccountusername(login);
+                    } else {
+                        contentValues.putAccountusername("");
                     }
                     if (response.balanceDetails != null) {
                         contentValues.putBalancehold(response.balanceDetails.hold.toString());
@@ -51,13 +54,19 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                         contentValues.putAvatar(response.avatar.url);
                     }
 
-                    context.getContentResolver().
-                            update(AccountColumns.CONTENT_URI, contentValues.values(), null, null);
+                    int r = context.getContentResolver().
+                            update(AccountColumns.CONTENT_URI, contentValues.values(),
+                                    new AccountSelection().accountnumber(response.account).sel(), null);
+                    if (r == 0) {
+                        new AccountSelection().accountnumberNot("").delete(context.getContentResolver());
+                        contentValues.putAccountnumber(response.account);
+                        contentValues.insert(context.getContentResolver());
+                    }
                     YMCApplication.accountDownloadingFinish();
                     EventBus.getDefault().post(new SuccessAccountInfoEvent(response));
                 }
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
             YMCApplication.accountDownloadingFinish();
             e.printStackTrace();
             EventBus.getDefault().post(new AnyErrorEvent(e));

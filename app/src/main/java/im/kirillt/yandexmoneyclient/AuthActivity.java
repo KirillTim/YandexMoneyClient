@@ -1,12 +1,12 @@
 package im.kirillt.yandexmoneyclient;
 
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -16,13 +16,10 @@ import android.widget.Toast;
 
 import com.yandex.money.api.model.AccountStatus;
 
-import org.w3c.dom.Text;
-
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
-import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.fragments.auth.CreateLockCodeFragment;
 import im.kirillt.yandexmoneyclient.fragments.auth.ErrorFragment;
@@ -30,18 +27,30 @@ import im.kirillt.yandexmoneyclient.fragments.auth.WebViewFragment;
 
 public class AuthActivity extends AppCompatActivity {
 
+    private static final String KEY_TOKEN = "token";
+    private static final String KEY_LOGIN = "login";
+    private static final String KEY_STATE = "state";
+    private static final String KEY_MESSAGE = "message";
+
     private ProgressBar progressBar;
     private FrameLayout frameLayout;
     private TextView greetingTextView;
     private String token;
     private String login;
+    private String message;
+    private int state = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("AuthActivity", "onCreate()");
-        Log.i("activity", "getWebAuth id="+Thread.currentThread().getId());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        if (savedInstanceState != null) {
+         /*   token = savedInstanceState.getString(KEY_TOKEN);
+            login = savedInstanceState.getString(KEY_LOGIN);
+            state = savedInstanceState.getInt(KEY_STATE);
+            message = savedInstanceState.getString(KEY_MESSAGE);*/
+        }
 
         frameLayout = (FrameLayout)findViewById(R.id.activity_auth_fragment_container);
         progressBar = (ProgressBar)findViewById(R.id.auth_progress_bar);
@@ -53,13 +62,20 @@ public class AuthActivity extends AppCompatActivity {
         String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
                 .getString(YMCApplication.PREF_AUTH_TOKEN, "");
         if (!TextUtils.isEmpty(token)) {
-            Log.i("Already authorized", "");
             setResult(RESULT_OK);
             this.finish();
             return;
         }
-        Fragment fragment = WebViewFragment.newInstance(YMCApplication.authorization.getAuthorizeUrl(),
-                YMCApplication.authParams.build());
+        //TODO: use parecalble model to hold data and fancy enum with states
+        Fragment fragment ;
+        if (state == 0) {
+            fragment = WebViewFragment.newInstance(YMCApplication.authorization.getAuthorizeUrl(),
+                    YMCApplication.authParams.build());
+        } else if (state == 1) {
+            fragment = CreateLockCodeFragment.newInstance();
+        } else {
+            fragment = ErrorFragment.newInstance(message);
+        }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.activity_auth_fragment_container, fragment).commit();
     }
@@ -88,18 +104,17 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Log.i("onBackPressed", "pressed");
         setResult(RESULT_CANCELED);
         finish();
     }
 
     public void getWebAuth(String token, String login, String errorMessage) {
-        Log.i("activity", "getWebAuth id=" + Thread.currentThread().getId());
         if (!TextUtils.isEmpty(errorMessage)) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     ErrorFragment.newInstance(errorMessage)).commit();
+            this.message = message;
+            this.state = 2;
         } else {
-            Log.i("getWebAuth()", "login: "+login+", token: "+token);
             YMCApplication.auth2Session.setAccessToken(token);
             this.token = token;
             this.login = login;
@@ -132,17 +147,26 @@ public class AuthActivity extends AppCompatActivity {
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     CreateLockCodeFragment.newInstance()).commit();
+            state = 1;
         }
 
     }
 
     public void getLockCode(String lockCode) {
-        Log.i("getLockCode", "lock code: " + lockCode);
         getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
-                .putString(YMCApplication.PREF_LOCK_CODE, lockCode)
-                .putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+                .putString(YMCApplication.PREF_LOCK_CODE, Encryption.passMD5(lockCode).toString())
+                .putString(YMCApplication.PREF_AUTH_TOKEN, Encryption.encryptToken(token, lockCode).toString()).apply();
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putString(KEY_TOKEN, token);
+        outState.putString(KEY_LOGIN, token);
+        outState.putInt(KEY_STATE, state);
+        outState.putString(KEY_MESSAGE, message);
     }
 
     @Override

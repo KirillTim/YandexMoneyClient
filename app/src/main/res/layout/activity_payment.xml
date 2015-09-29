@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
@@ -25,11 +25,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/primary" />
 
-            <android.support.design.widget.FloatingActionButton
-                style="@style/FabStyle"
-                android:id="@+id/payment_fab"
-                app:layout_anchor="@id/payment_toolbar"
-                app:layout_anchorGravity="bottom|right|end" />
 
 
             <ProgressBar
@@ -123,8 +118,6 @@
                     android:hint="@string/optional"
                     app:binding="@{paymentInfo.message}" />
 
-                <View style="@style/HorizontalDivider" />
-
                 <!-- fifth line -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -167,6 +160,11 @@
 
         </LinearLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            style="@style/FabStyle"
+            android:id="@+id/payment_fab"
+            app:layout_anchor="@id/payment_toolbar"
+            app:layout_anchorGravity="bottom|right|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 
