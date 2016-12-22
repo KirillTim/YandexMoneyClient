@@ -20,6 +20,7 @@ import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
 //import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
+import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.fragments.auth.CreateLockCodeFragment;
 import im.kirillt.yandexmoneyclient.fragments.auth.ErrorFragment;
@@ -121,7 +122,7 @@ public class AuthActivity extends AppCompatActivity {
             showProgressBar();
             frameLayout.setVisibility(View.GONE);
             greetingTextView.setText(getString(R.string.greeting)+login+"!");
-        //    EventBus.getDefault().post(new DownloadAccountInfoEvent(this, login));
+            EventBus.getDefault().post(new DownloadAccountInfoEvent(this, login));
         }
     }
 
@@ -129,9 +130,9 @@ public class AuthActivity extends AppCompatActivity {
         getWebAuth(event.token, event.login, event.errorDescription);
     }
 
-//    public void onEventAsync(DownloadAccountInfoEvent event) {
-//        event.download();
-//    }
+    public void onEventAsync(DownloadAccountInfoEvent event) {
+        event.download();
+    }
 
     public void onEventMainThread(AnyErrorEvent event) {
         Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show();

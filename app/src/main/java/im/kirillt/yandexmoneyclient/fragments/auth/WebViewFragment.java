@@ -132,26 +132,6 @@ public class WebViewFragment extends Fragment {
         }
     }
 
-    /*private void getPermanentToken(String tempToken) {
-//        OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
-        try {
-            session.enqueue(new Token.Request(tempToken, YMCApplication.APP_ID, YMCApplication.REDIRECT_URI), new ResponseReady<Token>() {
-                @Override
-                protected void failure(Exception exception) {
-                    returnResult(null, exception.getMessage());
-                }
-
-                @Override
-                protected void response(Token response) {
-                    //Toast.makeText(AuthActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                    returnResult(response.accessToken, response.error == null ? null : response.error.name());
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-            returnResult(null, e.getMessage());
-        }
-    }*/
     private String getLoginFromCookies(String cookies) {
         final String key = "yandex_login=";
         int begin = cookies.indexOf(key);
