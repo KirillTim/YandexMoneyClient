@@ -1,3 +1,4 @@
+/*
 package im.kirillt.yandexmoneyclient.events.download;
 
 import android.content.Context;
@@ -107,3 +108,4 @@ public class DownloadHistoryEvent implements DownloadEvent {
         return builder.createRequest();
     }
 }
+*/

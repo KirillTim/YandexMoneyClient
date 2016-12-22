@@ -19,7 +19,7 @@ import com.yandex.money.api.model.AccountStatus;
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
-import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
+//import im.kirillt.yandexmoneyclient.events.download.DownloadAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessAccountInfoEvent;
 import im.kirillt.yandexmoneyclient.fragments.auth.CreateLockCodeFragment;
 import im.kirillt.yandexmoneyclient.fragments.auth.ErrorFragment;
@@ -69,8 +69,8 @@ public class AuthActivity extends AppCompatActivity {
         //TODO: use parecalble model to hold data and fancy enum with states
         Fragment fragment ;
         if (state == 0) {
-            fragment = WebViewFragment.newInstance(YMCApplication.authorization.getAuthorizeUrl(),
-                    YMCApplication.authParams.build());
+            fragment = WebViewFragment.newInstance(YMCApplication.data.getUrl(), YMCApplication.data.getParameters());
+                    //YMCApplication.authParams.build());
         } else if (state == 1) {
             fragment = CreateLockCodeFragment.newInstance();
         } else {
@@ -115,13 +115,13 @@ public class AuthActivity extends AppCompatActivity {
             this.message = message;
             this.state = 2;
         } else {
-            YMCApplication.auth2Session.setAccessToken(token);
+            YMCApplication.client.setAccessToken(token);
             this.token = token;
             this.login = login;
             showProgressBar();
             frameLayout.setVisibility(View.GONE);
             greetingTextView.setText(getString(R.string.greeting)+login+"!");
-            EventBus.getDefault().post(new DownloadAccountInfoEvent(this, login));
+        //    EventBus.getDefault().post(new DownloadAccountInfoEvent(this, login));
         }
     }
 
@@ -129,9 +129,9 @@ public class AuthActivity extends AppCompatActivity {
         getWebAuth(event.token, event.login, event.errorDescription);
     }
 
-    public void onEventAsync(DownloadAccountInfoEvent event) {
-        event.download();
-    }
+//    public void onEventAsync(DownloadAccountInfoEvent event) {
+//        event.download();
+//    }
 
     public void onEventMainThread(AnyErrorEvent event) {
         Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show();
@@ -164,7 +164,7 @@ public class AuthActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
         outState.putString(KEY_TOKEN, token);
-        outState.putString(KEY_LOGIN, token);
+        outState.putString(KEY_LOGIN, login);
         outState.putInt(KEY_STATE, state);
         outState.putString(KEY_MESSAGE, message);
     }

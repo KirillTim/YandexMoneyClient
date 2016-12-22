@@ -22,22 +22,22 @@
             </intent-filter>
 
         </activity>
-        <activity
-            android:name=".PaymentActivity"
-            android:label="@string/title_activity_payment" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
+        <!--<activity-->
+            <!--android:name=".PaymentActivity"-->
+            <!--android:label="@string/title_activity_payment" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<action android:name="android.intent.action.VIEW" />-->
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <!--<category android:name="android.intent.category.DEFAULT" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
 
-                <data
-                    android:host="money.yandex.ru"
-                    android:pathPrefix="/direct-payment"
-                    android:scheme="https" />
-            </intent-filter>
-        </activity>
+                <!--<data-->
+                    <!--android:host="money.yandex.ru"-->
+                    <!--android:pathPrefix="/direct-payment"-->
+                    <!--android:scheme="https" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity android:name=".AuthActivity" >
         </activity>
 

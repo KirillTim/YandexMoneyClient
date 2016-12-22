@@ -1,3 +1,4 @@
+/*
 package im.kirillt.yandexmoneyclient.events.payment;
 
 import com.yandex.money.api.methods.ProcessPayment;
@@ -35,3 +36,4 @@ public class PaymentProcessEvent {
         }
     }
 }
+*/

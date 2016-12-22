@@ -20,9 +20,9 @@ public class ResponseToContentValues {
         AccountContentValues rv = new AccountContentValues();
         rv.putAccountnumber(accountInfo.account)
                 .putAccountusername("UserName");
-        if (accountInfo.avatar != null) {
-            rv.putAvatar(stringOrEmpty(accountInfo.avatar.url));
-        }
+//        if (accountInfo.avatar != null) {
+//            rv.putAvatar(stringOrEmpty(accountInfo.avatar.url));
+//        }
         rv.putBalance(accountInfo.balance.toString());
         if (accountInfo.balanceDetails != null) {
             rv.putBalancehold(bigDecimalOrZero(accountInfo.balanceDetails.hold).toString());

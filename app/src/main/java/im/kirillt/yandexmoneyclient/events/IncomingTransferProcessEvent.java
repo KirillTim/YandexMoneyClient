@@ -1,3 +1,4 @@
+/*
 package im.kirillt.yandexmoneyclient.events;
 
 import android.content.ContentResolver;
@@ -92,3 +93,4 @@ public class IncomingTransferProcessEvent {
 
     }
 }
+*/

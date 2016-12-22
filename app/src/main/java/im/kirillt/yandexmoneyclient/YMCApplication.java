@@ -8,11 +8,17 @@ import android.support.v4.util.Pair;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.yandex.money.api.methods.Token;
+import com.yandex.money.api.authorization.AuthorizationData;
+import com.yandex.money.api.authorization.AuthorizationParameters;
 import com.yandex.money.api.model.Scope;
-import com.yandex.money.api.net.DefaultApiClient;
-import com.yandex.money.api.net.OAuth2Authorization;
-import com.yandex.money.api.net.OAuth2Session;
+import com.yandex.money.api.net.clients.ApiClient;
+import com.yandex.money.api.net.clients.DefaultApiClient;
+
+//import com.yandex.money.api.methods.Token;
+//import com.yandex.money.api.model.Scope;
+//import com.yandex.money.api.net. //DefaultApiClient;
+//import com.yandex.money.api.net.OAuth2Authorization;
+//import com.yandex.money.api.net.OAuth2Session;
 
 /**
  * Created by kirill on 15.09.15.
@@ -24,18 +30,19 @@ public class YMCApplication extends Application {
     public static final String PREF_LOCK_CODE = "lock_code";
     public static final String APP_ID = "DDD264D223C195815CB984B24B74220E9A551C81F9163AAD41A55EDA98C03E98";
     public static final String REDIRECT_URI = "client://authresult";
-    public static final DefaultApiMobileClientWrapper apiClient = new DefaultApiMobileClientWrapper(new DefaultApiClient(APP_ID, true, "Android"));
-    //public static final DefaultApiClient apiClient = new DefaultApiClient(APP_ID, true, "Android");
-    public static final OAuth2Session auth2Session = new OAuth2Session(apiClient);
-
-    public static final OAuth2Authorization authorization = new OAuth2Authorization(apiClient);
-    public static final OAuth2Authorization.Params authParams = authorization.getAuthorizeParams()
+    public static final ApiClient client = new DefaultApiClient.Builder().setClientId(APP_ID).create();
+//    public static final DefaultApiMobileClientWrapper apiClient = new DefaultApiMobileClientWrapper(new DefaultApiClient(APP_ID, true, "Android"));
+//    public static final DefaultApiClient apiClient = new DefaultApiClient(APP_ID, true, "Android");
+    public static final AuthorizationParameters parameters = new AuthorizationParameters.Builder()
             .addScope(Scope.ACCOUNT_INFO)
             .addScope(Scope.INCOMING_TRANSFERS)
             .addScope(Scope.OPERATION_DETAILS)
             .addScope(Scope.OPERATION_HISTORY)
             .addScope(Scope.PAYMENT_P2P)
-            .setRedirectUri(REDIRECT_URI);
+            .setRedirectUri(REDIRECT_URI)
+            .create();
+
+    public static final AuthorizationData data = client.createAuthorizationData(parameters);
 
     private static volatile boolean accountDownloadedNow = false;
     private static volatile boolean historyDownloadedNow = false;
@@ -88,7 +95,7 @@ public class YMCApplication extends Application {
     }
 
     public static void setToken(String token) {
-        auth2Session.setAccessToken(token);
+        client.setAccessToken(token);
     }
 
     public static void deleteToken(Activity activity) {

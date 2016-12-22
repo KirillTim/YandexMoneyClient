@@ -21,11 +21,11 @@ import java.io.IOException;
 import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.IncomingTransferProcessResultEvent;
-import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
+//import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
-import im.kirillt.yandexmoneyclient.fragments.HistoryFragment;
+//import im.kirillt.yandexmoneyclient.fragments.HistoryFragment;
 import im.kirillt.yandexmoneyclient.fragments.MainFragment;
-import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
+//import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -104,13 +104,13 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.drawer_pay:
                 curMenuItemId = menu.getItem(0);
-                PaymentActivity.startActivity(MainActivity.this);
+//                PaymentActivity.startActivity(MainActivity.this);
                 break;
             case R.id.drawer_history:
-                currentFragment = HistoryFragment.newInstance();
+//                currentFragment = HistoryFragment.newInstance();
                 break;
             case R.id.drawer_settings:
-                currentFragment = SettingsFragment.newInstance();
+//                currentFragment = SettingsFragment.newInstance();
                 break;
             case R.id.drawer_about:
                 currentFragment = AboutFragment.newInstance();
@@ -143,9 +143,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onEventAsync(DownloadAllEvent event) {
-        event.download();
-    }
+//    public void onEventAsync(DownloadAllEvent event) {
+//        event.download();
+//    }
 
     public void onEventMainThread(IncomingTransferProcessResultEvent event) {
         Toast.makeText(this, event.result, Toast.LENGTH_SHORT).show();

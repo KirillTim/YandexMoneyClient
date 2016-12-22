@@ -15,7 +15,7 @@ import android.webkit.WebViewClient;
 
 import com.yandex.money.api.methods.Token;
 import com.yandex.money.api.net.AuthorizationCodeResponse;
-import com.yandex.money.api.net.OAuth2Session;
+//import com.yandex.money.api.net.OAuth2Session;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,7 +28,8 @@ import im.kirillt.yandexmoneyclient.AuthActivity;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.WebAuthResultEvent;
-import im.kirillt.yandexmoneyclient.utils.ResponseReady;
+import im.kirillt.yandexmoneyclient.model.util.Objects;
+//import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 
 public class WebViewFragment extends Fragment {
 
@@ -92,45 +93,30 @@ public class WebViewFragment extends Fragment {
     private class GetTempTokenClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("GetTempTokenClient", "loading " + url);
-            boolean completed = false;
-            try {
-                AuthorizationCodeResponse authResponse = AuthorizationCodeResponse.parse(url);
-                //WTF? accidentally i realized, that from one moment i've started loading "code%3D" instead of "code="
-                if (authResponse.code == null && authResponse.error == null) {
-                    try {
-                        url = java.net.URLDecoder.decode(url, "UTF-8");
-                        //TODO: fix it
-                        authResponse = AuthorizationCodeResponse.parse(url);
-                        if (authResponse.code == null && url.contains("code")) {
-                            int i = url.indexOf("code")+4;
-                            if (url.charAt(i) == '%') {
-                                i += 3;
-                            } else {
-                                i ++;
-                            }
-                            getPermanentToken(url.substring(i));
-                            completed = true;
+            if (url.startsWith("client")) {
+                AuthorizationCodeResponse response;
+                try {
+                    response = AuthorizationCodeResponse.parse(url);
+                } catch (URISyntaxException e) {
+                    throw new RuntimeException(e);
+                }
+
+                if (response.error == null) {
+                    // try to get OAuth2 access token
+                    new Thread(() -> {
+                        try {
+                            Token token = YMCApplication.client.execute(new Token.Request(response.code, YMCApplication.client.getClientId(), YMCApplication.REDIRECT_URI, YMCApplication.APP_ID));
+                            returnResult(token.accessToken, token.error == null ? null : token.error.name());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (UnsupportedEncodingException ignored) {}
+                    }).start();
+                } else {
+                    throw new RuntimeException("Could not authorize");
                 }
-                if (authResponse.code != null) {
-                    getPermanentToken(authResponse.code);
-                    completed = true;
-                } else if (authResponse.error != null) {
-                    completed = true;
-                    //Toast.makeText(AuthActivity.this, "Error: "+errorDescription, Toast.LENGTH_SHORT).show();
-                    returnResult(null, authResponse.errorDescription);
-                }
-            } catch (URISyntaxException e) {
-                completed = true;
-                e.printStackTrace();
-                returnResult(null, "Unknown error");
+                return true;
             }
-            if (completed) {
-                hideProgressBar();
-            }
-            return completed || super.shouldOverrideUrlLoading(view, url);
+            return false;
         }
 
         @Override
@@ -146,8 +132,8 @@ public class WebViewFragment extends Fragment {
         }
     }
 
-    private void getPermanentToken(String tempToken) {
-        OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
+    /*private void getPermanentToken(String tempToken) {
+//        OAuth2Session session = new OAuth2Session(YMCApplication.apiClient);
         try {
             session.enqueue(new Token.Request(tempToken, YMCApplication.APP_ID, YMCApplication.REDIRECT_URI), new ResponseReady<Token>() {
                 @Override
@@ -165,7 +151,7 @@ public class WebViewFragment extends Fragment {
             e.printStackTrace();
             returnResult(null, e.getMessage());
         }
-    }
+    }*/
     private String getLoginFromCookies(String cookies) {
         final String key = "yandex_login=";
         int begin = cookies.indexOf(key);

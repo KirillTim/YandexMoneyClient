@@ -7,15 +7,15 @@
     android:orientation="vertical">
 
 
-    <fragment
-        android:id="@+id/fragment_history"
-        android:name="im.kirillt.yandexmoneyclient.fragments.HistoryFragment"
-        class="im.kirillt.yandexmoneyclient.fragments.HistoryFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        tools:layout="@layout/fragment_history">
+    <!--<fragment-->
+        <!--android:id="@+id/fragment_history"-->
+        <!--android:name="im.kirillt.yandexmoneyclient.fragments.HistoryFragment"-->
+        <!--class="im.kirillt.yandexmoneyclient.fragments.HistoryFragment"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent"-->
+        <!--tools:layout="@layout/fragment_history">-->
 
-    </fragment>
+    <!--</fragment>-->
 </LinearLayout>
 
 

@@ -1,3 +1,4 @@
+/*
 package im.kirillt.yandexmoneyclient.events.download;
 
 import android.content.Context;
@@ -81,3 +82,4 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
         }
     }
 }
+*/

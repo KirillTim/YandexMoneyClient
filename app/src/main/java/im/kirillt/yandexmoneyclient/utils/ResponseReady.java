@@ -1,6 +1,7 @@
+/*
 package im.kirillt.yandexmoneyclient.utils;
 
-import com.yandex.money.api.net.OnResponseReady;
+import com.yandex.money.api.net. OnResponseReady;
 
 public abstract class ResponseReady<T> implements OnResponseReady<T> {
 
@@ -18,3 +19,4 @@ public abstract class ResponseReady<T> implements OnResponseReady<T> {
 
     protected abstract void response(T response);
 }
+*/
