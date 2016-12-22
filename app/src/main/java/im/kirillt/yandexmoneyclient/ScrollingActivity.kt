@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient
+package im.kirillt.yandexmoneyclient
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import im.kirillt.yandexmoneyclient.R
 
 class ScrollingActivity : AppCompatActivity() {
 

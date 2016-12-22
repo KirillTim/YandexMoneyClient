@@ -1,4 +1,4 @@
-package im.kitillt.yandexmoneyclient
+package im.kirillt.yandexmoneyclient
 
 import org.jetbrains.anko.*
 import android.support.v7.app.AppCompatActivity
