@@ -1,102 +1,20 @@
 <resources>
 
-    <style name="EditText" parent="Base.Widget.AppCompat.EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/text_color_light</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:lines">1</item>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AmountEditText" parent="EditText">
-        <item name="android:inputType">numberDecimal</item>
-        <item name="android:maxLength">8</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="TextViewH1">
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/text_color_dark</item>
-        <item name="android:textSize">25dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="TextViewH2">
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/text_color_dark</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="TextViewH3">
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/text_color_dark</item>
-        <item name="android:textSize">15dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="TextViewH4">
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/text_color_light</item>
-        <item name="android:textSize">10dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="FabStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">@dimen/spacing_large</item>
-        <item name="background">@color/red</item>
-        <item name="colorControlActivated">@color/red</item>
-        <item name="android:src">@drawable/ic_send_black_24dp</item>
-        <item name="borderWidth">0dp</item>
-        <item name="elevation">6dp</item>
-        <item name="pressedTranslationZ">10dp</item>
-        <item name="rippleColor">@android:color/white</item>
-    </style>
-
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item> 
-        <item name="colorPrimaryDark">@color/primary_dark</item> 
-        <item name="colorControlHighlight">@color/accent_translucent</item> 
-        <item name="colorAccent">@color/accent</item>
-
-        <item name="android:textColorHint">@color/text_color_hint</item>
-        <!--<item name="colorControlActivated">@color/primary</item>-->
-    </style>
-
-    <style name="HorizontalDivider">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@android:color/darker_gray</item>
-    </style>
-
-    <style name="VerticalDivider">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@android:color/darker_gray</item>
-    </style>
-
-    <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar">
-        <item name="android:color">@color/red</item>
-    </style>
-
-
-    <color name="primary">#ffdc60</color>
-    <color name="primary_dark">#e5c645</color>
-    <color name="red">#9cff0000</color>
-    <color name="red_dark">#b7b30606</color>
-    <color name="accent">@color/red</color>
-    <color name="accent_translucent">@color/red_dark</color>
-    <!--<color name="accent_bright">#83FF0000</color>-->
-    <color name="text_color_dark">#000000</color>
-    <color name="text_color_light">#97000000</color>
-    <color name="text_color_hint">#67000000</color>
-    <color name="text_color_error">#b0e80000</color>
-    <color name="text_color_menu_item">#000000</color>
-    <color name="text_color_title">#000000</color>
-    <color name="background_white">#ffffff</color>
 </resources>
