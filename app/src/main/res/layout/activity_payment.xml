@@ -2,170 +2,170 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="paymentInfo"
-            type="im.kirillt.yandexmoneyclient.model.PaymentInfo" />
-        <import type="android.view.View" />
-    </data>
+    <!--<data>-->
+        <!--<variable-->
+            <!--name="paymentInfo"-->
+            <!--type="im.kirillt.yandexmoneyclient.model.PaymentInfo" />-->
+        <!--<import type="android.view.View" />-->
+    <!--</data>-->
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/background_white">
+    <!--<android.support.design.widget.CoordinatorLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/background_white">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical">-->
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/payment_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary" />
-
-
-
-            <ProgressBar
-                android:id="@+id/payment_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{paymentInfo.refreshing.get() ? View.VISIBLE : View.GONE}" />
-
-            <TextView
-                android:id="@+id/payment_result_msg"
-                style="@style/TextViewH2"
-                app:tvbinding="@{paymentInfo.processResultMessage}"
-                android:visibility="@{paymentInfo.processResultMessage.isEmpty() ? View.GONE : View.VISIBLE}" />
-
-            <TextView
-                android:id="@+id/payment_error_textview"
-                style="@style/TextViewH2"
-                android:visibility="@{paymentInfo.requestResultMessage.isEmpty() ? View.GONE : View.VISIBLE}"
-                app:tvbinding="@{paymentInfo.requestResultMessage}" />
-
-            <!--<include
-                layout="@layout/payment_edit"
-                bind:paymentInfo="@{paymentInfo}" />-->
-            <LinearLayout
-                android:id="@+id/pay_editdata_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="@{paymentInfo.finished.get() ? View.GONE : View.VISIBLE}">
-                <!-- first line -->
-                <TextView
-                    style="@style/TextViewH3"
-                    android:gravity="left"
-                    android:text="@string/pay_who" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/pay_who_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:error="@{paymentInfo.whoError}">
-
-                    <EditText
-                        android:id="@+id/pay_who"
-                        style="@style/EditText"
-                        android:maxLength="250"
-                        app:binding="@{paymentInfo.who}" />
-
-                </android.support.design.widget.TextInputLayout>
-                <!-- second line -->
-                <TextView
-                    style="@style/TextViewH3"
-                    android:gravity="left"
-                    android:text="@string/pay_total" />
-
-                <EditText
-                    android:id="@+id/pay_total"
-                    style="@style/AmountEditText"
-                    android:hint="@string/big_decimal_zero"
-                    app:binding="@{paymentInfo.amountTotal}" />
-
-                <!-- third line -->
-                <TextView
-                    style="@style/TextViewH3"
-                    android:gravity="left"
-                    android:text="@string/pay_to_be_paid" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/pay_to_be_paid_wrapper"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    app:error="@{paymentInfo.amountError}">
-
-                    <EditText
-                        android:id="@+id/pay_to_be_paid"
-                        style="@style/AmountEditText"
-                        android:hint="@string/big_decimal_zero"
-                        app:binding="@{paymentInfo.amountToBePaid}" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <!-- fourth line -->
-                <TextView
-                    style="@style/TextViewH3"
-                    android:gravity="left"
-                    android:text="@string/pay_recipient_message" />
-
-                <EditText
-                    android:id="@+id/pay_message"
-                    style="@style/EditText"
-                    android:hint="@string/optional"
-                    app:binding="@{paymentInfo.message}" />
-
-                <!-- fifth line -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        style="@style/TextViewH3"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:gravity="left"
-                        android:text="@string/pay_security_code" />
-
-                    <Switch
-                        android:id="@+id/pay_codepro_switch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+            <!--<android.support.v7.widget.Toolbar-->
+                <!--android:id="@+id/payment_toolbar"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/primary" />-->
 
 
-                </LinearLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/pay_codepro_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{paymentInfo.codePro.get() ? View.VISIBLE : View.GONE}">
+            <!--<ProgressBar-->
+                <!--android:id="@+id/payment_progress_bar"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:visibility="@{paymentInfo.refreshing.get() ? View.VISIBLE : View.GONE}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/payment_result_msg"-->
+                <!--style="@style/TextViewH2"-->
+                <!--app:tvbinding="@{paymentInfo.processResultMessage}"-->
+                <!--android:visibility="@{paymentInfo.processResultMessage.isEmpty() ? View.GONE : View.VISIBLE}" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/payment_error_textview"-->
+                <!--style="@style/TextViewH2"-->
+                <!--android:visibility="@{paymentInfo.requestResultMessage.isEmpty() ? View.GONE : View.VISIBLE}"-->
+                <!--app:tvbinding="@{paymentInfo.requestResultMessage}" />-->
+
+            <!--&lt;!&ndash;<include-->
+                <!--layout="@layout/payment_edit"-->
+                <!--bind:paymentInfo="@{paymentInfo}" />&ndash;&gt;-->
+            <!--<LinearLayout-->
+                <!--android:id="@+id/pay_editdata_container"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical"-->
+                <!--android:visibility="@{paymentInfo.finished.get() ? View.GONE : View.VISIBLE}">-->
+                <!--&lt;!&ndash; first line &ndash;&gt;-->
+                <!--<TextView-->
+                    <!--style="@style/TextViewH3"-->
+                    <!--android:gravity="left"-->
+                    <!--android:text="@string/pay_who" />-->
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:id="@+id/pay_who_wrapper"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:error="@{paymentInfo.whoError}">-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/pay_who"-->
+                        <!--style="@style/EditText"-->
+                        <!--android:maxLength="250"-->
+                        <!--app:binding="@{paymentInfo.who}" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+                <!--&lt;!&ndash; second line &ndash;&gt;-->
+                <!--<TextView-->
+                    <!--style="@style/TextViewH3"-->
+                    <!--android:gravity="left"-->
+                    <!--android:text="@string/pay_total" />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/pay_total"-->
+                    <!--style="@style/AmountEditText"-->
+                    <!--android:hint="@string/big_decimal_zero"-->
+                    <!--app:binding="@{paymentInfo.amountTotal}" />-->
+
+                <!--&lt;!&ndash; third line &ndash;&gt;-->
+                <!--<TextView-->
+                    <!--style="@style/TextViewH3"-->
+                    <!--android:gravity="left"-->
+                    <!--android:text="@string/pay_to_be_paid" />-->
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:id="@+id/pay_to_be_paid_wrapper"-->
+                    <!--android:layout_width="fill_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:error="@{paymentInfo.amountError}">-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/pay_to_be_paid"-->
+                        <!--style="@style/AmountEditText"-->
+                        <!--android:hint="@string/big_decimal_zero"-->
+                        <!--app:binding="@{paymentInfo.amountToBePaid}" />-->
+
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <!--&lt;!&ndash; fourth line &ndash;&gt;-->
+                <!--<TextView-->
+                    <!--style="@style/TextViewH3"-->
+                    <!--android:gravity="left"-->
+                    <!--android:text="@string/pay_recipient_message" />-->
+
+                <!--<EditText-->
+                    <!--android:id="@+id/pay_message"-->
+                    <!--style="@style/EditText"-->
+                    <!--android:hint="@string/optional"-->
+                    <!--app:binding="@{paymentInfo.message}" />-->
+
+                <!--&lt;!&ndash; fifth line &ndash;&gt;-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<TextView-->
+                        <!--style="@style/TextViewH3"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="left"-->
+                        <!--android:text="@string/pay_security_code" />-->
+
+                    <!--<Switch-->
+                        <!--android:id="@+id/pay_codepro_switch"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content" />-->
 
 
-                    <EditText
-                        android:id="@+id/pay_codepro_time_edittext"
-                        style="@style/EditText"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        app:binding="@{paymentInfo.codeproTime}" />
+                <!--</LinearLayout>-->
 
-                </android.support.design.widget.TextInputLayout>
-            </LinearLayout>
+                <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:id="@+id/pay_codepro_wrapper"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:visibility="@{paymentInfo.codePro.get() ? View.VISIBLE : View.GONE}">-->
 
 
-        </LinearLayout>
+                    <!--<EditText-->
+                        <!--android:id="@+id/pay_codepro_time_edittext"-->
+                        <!--style="@style/EditText"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:inputType="number"-->
+                        <!--android:maxLength="3"-->
+                        <!--app:binding="@{paymentInfo.codeproTime}" />-->
 
-        <android.support.design.widget.FloatingActionButton
-            style="@style/FabStyle"
-            android:id="@+id/payment_fab"
-            app:layout_anchor="@id/payment_toolbar"
-            app:layout_anchorGravity="bottom|right|end" />
+                <!--</android.support.design.widget.TextInputLayout>-->
+            <!--</LinearLayout>-->
 
-    </android.support.design.widget.CoordinatorLayout>
+
+        <!--</LinearLayout>-->
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--style="@style/FabStyle"-->
+            <!--android:id="@+id/payment_fab"-->
+            <!--app:layout_anchor="@id/payment_toolbar"-->
+            <!--app:layout_anchorGravity="bottom|right|end" />-->
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->
 
 </layout>
