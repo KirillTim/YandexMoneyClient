@@ -154,9 +154,9 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void getLockCode(String lockCode) {
-        getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
+        /*getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
                 .putString(YMCApplication.PREF_LOCK_CODE, Encryption.passMD5(lockCode).toString())
-                .putString(YMCApplication.PREF_AUTH_TOKEN, Encryption.encryptToken(token, lockCode).toString()).apply();
+                .putString(YMCApplication.PREF_AUTH_TOKEN, Encryption.encryptToken(token, lockCode).toString()).apply();*/
         setResult(RESULT_OK);
         finish();
     }
