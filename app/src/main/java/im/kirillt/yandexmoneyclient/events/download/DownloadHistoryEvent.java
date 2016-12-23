@@ -1,4 +1,3 @@
-/*
 package im.kirillt.yandexmoneyclient.events.download;
 
 import android.content.Context;
@@ -20,7 +19,7 @@ import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationCursor;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationSelection;
-import im.kirillt.yandexmoneyclient.utils.ResponseReady;
+//import im.kirillt.yandexmoneyclient.utils.ResponseReady;
 import im.kirillt.yandexmoneyclient.utils.ResponseToContentValues;
 
 public class DownloadHistoryEvent implements DownloadEvent {
@@ -43,37 +42,31 @@ public class DownloadHistoryEvent implements DownloadEvent {
     }
 
     private void download(DateTime from, int startRecord, int records) throws IOException {
-        YMCApplication.auth2Session.enqueue(createRequest(from, startRecord, records), new ResponseReady<OperationHistory>() {
-            @Override
-            protected void failure(Exception exception) {
-                YMCApplication.historyDownloadingFinish();
-                exception.printStackTrace();
-                EventBus.getDefault().post(new AnyErrorEvent(exception));
-            }
-
-            @Override
-            protected void response(OperationHistory response) {
-                Log.i("download: ", "nextRecord:"+ (response.nextRecord == null ? 0 : response.nextRecord )+" response size: "+response.operations.size());
-                if (!TextUtils.isEmpty(response.nextRecord)) {
-                    try {
-                        download(from, Integer.valueOf(response.nextRecord), records);
-                    } catch (IOException e) {
-                        YMCApplication.historyDownloadingFinish();
-                        e.printStackTrace();
-                        EventBus.getDefault().post(new AnyErrorEvent(e));
-                    }
+        try {
+            OperationHistory response = YMCApplication.client.execute(createRequest(from, startRecord, records));
+            Log.i("download: ", "nextRecord:"+ (response.nextRecord == null ? 0 : response.nextRecord )+" response size: "+response.operations.size());
+            if (!TextUtils.isEmpty(response.nextRecord)) {
+                try {
+                    download(from, Integer.valueOf(response.nextRecord), records);
+                } catch (IOException e) {
+                    YMCApplication.historyDownloadingFinish();
+                    e.printStackTrace();
+                    EventBus.getDefault().post(new AnyErrorEvent(e));
                 }
-                for (Operation operation : response.operations) {
-                    if (operation.type == Operation.Type.OUTGOING_TRANSFER
-                            || operation.type == Operation.Type.INCOMING_TRANSFER
-                            || operation.type == Operation.Type.INCOMING_TRANSFER_PROTECTED) {
-                        ResponseToContentValues.operation(operation).insert(context.getContentResolver());
-                    }
-                }
-                YMCApplication.historyDownloadingFinish();
-                EventBus.getDefault().post(new SuccessHistoryEvent());
             }
-        });
+            for (Operation operation : response.operations) {
+                if (operation.type == Operation.Type.OUTGOING_TRANSFER
+                        || operation.type == Operation.Type.INCOMING_TRANSFER
+                        || operation.type == Operation.Type.INCOMING_TRANSFER_PROTECTED) {
+                    ResponseToContentValues.operation(operation).insert(context.getContentResolver());
+                }
+            }
+            YMCApplication.historyDownloadingFinish();
+            EventBus.getDefault().post(new SuccessHistoryEvent());
+        } catch (Exception exception) {
+            YMCApplication.historyDownloadingFinish();
+            EventBus.getDefault().post(new AnyErrorEvent(exception));
+        }
     }
 
     public DateTime getLatestSavedOperationDate() {
@@ -105,7 +98,6 @@ public class DownloadHistoryEvent implements DownloadEvent {
         } else {
             builder.setRecords(DEFAULT_RECORDS_DOWNLOAD);
         }
-        return builder.createRequest();
+        return builder.create();
     }
 }
-*/
