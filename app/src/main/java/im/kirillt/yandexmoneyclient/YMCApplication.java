@@ -79,11 +79,12 @@ public class YMCApplication extends Application {
         Log.i("YMCApplication", "onCreate()");
         String tokenStr = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
         if (TextUtils.isEmpty(tokenStr)) {
-            askLock = false;
+            //askLock = false;
             askAuth = true;
         } else {
-            askLock = true;
-            askAuth = false;
+            setToken(tokenStr);
+            //askLock = true;
+            //askAuth = false;
         }
         singleton = this;
         appContext = getApplicationContext();

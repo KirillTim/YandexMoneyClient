@@ -9,7 +9,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (YMCApplication.askLock) {
-            startActivityForResult(new Intent(this, LockScreenActivity.class), 1);
+            //startActivityForResult(new Intent(this, LockScreenActivity.class), 1);
         } else if (YMCApplication.askAuth) {
             startActivityForResult(new Intent(this, AuthActivity.class), 2);
         }
