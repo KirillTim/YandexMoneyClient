@@ -127,7 +127,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void onEventMainThread(WebAuthResultEvent event) {
-        getWebAuth(event.token, event.login, event.errorDescription);
+        getWebAuth(event.getToken(), event.getLogin(), event.getErrorDescription());
     }
 
     public void onEventAsync(DownloadAccountInfoEvent event) {
@@ -141,7 +141,7 @@ public class AuthActivity extends AppCompatActivity {
     public void onEventMainThread(SuccessAccountInfoEvent event) {
         progressBar.setVisibility(View.INVISIBLE);
         greetingTextView.setVisibility(View.GONE);
-        if (event.response.accountStatus == AccountStatus.ANONYMOUS) {
+        if (event.getResponse().accountStatus == AccountStatus.ANONYMOUS) {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
         } else {

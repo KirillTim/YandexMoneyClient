@@ -148,7 +148,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onEventMainThread(IncomingTransferProcessResultEvent event) {
-        Toast.makeText(this, event.result, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, event.getResult(), Toast.LENGTH_SHORT).show();
     }
 
     public LinearLayout getToolBarInnerView() {
