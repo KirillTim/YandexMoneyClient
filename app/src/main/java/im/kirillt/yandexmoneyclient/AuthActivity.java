@@ -145,12 +145,20 @@ public class AuthActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
         } else {
-            frameLayout.setVisibility(View.VISIBLE);
+            /*frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
                     CreateLockCodeFragment.newInstance()).commit();
-            state = 1;
+            state = 1;*/
+            saveTokenAndExit();
         }
 
+    }
+
+    public void saveTokenAndExit() {
+        getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
+                .putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+        setResult(RESULT_OK);
+        finish();
     }
 
     public void getLockCode(String lockCode) {

@@ -13,6 +13,7 @@ import im.kirillt.yandexmoneyclient.provider.operation.paymentType;
 import im.kirillt.yandexmoneyclient.provider.operation.status;
 
 import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalOrZero;
+import static im.kirillt.yandexmoneyclient.utils.Converters.boolOrFalse;
 import static im.kirillt.yandexmoneyclient.utils.Converters.stringOrEmpty;
 
 public class ResponseToContentValues {
@@ -57,8 +58,8 @@ public class ResponseToContentValues {
         }
         rv.putLabel(stringOrEmpty(operation.label))
                 .putDetails(stringOrEmpty(operation.details))
-                .putRepeatable(operation.repeatable)
-                .putFavorite(operation.favorite)
+                .putRepeatable(boolOrFalse(operation.repeatable))
+                .putFavorite(boolOrFalse(operation.favorite))
                 .putPaymenttype(paymentType.valueOf(operation.type.toString()));
         return rv;
     }

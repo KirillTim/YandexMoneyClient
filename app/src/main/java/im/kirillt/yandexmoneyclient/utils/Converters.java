@@ -10,6 +10,10 @@ public class Converters {
         return s == null ? "" : s;
     }
 
+    public static Boolean boolOrFalse(Boolean b) {
+        return b == null ? false : b;
+    }
+
     public static BigDecimal bigDecimalOrZero(BigDecimal bd) {
         return bd == null ? new BigDecimal(0) : bd;
     }
