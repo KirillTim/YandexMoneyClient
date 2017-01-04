@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import im.kirillt.yandexmoneyclient.MainActivity;
 //import im.kirillt.yandexmoneyclient.PaymentActivity_old;
 //import im.kirillt.yandexmoneyclient.PaymentActivity;
+import im.kirillt.yandexmoneyclient.PaymentActivity;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.provider.account.AccountColumns;
 
@@ -61,7 +62,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         fab = ((MainActivity)getActivity()).getFab();
         fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(v -> {
-//            PaymentActivity.startActivity(getContext());
+            PaymentActivity.startActivity(getContext());
         });
     }
 

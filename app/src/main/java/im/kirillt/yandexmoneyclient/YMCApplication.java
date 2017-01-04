@@ -77,7 +77,8 @@ public class YMCApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Log.i("YMCApplication", "onCreate()");
-        String tokenStr = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        //String tokenStr = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        String tokenStr = "410011641845768.5AE1D0B5D1FC724B4EF13B91D43254E6E38809140A21A784EB78EDF8D7AD5FC7000484587B23ECD995CB2091D6F828CB93FCB5FC4CD02149D9321572B4167C3E55C91F4FE1F1FC9BCA44F515F3328F9E589479C27F3038CD6C766611ADF6CE11327ECCEAFDE6DAC27A38FDFAF7A29D5055C53B057AA9EA58DFE81019573E3477";
         if (TextUtils.isEmpty(tokenStr)) {
             //askLock = false;
             askAuth = true;

@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
             finish();
         }*/
         setContentView(R.layout.activity_main);
-        mainFab = (FloatingActionButton)findViewById(R.id.activity_main_fab);
+        mainFab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         initToolbar();
         initDrawerLayout();
         currentFragment = MainFragment.newInstance();
@@ -95,16 +95,16 @@ public class MainActivity extends BaseActivity {
 
     private void selectDrawerItem(MenuItem menuItem) {
         if (menuItem == curMenuItemId) {
-            return ;
+            return;
         }
         curMenuItemId = menuItem;
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.drawer_home:
                 currentFragment = MainFragment.newInstance();
                 break;
             case R.id.drawer_pay:
                 curMenuItemId = menu.getItem(0);
-//                PaymentActivity.startActivity(MainActivity.this);
+                PaymentActivity.startActivity(MainActivity.this);
                 break;
             case R.id.drawer_history:
                 currentFragment = HistoryFragment.newInstance();
@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
 
     public void onEventMainThread(AnyErrorEvent errorEvent) {
         if (errorEvent.getException() instanceof IOException) {
-            Toast.makeText(this, getString(R.string.net_error),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.net_error), Toast.LENGTH_SHORT).show();
         }
     }
 

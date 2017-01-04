@@ -1,3 +1,3 @@
 package im.kirillt.yandexmoneyclient.events
 
-data class AnyErrorEvent(val exception: Exception)
+class AnyErrorEvent(val exception: Exception? = null)
