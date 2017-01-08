@@ -32,11 +32,11 @@ class BottomNavActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_nav)
 
-        val fab = findViewById(R.id.activity_bot_fab) as FloatingActionButton
+        /*val fab = findViewById(R.id.activity_bot_fab) as FloatingActionButton
         fab.setOnClickListener {
             PaymentActivity.startActivity(YMCApplication.getAppContext())
         }
-        /*accountInfoContainer = findViewById(R.id.account_info_container) as LinearLayout
+        accountInfoContainer = findViewById(R.id.account_info_container) as LinearLayout
         val toolbar = findViewById(R.id.activity_main_toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
@@ -49,6 +49,8 @@ class BottomNavActivity : BaseActivity() {
         historyFragment = HistoryFragment.newInstance()
         currentFragment = historyFragment
 
+        supportFragmentManager.beginTransaction().add(R.id.activity_bot_fragment, currentFragment).commit()
+
 
         val bottomNavigationView = findViewById(R.id.bottom_navigation) as BottomNavigationView
 
@@ -56,8 +58,10 @@ class BottomNavActivity : BaseActivity() {
             when (it.itemId) {
                 R.id.action_history -> {
                     //"history"
-                    if (currentFragment != historyFragment)
+                    if (currentFragment != historyFragment) {
                         currentFragment = historyFragment
+                        supportFragmentManager.beginTransaction().replace(R.id.activity_bot_fragment, currentFragment).commit()
+                    }
                 }
                 R.id.action_favorites -> {
                     //"favorites"
@@ -65,8 +69,10 @@ class BottomNavActivity : BaseActivity() {
                 }
                 R.id.action_settings -> {
                     //"settings"
-                    if (currentFragment != settingsFragment)
+                    if (currentFragment != settingsFragment) {
                         currentFragment = settingsFragment
+                        supportFragmentManager.beginTransaction().replace(R.id.activity_bot_fragment, currentFragment).commit()
+                    }
                 }
                 else -> {
                 }
