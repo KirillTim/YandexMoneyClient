@@ -19,7 +19,7 @@
     <string name="enter_lock_code_hint">From four to eight digits</string>
     <string name="logout">Log out</string>
     <string name="invalid_code">Invalid lock code</string>
-    <string name="forget_code">Forget your code?</string>
+    <string name="forget_code">Forgot your code?</string>
     <string name="logout_from_acc">Log out from your account</string>
     <string name="forget_lock_msg_line1">Your current passcode will be reset. Log in again to create new passcode</string>
     <string name="at_least_4">At least 4 symbols</string>
@@ -33,7 +33,7 @@
 
     <!-- operation details -->
     <string name="amount">Amount</string>
-    <string name="commission">Commission</string>
+    <string name="commission">Fee</string>
     <string name="operation_title">Title</string>
     <string name="commission_hint">0.00</string>
     <string name="date_and_time">Date and time</string>

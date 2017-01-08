@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Yandex Money Client</string>
+    <string name="balance">Баланс</string>
+    <string name="cancel">Отмена</string>
+    <string name="menu_history">История</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="recipient">Получатель</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="user_login">Логин</string>
+    <string name="date_and_time">Дата и время</string>
+    <string name="at_least_4">Минимум 4 символа</string>
+    <string name="amount">Сумма</string>
+    <string name="account_number">Номер счёта</string>
+    <string name="accept">Принять</string>
+    <string name="commission">Комиссия</string>
+    <string name="enter_code">Введите код блокировки</string>
+    <string name="enter_lock_code_hint">От 4 до 8 цифр</string>
+    <string name="forget_code">Забыли код?</string>
+    <string name="menu_favorites">Избранное</string>
+    <string name="greeting">Прив, </string>
+    <string name="reserved">Заморожено</string>
+</resources>
