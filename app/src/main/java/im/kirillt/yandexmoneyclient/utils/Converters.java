@@ -1,5 +1,7 @@
 package im.kirillt.yandexmoneyclient.utils;
 
+import com.yandex.money.api.util.Currency;
+
 import java.math.BigDecimal;
 
 public class Converters {
@@ -28,5 +30,16 @@ public class Converters {
 
     public static String bigDecimalToAmountString(BigDecimal bd) {
         return bd.setScale(2, BigDecimal.ROUND_CEILING).toString();
+    }
+
+    public static String fancyCurrencyName(Currency currency) {
+        switch (currency) {
+            case RUB:
+                return "\u20BD";
+            case UAH:
+                return "\u20B4";
+            default:
+                return currency.alphaCode;
+        }
     }
 }
