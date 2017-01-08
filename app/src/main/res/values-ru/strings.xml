@@ -20,4 +20,24 @@
     <string name="menu_favorites">Избранное</string>
     <string name="greeting">Прив, </string>
     <string name="reserved">Заморожено</string>
+    <string name="clear_cache">Очистить кэш</string>
+    <string name="pay_codepro_hint">От 1 до 365</string>
+    <string name="pay_error">Ошибка</string>
+    <string name="pay_to_be_paid">К оплате</string>
+    <string name="pay_total">Всего</string>
+    <string name="reject">Отклонить</string>
+    <string name="repeat">Повторить</string>
+    <string name="title_activity_payment">Платёж</string>
+    <string name="status">Статус</string>
+    <string name="reset">Сбросить</string>
+    <string name="pay_success">Успешно!</string>
+    <string name="pay_security_code">Код безопасности</string>
+    <string name="pay_recipient_message">Сообщение получателю</string>
+    <string name="password_doesnt_match">Коды не совпадают</string>
+    <string name="optional">необязательно</string>
+    <string name="not_enough_money">Недостаточно средств</string>
+    <string name="drawer_pay">Оплатить</string>
+    <string name="drawer_home">Домой</string>
+    <string name="error_anonymous_account">Щас бы анонимом быть</string>
+    <string name="enter_code_second_time">Пожалуйста, введите тот же код ещё раз</string>
 </resources>
