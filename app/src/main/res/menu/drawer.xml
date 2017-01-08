@@ -12,16 +12,6 @@
 
         <item
             android:id="@+id/drawer_history"
-            android:title="@string/drawer_history" />
-    </group>
-
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/drawer_settings"
-            android:title="@string/drawer_settings" />
-
-        <item
-            android:id="@+id/drawer_about"
-            android:title="@string/drawer_about" />
+            android:title="@string/menu_history" />
     </group>
 </menu>

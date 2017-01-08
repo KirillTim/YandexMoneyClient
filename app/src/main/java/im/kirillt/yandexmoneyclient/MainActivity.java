@@ -22,7 +22,6 @@ import de.greenrobot.event.EventBus;
 import im.kirillt.yandexmoneyclient.events.AnyErrorEvent;
 import im.kirillt.yandexmoneyclient.events.IncomingTransferProcessResultEvent;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
-import im.kirillt.yandexmoneyclient.fragments.AboutFragment;
 import im.kirillt.yandexmoneyclient.fragments.HistoryFragment;
 import im.kirillt.yandexmoneyclient.fragments.MainFragment;
 //import im.kirillt.yandexmoneyclient.fragments.SettingsFragment;
@@ -69,7 +68,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initDrawerLayout() {
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        /*drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView view = (NavigationView) findViewById(R.id.navigation_view);
         view.setNavigationItemSelectedListener(menuItem -> {
             selectDrawerItem(menuItem);
@@ -78,8 +77,8 @@ public class MainActivity extends BaseActivity {
             setTitle(menuItem.getTitle());
             return true;
         });
-        menu = view.getMenu();
-        curMenuItemId = menu.getItem(0);
+        menu = view.getMenu();*/
+        //curMenuItemId = MenuItem;//menu.getItem(0);
     }
 
     @Override
@@ -97,7 +96,7 @@ public class MainActivity extends BaseActivity {
         if (menuItem == curMenuItemId) {
             return;
         }
-        curMenuItemId = menuItem;
+        /*curMenuItemId = menuItem;
         switch (menuItem.getItemId()) {
             case R.id.drawer_home:
                 currentFragment = MainFragment.newInstance();
@@ -120,7 +119,7 @@ public class MainActivity extends BaseActivity {
 
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.activity_main_fragment, currentFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.activity_main_fragment, currentFragment).commit();*/
     }
 
     @Override

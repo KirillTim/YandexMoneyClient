@@ -2,9 +2,6 @@ package im.kirillt.yandexmoneyclient.model;
 
 
 import android.content.res.Resources;
-import android.text.TextUtils;
-import android.util.Patterns;
-import android.view.View;
 
 import org.parceler.Parcel;
 
@@ -13,12 +10,9 @@ import java.math.BigDecimal;
 import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.model.util.BindableBoolean;
 import im.kirillt.yandexmoneyclient.model.util.BindableString;
-import im.kirillt.yandexmoneyclient.model.util.BindableVisible;
-import im.kirillt.yandexmoneyclient.utils.Validator;
 
 import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalOrZero;
 import static im.kirillt.yandexmoneyclient.utils.Converters.bigDecimalToAmountString;
-import static im.kirillt.yandexmoneyclient.utils.Converters.stringOrEmpty;
 
 @Parcel
 public class PaymentInfo {
@@ -75,7 +69,8 @@ public class PaymentInfo {
         BigDecimal tbp = BigDecimal.ZERO;
         try {
             tbp = new BigDecimal(amountToBePaid.get());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         amountTotal.set(bigDecimalToAmountString(totalFromToBePaid(tbp)));
     }
 
@@ -85,10 +80,11 @@ public class PaymentInfo {
             return;
         }
         recursionFlag = 2;
-         BigDecimal total = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
         try {
             total = new BigDecimal(amountTotal.get());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         amountToBePaid.set(bigDecimalToAmountString(toBePaidFromTotal(total)));
     }
 
@@ -127,7 +123,9 @@ public class PaymentInfo {
         BigDecimal rv = BigDecimal.ZERO;
         try {
             rv = toBePaid.divide(BigDecimal.ONE.add(P2P_COMMISSION), 2, BigDecimal.ROUND_HALF_UP);
-        } catch (Exception ignored) {ignored.printStackTrace();}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
         return rv;
     }
 
@@ -135,7 +133,9 @@ public class PaymentInfo {
         BigDecimal rv = BigDecimal.ZERO;
         try {
             rv = total.add(total.multiply(P2P_COMMISSION));
-        } catch (Exception ignored) {ignored.printStackTrace();}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
         return rv;
     }
 }

@@ -18,6 +18,7 @@ import im.kirillt.yandexmoneyclient.R;
 import im.kirillt.yandexmoneyclient.YMCApplication;
 import im.kirillt.yandexmoneyclient.events.download.DownloadAllEvent;
 import im.kirillt.yandexmoneyclient.events.download.SuccessDownloadEvent;
+import im.kirillt.yandexmoneyclient.provider.YMCContentProvider;
 import im.kirillt.yandexmoneyclient.provider.operation.OperationColumns;
 
 
