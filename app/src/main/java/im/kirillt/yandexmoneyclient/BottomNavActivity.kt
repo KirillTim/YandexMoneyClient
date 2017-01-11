@@ -41,19 +41,13 @@ class BottomNavActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_nav)
 
-        /*val fab = findViewById(R.id.activity_bot_fab) as FloatingActionButton
+        val fab = findViewById(R.id.activity_bot_fab) as FloatingActionButton
         fab.setOnClickListener {
-            PaymentActivity.startActivity(YMCApplication.getAppContext())
+            PaymentActivity.startActivity(YMCApplication.appContext)
         }
         accountInfoContainer = findViewById(R.id.account_info_container) as LinearLayout
-        val toolbar = findViewById(R.id.activity_main_toolbar) as Toolbar
+        val toolbar = findViewById(R.id.activity_bot_toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
-        (accountInfoContainer!!.findViewById(R.id.account_info_user_name) as TextView).text = "line1"
-        (accountInfoContainer!!.findViewById(R.id.account_info_account_number) as TextView).text = "line2"
-        (accountInfoContainer!!.findViewById(R.id.account_info_balance) as TextView).text = "line3"
-        (accountInfoContainer!!.findViewById(R.id.account_info_reserved) as TextView).text = "line4"
-        */
 
         settingsFragment = SettingsFragment.newInstance()
         historyFragment = HistoryFragment.newInstance()
@@ -119,18 +113,19 @@ class BottomNavActivity : BaseActivity() {
     }
 
     fun onEventAsync(event: SuccessAccountInfoEvent) {
+        val accountInfo = event.response
+        val currency = Converters.fancyCurrencyName(accountInfo.currency)
         runOnUiThread {
-            val accountInfo = event.response
             account!!.text = accountInfo.account
             balance!!.text = String.format("%s: %s %s",
                     getString(R.string.balance),
                     NumberFormat.getInstance().format(accountInfo.balance),
-                    Converters.fancyCurrencyName(accountInfo.currency)
+                    currency
             )
             reserved!!.text = String.format("%s: %s %s",
                     getString(R.string.reserved),
                     NumberFormat.getInstance().format(accountInfo.balanceDetails.hold ?: 0), // wtf nulls in my Kotlin
-                    Converters.fancyCurrencyName(accountInfo.currency)
+                    currency
             )
         }
     }

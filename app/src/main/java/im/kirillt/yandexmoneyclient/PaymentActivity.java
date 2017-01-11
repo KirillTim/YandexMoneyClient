@@ -106,7 +106,7 @@ public class PaymentActivity extends BaseActivity {
     }
 
     public static void startActivity(Context context) {
-        context.startActivity(new Intent(context, PaymentActivity.class).putExtra(YMCApplication.FROM_INNER, true));
+        context.startActivity(new Intent(context, PaymentActivity.class).putExtra(YMCApplication.Companion.getFROM_INNER(), true));
     }
 
 

@@ -60,8 +60,8 @@ public class AuthActivity extends AppCompatActivity {
 
         initToolbar();
 
-        String token = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0)
-                .getString(YMCApplication.PREF_AUTH_TOKEN, "");
+        String token = getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0)
+                .getString(YMCApplication.Companion.getPREF_AUTH_TOKEN(), "");
         if (!TextUtils.isEmpty(token)) {
             setResult(RESULT_OK);
             this.finish();
@@ -70,7 +70,7 @@ public class AuthActivity extends AppCompatActivity {
         //TODO: use parecalble model to hold data and fancy enum with states
         Fragment fragment ;
         if (state == 0) {
-            fragment = WebViewFragment.newInstance(YMCApplication.data.getUrl(), YMCApplication.data.getParameters());
+            fragment = WebViewFragment.newInstance(YMCApplication.Companion.getData().getUrl(), YMCApplication.Companion.getData().getParameters());
                     //YMCApplication.authParams.build());
         } else if (state == 1) {
             fragment = CreateLockCodeFragment.newInstance();
@@ -116,7 +116,7 @@ public class AuthActivity extends AppCompatActivity {
             this.message = message;
             this.state = 2;
         } else {
-            YMCApplication.client.setAccessToken(token);
+            YMCApplication.Companion.getClient().setAccessToken(token);
             this.token = token;
             this.login = login;
             showProgressBar();
@@ -155,8 +155,8 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void saveTokenAndExit() {
-        getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).edit()
-                .putString(YMCApplication.PREF_AUTH_TOKEN, token).apply();
+        getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).edit()
+                .putString(YMCApplication.Companion.getPREF_AUTH_TOKEN(), token).apply();
         setResult(RESULT_OK);
         finish();
     }

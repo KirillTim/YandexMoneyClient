@@ -43,7 +43,7 @@
             style="@style/FabStyle"
             android:visibility="visible"
             app:layout_anchor="@id/activity_bot_toolbar"
-            app:layout_anchorGravity="bottom|end" />
+            app:layout_anchorGravity="bottom|end"/>
 
 
     </android.support.design.widget.CoordinatorLayout>

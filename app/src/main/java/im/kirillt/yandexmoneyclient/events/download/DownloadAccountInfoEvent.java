@@ -31,8 +31,8 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
 
     public void download() {
         try {
-            YMCApplication.accountDownloadingStart();
-            AccountInfo response = YMCApplication.client.execute(new AccountInfo.Request()); // enqueue(new AccountInfo.Request(), new ResponseReady<AccountInfo>() {
+            YMCApplication.Companion.accountDownloadingStart();
+            AccountInfo response = YMCApplication.Companion.getClient().execute(new AccountInfo.Request()); // enqueue(new AccountInfo.Request(), new ResponseReady<AccountInfo>() {
             AccountContentValues contentValues = new AccountContentValues();
             contentValues.putBalance(response.balance.toString());
             if (login != null) {
@@ -60,10 +60,10 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                 }
                 contentValues.insert(context.getContentResolver());
             }
-            YMCApplication.accountDownloadingFinish();
+            YMCApplication.Companion.accountDownloadingFinish();
             EventBus.getDefault().post(new SuccessAccountInfoEvent(response));
         } catch (Exception e) {
-            YMCApplication.accountDownloadingFinish();
+            YMCApplication.Companion.accountDownloadingFinish();
             e.printStackTrace();
             EventBus.getDefault().post(new AnyErrorEvent(e));
         }

@@ -105,7 +105,7 @@ public class WebViewFragment extends Fragment {
                     // try to get OAuth2 access token
                     new Thread(() -> {
                         try {
-                            Token token = YMCApplication.client.execute(new Token.Request(response.code, YMCApplication.client.getClientId(), YMCApplication.REDIRECT_URI, YMCApplication.APP_ID));
+                            Token token = YMCApplication.Companion.getClient().execute(new Token.Request(response.code, YMCApplication.Companion.getClient().getClientId(), YMCApplication.Companion.getREDIRECT_URI(), YMCApplication.Companion.getAPP_ID()));
                             returnResult(token.accessToken, token.error == null ? null : token.error.name());
                         } catch (Exception e) {
                             e.printStackTrace();

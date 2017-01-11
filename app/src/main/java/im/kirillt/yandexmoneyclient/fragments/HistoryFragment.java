@@ -60,13 +60,13 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
         listView.setAdapter(adapter);
         swipeRefreshLayout = (SwipeRefreshLayout)rootView.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (YMCApplication.isDownloading()) {
+            if (YMCApplication.Companion.isDownloading()) {
                 swipeRefreshLayout.setRefreshing(false);
                 return;
             }
             downloadData();
         });
-        swipeRefreshLayout.setRefreshing(YMCApplication.isDownloading());}
+        swipeRefreshLayout.setRefreshing(YMCApplication.Companion.isDownloading());}
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -101,7 +101,7 @@ public class HistoryFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     public void onEventMainThread(SuccessDownloadEvent event) {
-        if (!YMCApplication.isDownloading()) {
+        if (!YMCApplication.Companion.isDownloading()) {
             swipeRefreshLayout.setRefreshing(false);
         }
     }

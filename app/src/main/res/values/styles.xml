@@ -49,13 +49,15 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/spacing_large</item>
-        <item name="background">@color/red</item>
-        <item name="colorControlActivated">@color/red</item>
-        <item name="android:src">@drawable/ic_send_black_24dp</item>
+
+        <item name="background">@color/background_white</item>
+        <item name="colorControlActivated">@color/background_white</item>
+        <item name="android:backgroundTint">@color/background_white</item>
+        <item name="rippleColor">@color/background_white</item>
+        <item name="android:src">@drawable/ic_payment_grey_700_24dp</item>
         <item name="borderWidth">0dp</item>
         <item name="elevation">6dp</item>
         <item name="pressedTranslationZ">10dp</item>
-        <item name="rippleColor">@android:color/white</item>
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -87,10 +89,11 @@
 
     <color name="primary">#ffdc60</color>
     <color name="primary_dark">#e5c645</color>
-    <color name="red">#9cff0000</color>
-    <color name="red_dark">#b7b30606</color>
+    <color name="red">#ff0000</color>
+    <color name="red_dark">#b30606</color>
     <color name="accent">@color/red</color>
     <color name="accent_translucent">@color/red_dark</color>
+    <color name="gray_700">#616161</color>
     <!--<color name="accent_bright">#83FF0000</color>-->
     <color name="text_color_dark">#000000</color>
     <color name="text_color_light">#97000000</color>

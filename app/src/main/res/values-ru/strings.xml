@@ -40,4 +40,6 @@
     <string name="drawer_home">Домой</string>
     <string name="error_anonymous_account">Щас бы анонимом быть</string>
     <string name="enter_code_second_time">Пожалуйста, введите тот же код ещё раз</string>
+    <string name="message">Сообщение</string>
+    <string name="pay_who">Получатель (номер счёта/телефон/email)</string>
 </resources>

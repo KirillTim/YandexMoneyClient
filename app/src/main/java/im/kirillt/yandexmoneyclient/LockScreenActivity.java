@@ -48,11 +48,11 @@ public class LockScreenActivity extends AppCompatActivity {
                 return;
             }
             if (((YMCApplication)getApplication()).getInstance().validateCode(code)) {
-                String tokenStr = getSharedPreferences(YMCApplication.PREFERENCES_STORAGE, 0).getString(YMCApplication.PREF_AUTH_TOKEN, "");
+                String tokenStr = getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).getString(YMCApplication.Companion.getPREF_AUTH_TOKEN(), "");
                 String token = new String(Encryption.encryptToken(tokenStr, code).toByteArray());
-                YMCApplication.setToken(token);
+                YMCApplication.Companion.setToken(token);
                 setResult(RESULT_OK);
-                YMCApplication.askLock = false;
+                YMCApplication.Companion.setAskLock(false);
                 finish();
             } else {
                 passwordEditText.setText("");
@@ -67,7 +67,7 @@ public class LockScreenActivity extends AppCompatActivity {
             });
             builder.setNegativeButton(R.string.logout, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    YMCApplication.deleteToken(LockScreenActivity.this);
+                    YMCApplication.Companion.deleteToken(LockScreenActivity.this);
                     dialog.cancel();
                     setResult(RESULT_CANCELED);
                     finish();
