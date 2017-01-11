@@ -47,10 +47,10 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth);
 
         if (savedInstanceState != null) {
-         /*   token = savedInstanceState.getString(KEY_TOKEN);
+            token = savedInstanceState.getString(KEY_TOKEN);
             login = savedInstanceState.getString(KEY_LOGIN);
             state = savedInstanceState.getInt(KEY_STATE);
-            message = savedInstanceState.getString(KEY_MESSAGE);*/
+            message = savedInstanceState.getString(KEY_MESSAGE);
         }
 
         frameLayout = (FrameLayout)findViewById(R.id.activity_auth_fragment_container);

@@ -60,6 +60,7 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                 }
                 contentValues.insert(context.getContentResolver());
             }
+            YMCApplication.Companion.getAppContext().getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).edit().putString("LOGIN", login).apply();
             YMCApplication.Companion.accountDownloadingFinish();
             EventBus.getDefault().post(new SuccessAccountInfoEvent(response));
         } catch (Exception e) {

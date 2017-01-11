@@ -116,6 +116,7 @@ class BottomNavActivity : BaseActivity() {
         val accountInfo = event.response
         val currency = Converters.fancyCurrencyName(accountInfo.currency)
         runOnUiThread {
+            userName!!.text = YMCApplication.getLogin()
             account!!.text = accountInfo.account
             balance!!.text = String.format("%s: %s %s",
                     getString(R.string.balance),
