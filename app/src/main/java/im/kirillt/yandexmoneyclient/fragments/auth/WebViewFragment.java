@@ -138,7 +138,7 @@ public class WebViewFragment extends Fragment {
         if (begin == -1) {
             return null;
         }
-        begin +=key.length();
+        begin += key.length();
         if (begin == -1) {
             return null;
         }
@@ -151,14 +151,14 @@ public class WebViewFragment extends Fragment {
 
     private void hideProgressBar() {
         Log.i("WebViewFragment", "hideProgressBar thread.id= "+Thread.currentThread().getId());
-        AuthActivity activity = (AuthActivity)getActivity();
-        if (activity!= null) {
+        AuthActivity activity = (AuthActivity) getActivity();
+        if (activity != null) {
             activity.hideProgressBar();
         }
     }
 
     private void showProgressBar() {
-        AuthActivity activity = (AuthActivity)getActivity();
+        AuthActivity activity = (AuthActivity) getActivity();
         if (activity != null) {
             activity.showProgressBar();
         }

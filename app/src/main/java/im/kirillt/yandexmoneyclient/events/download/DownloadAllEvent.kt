@@ -1,6 +1,7 @@
 package im.kirillt.yandexmoneyclient.events.download
 
 import android.content.Context
+import im.kirillt.yandexmoneyclient.YMCApplication
 
 
 class DownloadAllEvent(context: Context) : DownloadEvent {
@@ -8,7 +9,7 @@ class DownloadAllEvent(context: Context) : DownloadEvent {
     private val downloadHistoryEvent: DownloadHistoryEvent
 
     init {
-        downloadAccountInfoEvent = DownloadAccountInfoEvent(context)
+        downloadAccountInfoEvent = DownloadAccountInfoEvent(context, YMCApplication.getLogin())
         downloadHistoryEvent = DownloadHistoryEvent(context)
     }
 

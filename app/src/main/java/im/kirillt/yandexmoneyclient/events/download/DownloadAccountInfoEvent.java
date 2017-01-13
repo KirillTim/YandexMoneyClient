@@ -46,6 +46,7 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
             }
             //TODO this
             //yep, its crap. some magic bug is here and i don't write such a bad code often
+            // (actually, he does)
             AccountCursor ac = new AccountCursor(new AccountSelection()
                     .accountnumber(response.account).query(context.getContentResolver()));
             ac.moveToFirst();
@@ -60,9 +61,9 @@ public class DownloadAccountInfoEvent implements DownloadEvent {
                 }
                 contentValues.insert(context.getContentResolver());
             }
-            YMCApplication.Companion.getAppContext().getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).edit().putString("LOGIN", login).apply();
+            YMCApplication.Companion.getAppContext().getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).edit().putString("login", login).apply();
             YMCApplication.Companion.accountDownloadingFinish();
-            EventBus.getDefault().post(new SuccessAccountInfoEvent(response));
+            EventBus.getDefault().post(new SuccessAccountInfoEvent(login, response));
         } catch (Exception e) {
             YMCApplication.Companion.accountDownloadingFinish();
             e.printStackTrace();

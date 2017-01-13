@@ -73,6 +73,7 @@ public class AuthActivity extends AppCompatActivity {
             fragment = WebViewFragment.newInstance(YMCApplication.Companion.getData().getUrl(), YMCApplication.Companion.getData().getParameters());
                     //YMCApplication.authParams.build());
         } else if (state == 1) {
+            saveTokenAndExit();
             fragment = CreateLockCodeFragment.newInstance();
         } else {
             fragment = ErrorFragment.newInstance(message);
@@ -138,21 +139,22 @@ public class AuthActivity extends AppCompatActivity {
         Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    public void onEventMainThread(SuccessAccountInfoEvent event) {
-        progressBar.setVisibility(View.INVISIBLE);
-        greetingTextView.setVisibility(View.GONE);
-        if (event.getResponse().accountStatus == AccountStatus.ANONYMOUS) {
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
-                    ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
-        } else {
-            /*frameLayout.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
-                    CreateLockCodeFragment.newInstance()).commit();
-            state = 1;*/
-            saveTokenAndExit();
-        }
-
+public void onEventMainThread(SuccessAccountInfoEvent event) {
+    progressBar.setVisibility(View.INVISIBLE);
+    greetingTextView.setVisibility(View.GONE);
+    if (event.getResponse().accountStatus == AccountStatus.ANONYMOUS) {
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
+                ErrorFragment.newInstance(getString(R.string.error_anonymous_account))).commit();
+//        saveTokenAndExit();
+    } else {
+        /*frameLayout.setVisibility(View.VISIBLE);
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_auth_fragment_container,
+                CreateLockCodeFragment.newInstance()).commit();
+        state = 1;*/
+        saveTokenAndExit();
     }
+
+}
 
     public void saveTokenAndExit() {
         getSharedPreferences(YMCApplication.Companion.getPREFERENCES_STORAGE(), 0).edit()
